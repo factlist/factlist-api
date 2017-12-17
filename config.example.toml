@@ -1,0 +1,20 @@
+[database]
+adapter = "mysql"
+host = "localhost"
+name = "factlist"
+username = "root"
+password = ""
+port = 3306
+connection_max = 100
+enabled = true
+
+[server]
+host = "localhost"
+port = 8886
+
+[auth]
+jwt_signing_key = "jwt_signing_key"
+
+[aws]
+access_key_id = "access_key_id"
+secret_key = "secret_key"
