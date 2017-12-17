@@ -1,10 +1,10 @@
 package router
 
 import (
+	"github.com/factlist/factlist/app/handler"
+	"github.com/factlist/factlist/app/handler/auth"
 	"github.com/labstack/echo"
 	echoMiddleware "github.com/labstack/echo/middleware"
-	"github.com/onerciller/factlist/app/handler"
-	"github.com/onerciller/factlist/app/handler/auth"
 )
 
 //Init Router

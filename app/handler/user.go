@@ -6,8 +6,8 @@ import (
 
 	"github.com/labstack/echo"
 
-	"github.com/onerciller/factlist/app/model"
-	"github.com/onerciller/factlist/app/store"
+	"github.com/factlist/factlist/app/model"
+	"github.com/factlist/factlist/app/store"
 )
 
 //GetUserList is func

@@ -1,8 +1,8 @@
 package store
 
 import (
-	"github.com/onerciller/factlist/app/model"
-	"github.com/onerciller/factlist/db"
+	"github.com/factlist/factlist/app/model"
+	"github.com/factlist/factlist/db"
 )
 
 // GetEvidenceList is func for all users

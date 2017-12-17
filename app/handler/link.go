@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/factlist/factlist/app/model"
+	"github.com/factlist/factlist/app/store"
 	"github.com/labstack/echo"
-	"github.com/onerciller/factlist/app/model"
-	"github.com/onerciller/factlist/app/store"
 )
 
 //GetLinkList is func

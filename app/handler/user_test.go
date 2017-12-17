@@ -5,8 +5,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/factlist/factlist/app/router"
 	"github.com/gavv/httpexpect"
-	"github.com/onerciller/factlist/app/router"
 )
 
 func testRouter(e *httpexpect.Expect) {
