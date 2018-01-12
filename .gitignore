@@ -2,3 +2,4 @@ vendor
 config.toml
 factlist
 .vscode
+tmp

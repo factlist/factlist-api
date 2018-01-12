@@ -19,6 +19,8 @@ func GetEvidence(id uint) (*model.Evidence, error) {
 	db := db.GetDB()
 	evidence := new(model.Evidence)
 	err := db.First(&evidence, id).Error
+	db.Model(&evidence).Association("files").Find(&evidence.Files)
+	db.Model(&evidence).Association("links").Find(&evidence.Links)
 	return evidence, err
 }
 

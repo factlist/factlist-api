@@ -11,6 +11,20 @@ type Evidence struct {
 	UserID int    `json:"user_id"`
 	Status string `json:"status" gorm:"type:enum('true','false','complicated'); default:'true'"`
 	Text   string `json:"text"`
+	Files  []File `gorm:"many2many:evidence_files;"`
+	Links  []Link `gorm:"many2many:evidence_links;"`
+}
+
+//EvidenceFile Model
+type EvidenceFile struct {
+	EvidenceID int `json:"evidence_id"`
+	FileID     int `json:"file_id"`
+}
+
+//EvidenceLink model
+type EvidenceLink struct {
+	EvidenceID int `json:"evidence_id"`
+	LinkID     int `json:"link_id"`
 }
 
 //Validate for user model

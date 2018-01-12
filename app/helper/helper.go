@@ -2,27 +2,16 @@ package helper
 
 import (
 	"fmt"
+	"log"
+	"mime/multipart"
+	"os"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/spf13/viper"
 )
-
-// import (
-// 	"bytes"
-// 	"fmt"
-// 	"net/http"
-// 	"os"
-
-// 	"github.com/aws/aws-sdk-go/aws"
-// 	"github.com/aws/aws-sdk-go/aws/session"
-// 	"github.com/aws/aws-sdk-go/service/s3"
-// 	"github.com/spf13/viper"
-// )
-
-// TODO fill these in!
-// const (
-// 	S3_REGION = ""
-// 	S3_BUCKET = ""
-// )
 
 //SetConfig is file configuration
 func SetConfig(path string) *viper.Viper {
@@ -40,34 +29,40 @@ func SetConfig(path string) *viper.Viper {
 	return v
 }
 
-// // AddFileToS3 will upload a single file to S3, it will require a pre-built aws session
-// // and will set file info like content type and encryption on the uploaded file.
-// func AddFileToS3(s *session.Session, fileDir string) error {
+// AddFileToS3 will upload a single file to S3, it will require a pre-built aws session
+// and will set file info like content type and encryption on the uploaded file.
+func AddFileToS3(bucketPath, path string, file *multipart.FileHeader) error {
+	config := SetConfig(".")
+	var s3Bucket = config.GetString("aws.s3_bucket")
+	sess := session.Must(session.NewSession(&aws.Config{
+		Region:      aws.String(config.GetString("aws.s3_region")),
+		Credentials: credentials.NewStaticCredentials(config.GetString("aws.access_key_id"), config.GetString("aws.secret_key"), ""),
+	}))
 
-// 	// Open the file for use
-// 	file, err := os.Open(fileDir)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	defer file.Close()
+	osFile, err := os.Open(path)
+	if err != nil {
+		log.Fatalln("Error when opening", path, err)
+	}
 
-// 	// Get file size and read the file content into a buffer
-// 	fileInfo, _ := file.Stat()
-// 	var size int64 = fileInfo.Size()
-// 	buffer := make([]byte, size)
-// 	file.Read(buffer)
+	filename := bucketPath + osFile.Name()
 
-// 	// Config settings: this is where you choose the bucket, filename, content-type etc.
-// 	// of the file you're uploading.
-// 	_, err = s3.New(s).PutObject(&s3.PutObjectInput{
-// 		Bucket:               aws.String(S3_BUCKET),
-// 		Key:                  aws.String(fileDir),
-// 		ACL:                  aws.String("private"),
-// 		Body:                 bytes.NewReader(buffer),
-// 		ContentLength:        aws.Int64(size),
-// 		ContentType:          aws.String(http.DetectContentType(buffer)),
-// 		ContentDisposition:   aws.String("attachment"),
-// 		ServerSideEncryption: aws.String("AES256"),
-// 	})
-// 	return err
-// }
+	upparams := &s3manager.UploadInput{
+		Bucket:      &s3Bucket,
+		Key:         &filename,
+		Body:        osFile,
+		ContentType: aws.String(file.Header["Content-Type"][0]),
+		ACL:         aws.String("public-read"),
+	}
+
+	fmt.Println(upparams)
+
+	uploader := s3manager.NewUploader(sess)
+	_, err = uploader.Upload(upparams)
+	if err != nil {
+		log.Fatalln("Error when uploading to S3", err)
+	}
+
+	os.Remove(osFile.Name())
+
+	return nil
+}

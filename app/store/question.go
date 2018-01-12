@@ -18,6 +18,8 @@ func GetQuestionList() ([]*model.Question, error) {
 func GetQuestion(id uint) (*model.Question, error) {
 	db := db.GetDB()
 	question := new(model.Question)
+	db.Model(&question).Association("files").Find(&question.Files)
+	db.Model(&question).Association("links").Find(&question.Links)
 	err := db.First(&question, id).Error
 	return question, err
 }

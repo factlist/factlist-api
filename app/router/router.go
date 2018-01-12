@@ -18,7 +18,7 @@ func Init() *echo.Echo {
 		|
 	*/
 
-	e.Use(echoMiddleware.Logger())
+	// e.Use(echoMiddleware.Logger())
 	e.Use(echoMiddleware.Recover())
 	e.Use(echoMiddleware.CORSWithConfig(echoMiddleware.CORSConfig{
 		AllowOrigins: []string{"*"},

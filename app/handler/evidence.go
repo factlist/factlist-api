@@ -12,6 +12,7 @@ import (
 //GetEvidenceList is func
 func GetEvidenceList(c echo.Context) error {
 	evidences, err := store.GetEvidenceList()
+
 	if err != nil {
 		c.JSON(http.StatusNotFound, err)
 	}
