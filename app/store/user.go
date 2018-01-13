@@ -42,15 +42,16 @@ func GetUserByLogin(email, password string) (*model.User, error) {
 //CreateUser is user create method
 func CreateUser(user *model.User) (*model.User, error) {
 	db := db.GetDB()
-	err := db.Create(user).Error
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+
+	user.Password = string(hashedPassword)
+
+	err = db.Create(user).Error
 
 	if err != nil {
 		return nil, err
 	}
-
-	user.Password = string(hashedPassword)
 
 	return user, err
 }
@@ -60,15 +61,14 @@ func UpdateUser(user *model.User, id uint) (*model.User, error) {
 	newUser := new(model.User)
 	db := db.GetDB()
 
-	err := db.Model(&newUser).Updates(user).Error
-
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	user.Password = string(hashedPassword)
+
+	err = db.Model(&newUser).Updates(user).Error
 
 	if err != nil {
 		return nil, err
 	}
-
-	user.Password = string(hashedPassword)
 
 	return user, err
 }

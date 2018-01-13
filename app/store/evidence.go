@@ -9,7 +9,7 @@ import (
 func GetEvidenceList() ([]*model.Evidence, error) {
 	db := db.GetDB()
 	evidences := []*model.Evidence{}
-	err := db.Find(&evidences).Error
+	err := db.Preload("User").Preload("Files").Preload("Links").Find(&evidences).Error
 	return evidences, err
 
 }
@@ -18,9 +18,11 @@ func GetEvidenceList() ([]*model.Evidence, error) {
 func GetEvidence(id uint) (*model.Evidence, error) {
 	db := db.GetDB()
 	evidence := new(model.Evidence)
+	user := new(model.User)
 	err := db.First(&evidence, id).Error
 	db.Model(&evidence).Association("files").Find(&evidence.Files)
 	db.Model(&evidence).Association("links").Find(&evidence.Links)
+	db.Model(&evidence).Related(&user)
 	return evidence, err
 }
 
