@@ -1,6 +1,8 @@
 package store
 
 import (
+	"fmt"
+
 	"github.com/factlist/factlist/app/model"
 	"github.com/factlist/factlist/db"
 )
@@ -18,11 +20,11 @@ func GetEvidenceList() ([]*model.Evidence, error) {
 func GetEvidence(id uint) (*model.Evidence, error) {
 	db := db.GetDB()
 	evidence := new(model.Evidence)
-	user := new(model.User)
-	err := db.First(&evidence, id).Error
+	err := db.Preload("User").First(&evidence, id).Error
 	db.Model(&evidence).Association("files").Find(&evidence.Files)
 	db.Model(&evidence).Association("links").Find(&evidence.Links)
-	db.Model(&evidence).Related(&user)
+
+	fmt.Println(evidence.User.ID)
 	return evidence, err
 }
 

@@ -8,12 +8,12 @@ import (
 //Evidence Model
 type Evidence struct {
 	gorm.Model
-	User   User   `gorm:"ForeignKey:UserID"`
 	UserID int    `json:"user_id"`
 	Status string `json:"status" gorm:"type:enum('true','false','complicated'); default:'true'"`
 	Text   string `json:"text"`
 	Files  []File `gorm:"many2many:evidence_files"`
 	Links  []Link `gorm:"many2many:evidence_links"`
+	User   User
 }
 
 //EvidenceFile Model
