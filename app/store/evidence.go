@@ -1,8 +1,6 @@
 package store
 
 import (
-	"fmt"
-
 	"github.com/factlist/factlist/app/model"
 	"github.com/factlist/factlist/db"
 )
@@ -24,28 +22,29 @@ func GetEvidence(id uint) (*model.Evidence, error) {
 	db.Model(&evidence).Association("files").Find(&evidence.Files)
 	db.Model(&evidence).Association("links").Find(&evidence.Links)
 
-	fmt.Println(evidence.User.ID)
 	return evidence, err
 }
 
 //CreateEvidence is evidence create method
-func CreateEvidence(evidence *model.Evidence, files []model.File) (*model.Evidence, error) {
+func CreateEvidence(evidence *model.Evidence, files []model.File, links []model.Link) (*model.Evidence, error) {
 	db := db.GetDB()
 	err := db.Create(evidence).Error
 
 	db.Model(&evidence).Association("files").Append(files)
-
+	db.Model(&evidence).Association("links").Append(links)
 	return evidence, err
 }
 
 //UpdateEvidence is evidence update method
-func UpdateEvidence(evidence *model.Evidence, id uint) (*model.Evidence, error) {
-	newEvidence := new(model.Evidence)
+func UpdateEvidence(evidence *model.Evidence, files []model.File, links []model.Link, id uint) (*model.Evidence, error) {
 	db := db.GetDB()
-
+	newEvidence := new(model.Evidence)
+	db.First(&newEvidence, id)
 	err := db.Model(&newEvidence).Updates(evidence).Error
+	db.Model(&newEvidence).Association("files").Replace(files)
+	db.Model(&newEvidence).Association("links").Replace(links)
 
-	return evidence, err
+	return newEvidence, err
 }
 
 // DeleteEvidence is delete func
@@ -55,7 +54,10 @@ func DeleteEvidence(id uint) error {
 	if err := db.Find(&evidence, id).Error; err != nil {
 		return err
 	}
+
 	err := db.Delete(&evidence).Error
+	db.Model(&evidence).Association("files").Clear()
+	db.Model(&evidence).Association("links").Clear()
 
 	return err
 }
