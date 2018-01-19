@@ -29,9 +29,11 @@ func GetEvidence(id uint) (*model.Evidence, error) {
 }
 
 //CreateEvidence is evidence create method
-func CreateEvidence(evidence *model.Evidence) (*model.Evidence, error) {
+func CreateEvidence(evidence *model.Evidence, files []model.File) (*model.Evidence, error) {
 	db := db.GetDB()
 	err := db.Create(evidence).Error
+
+	db.Model(&evidence).Association("files").Append(files)
 
 	return evidence, err
 }

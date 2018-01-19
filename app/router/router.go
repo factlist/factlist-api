@@ -8,6 +8,7 @@ import (
 )
 
 //Init Router
+
 func Init() *echo.Echo {
 	e := echo.New()
 

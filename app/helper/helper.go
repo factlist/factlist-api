@@ -31,7 +31,7 @@ func SetConfig(path string) *viper.Viper {
 
 // AddFileToS3 will upload a single file to S3, it will require a pre-built aws session
 // and will set file info like content type and encryption on the uploaded file.
-func AddFileToS3(bucketPath, path string, file *multipart.FileHeader) error {
+func AddFileToS3(bucketPath, path string, file *multipart.FileHeader) (string, error) {
 	config := SetConfig(".")
 	var s3Bucket = config.GetString("aws.s3_bucket")
 	sess := session.Must(session.NewSession(&aws.Config{
@@ -44,7 +44,7 @@ func AddFileToS3(bucketPath, path string, file *multipart.FileHeader) error {
 		log.Fatalln("Error when opening", path, err)
 	}
 
-	filename := bucketPath + osFile.Name()
+	filename := bucketPath + "/" + file.Filename
 
 	upparams := &s3manager.UploadInput{
 		Bucket:      &s3Bucket,
@@ -54,15 +54,17 @@ func AddFileToS3(bucketPath, path string, file *multipart.FileHeader) error {
 		ACL:         aws.String("public-read"),
 	}
 
-	fmt.Println(upparams)
-
 	uploader := s3manager.NewUploader(sess)
+
 	_, err = uploader.Upload(upparams)
 	if err != nil {
 		log.Fatalln("Error when uploading to S3", err)
+		return "", err
 	}
 
 	os.Remove(osFile.Name())
 
-	return nil
+	s3path := config.GetString("aws.s3_root_path") + "/" + config.GetString("aws.s3_bucket") + "/" + filename
+
+	return s3path, nil
 }

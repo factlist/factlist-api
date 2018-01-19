@@ -1,9 +1,13 @@
 package handler
 
 import (
+	"fmt"
+	"io"
 	"net/http"
+	"os"
 	"strconv"
 
+	"github.com/factlist/factlist/app/helper"
 	"github.com/factlist/factlist/app/model"
 	"github.com/factlist/factlist/app/store"
 	"github.com/labstack/echo"
@@ -31,22 +35,62 @@ func GetEvidence(c echo.Context) error {
 
 //CreateEvidence is func
 func CreateEvidence(c echo.Context) error {
+	UserID, _ := strconv.Atoi(c.FormValue("user_id"))
+
 	evidenceModel := model.Evidence{}
 
-	c.Bind(&evidenceModel)
+	var modelFiles []model.File
+
+	m, _ := c.MultipartForm()
+
+	files := m.File["evidence_files[]"]
+
+	for i := range files {
+		file, err := files[i].Open()
+		defer file.Close()
+		if err != nil {
+			fmt.Println(err)
+			return c.JSON(http.StatusInternalServerError, err)
+		}
+
+		dst, err := os.Create(files[i].Filename)
+		defer dst.Close()
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, err)
+		}
+
+		if _, err := io.Copy(dst, file); err != nil {
+			return c.JSON(http.StatusInternalServerError, err)
+		}
+
+		location, err := helper.AddFileToS3("uploads", "./"+files[i].Filename, files[i])
+
+		f := model.File{Type: files[i].Header["Content-Type"][0], Source: location, UserID: UserID}
+
+		modelFiles = append(modelFiles, f)
+
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, err)
+		}
+	}
 
 	if err := evidenceModel.Validate(); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, err)
 		return nil
 	}
 
-	evidence, err := store.CreateEvidence(&evidenceModel)
+	evidenceModel.Text = c.FormValue("text")
+	evidenceModel.Status = c.FormValue("status")
+	evidenceModel.UserID = UserID
+
+	evidence, err := store.CreateEvidence(&evidenceModel, modelFiles)
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, err)
 	}
 
 	return c.JSON(http.StatusOK, evidence)
+
 }
 
 //UpdateEvidence is func
