@@ -9,7 +9,7 @@ import (
 type Evidence struct {
 	gorm.Model
 	UserID int    `json:"user_id"`
-	Status string `json:"status" gorm:"type:enum('true','false','complicated'); default:'true'"`
+	Status string `json:"status" gorm:"type:enum('true','false','inconclusive'); default:'true'"`
 	Text   string `json:"text"`
 	Files  []File `gorm:"many2many:evidence_files"`
 	Links  []Link `gorm:"many2many:evidence_links"`
