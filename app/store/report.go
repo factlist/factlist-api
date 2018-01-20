@@ -25,20 +25,22 @@ func GetReport(id uint) (*model.Report, error) {
 }
 
 //CreateReport is report create method
-func CreateReport(report *model.Report) (*model.Report, error) {
+func CreateReport(report *model.Report, files []model.File, links []model.Link) (*model.Report, error) {
 	db := db.GetDB()
 	err := db.Create(report).Error
-
+	db.Model(&report).Association("files").Append(files)
+	db.Model(&report).Association("links").Append(links)
 	return report, err
 }
 
 //UpdateReport is report update method
-func UpdateReport(report *model.Report, id uint) (*model.Report, error) {
+func UpdateReport(report *model.Report, files []model.File, links []model.Link, id uint) (*model.Report, error) {
 	newReport := new(model.Report)
 	db := db.GetDB()
 
 	err := db.Model(&newReport).Updates(report).Error
-
+	db.Model(&newReport).Association("files").Replace(files)
+	db.Model(&newReport).Association("links").Replace(links)
 	return report, err
 }
 
@@ -50,6 +52,7 @@ func DeleteReport(id uint) error {
 		return err
 	}
 	var err = db.Delete(&report).Error
-
+	db.Model(&report).Association("files").Clear()
+	db.Model(&report).Association("links").Clear()
 	return err
 }
