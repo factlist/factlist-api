@@ -5,26 +5,26 @@ import (
 	"github.com/factlist/factlist/db"
 )
 
-// GetReportList is func for all questions
+// GetReportList is func for all reports
 func GetReportList() ([]*model.Report, error) {
 	db := db.GetDB()
 	reports := []*model.Report{}
-	err := db.Find(&reports).Error
+	err := db.Preload("User").Preload("Files").Preload("Links").Find(&reports).Error
 	return reports, err
 
 }
 
-// GetReport is func for  question detail
+// GetReport is func for  report detail
 func GetReport(id uint) (*model.Report, error) {
 	db := db.GetDB()
 	report := new(model.Report)
 	db.Model(&report).Association("files").Find(&report.Files)
 	db.Model(&report).Association("links").Find(&report.Links)
-	err := db.First(&report, id).Error
+	err := db.Preload("User").First(&report, id).Error
 	return report, err
 }
 
-//CreateReport is question create method
+//CreateReport is report create method
 func CreateReport(report *model.Report) (*model.Report, error) {
 	db := db.GetDB()
 	err := db.Create(report).Error
@@ -32,7 +32,7 @@ func CreateReport(report *model.Report) (*model.Report, error) {
 	return report, err
 }
 
-//UpdateReport is question update method
+//UpdateReport is report update method
 func UpdateReport(report *model.Report, id uint) (*model.Report, error) {
 	newReport := new(model.Report)
 	db := db.GetDB()
