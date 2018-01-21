@@ -1,2 +1,2 @@
 build:
-	go build -o factlist ./cmd/factlist/api.go
+	go build -o factlistapp ./cmd/factlist/api.go
