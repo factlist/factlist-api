@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/factlist/factlist/app/router"
+	"github.com/factlist/factlist/api/router"
 	"github.com/gavv/httpexpect"
 )
 

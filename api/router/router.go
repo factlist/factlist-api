@@ -1,8 +1,8 @@
 package router
 
 import (
-	"github.com/factlist/factlist/app/handler"
-	"github.com/factlist/factlist/app/handler/auth"
+	"github.com/factlist/factlist/api/handler"
+	"github.com/factlist/factlist/api/handler/auth"
 	"github.com/labstack/echo"
 	echoMiddleware "github.com/labstack/echo/middleware"
 )

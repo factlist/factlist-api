@@ -3,7 +3,7 @@ package store
 import (
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/factlist/factlist/app/model"
+	"github.com/factlist/factlist/api/model"
 	"github.com/factlist/factlist/db"
 )
 

@@ -3,9 +3,9 @@ package main
 import (
 	"strconv"
 
-	"github.com/factlist/factlist/app/helper"
-	"github.com/factlist/factlist/app/model"
-	"github.com/factlist/factlist/app/router"
+	"github.com/factlist/factlist/api/helper"
+	"github.com/factlist/factlist/api/model"
+	"github.com/factlist/factlist/api/router"
 	"github.com/factlist/factlist/db"
 )
 

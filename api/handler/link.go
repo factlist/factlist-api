@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/factlist/factlist/app/model"
-	"github.com/factlist/factlist/app/store"
+	"github.com/factlist/factlist/api/model"
+	"github.com/factlist/factlist/api/store"
 	"github.com/labstack/echo"
 )
 
