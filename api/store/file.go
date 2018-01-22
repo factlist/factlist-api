@@ -1,8 +1,8 @@
 package store
 
 import (
-	"github.com/factlist/factlist/api/model"
-	"github.com/factlist/factlist/db"
+	"github.com/factlist/factlist-api/api/model"
+	"github.com/factlist/factlist-api/db"
 )
 
 // GetFileList is func for all files

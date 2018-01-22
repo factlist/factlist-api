@@ -3,10 +3,10 @@ package main
 import (
 	"strconv"
 
-	"github.com/factlist/factlist/api/helper"
-	"github.com/factlist/factlist/api/model"
-	"github.com/factlist/factlist/api/router"
-	"github.com/factlist/factlist/db"
+	"github.com/factlist/factlist-api/api/helper"
+	"github.com/factlist/factlist-api/api/model"
+	"github.com/factlist/factlist-api/api/router"
+	"github.com/factlist/factlist-api/db"
 )
 
 func main() {

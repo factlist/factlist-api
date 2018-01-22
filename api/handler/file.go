@@ -6,8 +6,8 @@ import (
 
 	"github.com/labstack/echo"
 
-	"github.com/factlist/factlist/api/model"
-	"github.com/factlist/factlist/api/store"
+	"github.com/factlist/factlist-api/api/model"
+	"github.com/factlist/factlist-api/api/store"
 )
 
 //GetFileList is func

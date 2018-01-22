@@ -8,9 +8,9 @@ import (
 
 	jwt "gopkg.in/dgrijalva/jwt-go.v3"
 
-	"github.com/factlist/factlist/api/helper"
-	"github.com/factlist/factlist/api/model"
-	"github.com/factlist/factlist/api/store"
+	"github.com/factlist/factlist-api/api/helper"
+	"github.com/factlist/factlist-api/api/model"
+	"github.com/factlist/factlist-api/api/store"
 )
 
 // PostLogin is jwt token handler

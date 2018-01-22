@@ -3,8 +3,8 @@ package store
 import (
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/factlist/factlist/api/model"
-	"github.com/factlist/factlist/db"
+	"github.com/factlist/factlist-api/api/model"
+	"github.com/factlist/factlist-api/db"
 )
 
 // GetUserList is func for all users

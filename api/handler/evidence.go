@@ -7,9 +7,9 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/factlist/factlist/api/helper"
-	"github.com/factlist/factlist/api/model"
-	"github.com/factlist/factlist/api/store"
+	"github.com/factlist/factlist-api/api/helper"
+	"github.com/factlist/factlist-api/api/model"
+	"github.com/factlist/factlist-api/api/store"
 	"github.com/labstack/echo"
 )
 
