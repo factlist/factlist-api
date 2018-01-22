@@ -1,9 +1,7 @@
 package db
 
 import (
-	"strconv"
-
-	"github.com/spf13/viper"
+	"os"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/jinzhu/gorm"
@@ -16,8 +14,8 @@ var (
 )
 
 // Init function for DB connection
-func Init(config *viper.Viper) {
-	db, err = gorm.Open("mysql", config.GetString("database.username")+":"+config.GetString("database.password")+"@tcp("+config.GetString("database.host")+":"+strconv.Itoa(config.GetInt("database.port"))+")/"+config.GetString("database.name")+"?charset=utf8&parseTime=True&loc=Local")
+func Init() {
+	db, err = gorm.Open("mysql", os.Getenv("db_username")+":"+os.Getenv("db_password")+"@tcp("+os.Getenv("db_host")+":"+os.Getenv("db_port")+")/"+os.Getenv("db_name")+"?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		logrus.Errorln(err)
 		logrus.Fatalln("database connection failed")
