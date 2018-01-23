@@ -1,10 +1,10 @@
-# factlist (On development)
+# factlist (In development)
 
 
 ## Quick Run
 
 If you are using Docker, you can use the following command to easily try Factlist. Only external dependency is MySQL.
-  
+
 
 ```
 docker run factlist/factlist-api:latest \
