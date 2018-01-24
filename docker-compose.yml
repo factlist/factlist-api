@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+   db:
+     image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: factlist
+       MYSQL_DATABASE: factlist
+       MYSQL_USER: factlist
+       MYSQL_PASSWORD: factlist
+
+   api:
+     depends_on:
+       - db
+     image: factlist/factlist-api
+     ports:
+       - "8844:8844"
+     restart: always
+     environment:
+      DB_HOST: "localhost"
+      DB_NAME: "factlist"
+      DB_USERNAME: "root"
+      DB_PASSWORD: "123123"
+      DB_PORT:  3306
+      PORT:  8884
+      JWT_SIGNING_KEY: "QfCAH04Cob7b71QCqy738vw5XGSnFZ9d"
+      ACCESS_KEY_ID: "AKIAIY2NPJPD7X3EZFVA"
+      SECRET_KEY: "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"
+      S3_REGION: "eu-central-1"
+      S3_BUCKET: "factlist.org"       
+volumes:
+    db_data:
+

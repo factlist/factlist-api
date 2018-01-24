@@ -1,6 +1,4 @@
-FROM golang:latest
-RUN mkdir /factlist
-ADD . /factlist/
-WORKDIR /app
-RUN make build
-CMD ["./factlist"]
+FROM scratch
+ADD factlist-api /
+EXPOSE 8884
+ENTRYPOINT ["./factlist-api"]
