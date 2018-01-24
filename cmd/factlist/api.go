@@ -32,5 +32,5 @@ func main() {
 	// //Close DB
 	defer db.GetClose()
 
-	r.Start(":" + os.Getenv("server_port"))
+	r.Start(":" + os.Getenv("SERVER_PORT"))
 }

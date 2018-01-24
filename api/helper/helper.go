@@ -32,10 +32,10 @@ func SetConfig(path string) *viper.Viper {
 // AddFileToS3 will upload a single file to S3, it will require a pre-built aws session
 // and will set file info like content type and encryption on the uploaded file.
 func AddFileToS3(bucketPath, path string, file *multipart.FileHeader) (string, error) {
-	var s3Bucket = os.Getenv("aws_s3_bucket")
+	var s3Bucket = os.Getenv("S3_BUCKET")
 	sess := session.Must(session.NewSession(&aws.Config{
-		Region:      aws.String(os.Getenv("aws_s3_region")),
-		Credentials: credentials.NewStaticCredentials(os.Getenv("aws_access_key_id"), os.Getenv("aws_secret_key"), ""),
+		Region:      aws.String(os.Getenv("S3_REGION")),
+		Credentials: credentials.NewStaticCredentials(os.Getenv("ACCESS_KEY_ID"), os.Getenv("SECRET_KEY"), ""),
 	}))
 
 	osFile, err := os.Open(path)
@@ -63,7 +63,7 @@ func AddFileToS3(bucketPath, path string, file *multipart.FileHeader) (string, e
 
 	os.Remove(osFile.Name())
 
-	s3path := os.Getenv("aws_s3_root_path") + "/" + os.Getenv("aws_s3_bucket") + "/" + filename
+	s3path := os.Getenv("S3_ROOT_PATH") + "/" + os.Getenv("S3_BUCKET") + "/" + filename
 
 	return s3path, nil
 }
