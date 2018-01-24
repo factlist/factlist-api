@@ -2,6 +2,7 @@ package auth
 
 import (
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/labstack/echo"
@@ -34,7 +35,7 @@ func PostLogin(c echo.Context) error {
 		"nbf": time.Now().UTC().Unix() + (500 * 1000),
 	})
 
-	tokenString, err := token.SignedString([]byte(config.GetString("JWT_SIGNING_KEY")))
+	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SIGNING_KEY")))
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
