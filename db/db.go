@@ -15,7 +15,7 @@ var (
 
 // Init function for DB connection
 func Init() {
-	db, err = gorm.Open("mysql", os.Getenv("db_username")+":"+os.Getenv("db_password")+"@tcp("+os.Getenv("db_host")+":"+os.Getenv("db_port")+")/"+os.Getenv("db_name")+"?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("mysql", os.Getenv("DB_USERNAME")+":"+os.Getenv("DB_PASSWORD")+"@tcp("+os.Getenv("DB_HOST")+":"+os.Getenv("DB_PORT")+")/"+os.Getenv("DB_NAME")+"?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		logrus.Errorln(err)
 		logrus.Fatalln("database connection failed")

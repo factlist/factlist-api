@@ -8,7 +8,6 @@ import (
 
 	jwt "gopkg.in/dgrijalva/jwt-go.v3"
 
-	"github.com/factlist/factlist-api/api/helper"
 	"github.com/factlist/factlist-api/api/model"
 	"github.com/factlist/factlist-api/api/store"
 )
@@ -35,8 +34,7 @@ func PostLogin(c echo.Context) error {
 		"nbf": time.Now().UTC().Unix() + (500 * 1000),
 	})
 
-	config := helper.SetConfig(".")
-	tokenString, err := token.SignedString([]byte(config.GetString("jwt_signing_key")))
+	tokenString, err := token.SignedString([]byte(config.GetString("JWT_SIGNING_KEY")))
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
