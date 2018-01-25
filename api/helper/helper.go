@@ -63,7 +63,7 @@ func AddFileToS3(bucketPath, path string, file *multipart.FileHeader) (string, e
 
 	os.Remove(osFile.Name())
 
-	s3path := os.Getenv("S3_ROOT_PATH") + "/" + os.Getenv("S3_BUCKET") + "/" + filename
+	s3path := "https://s3.eu-central-1.amazonaws.com/" + os.Getenv("S3_BUCKET") + "/" + filename
 
 	return s3path, nil
 }

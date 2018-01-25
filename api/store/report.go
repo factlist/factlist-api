@@ -34,11 +34,12 @@ func CreateReport(report *model.Report, files []model.File, links []model.Link) 
 }
 
 //UpdateReport is report update method
-func UpdateReport(report *model.Report, files []model.File, links []model.Link, id uint) (*model.Report, error) {
+func UpdateReport(report *model.Report, evidences *model.Evidence, files []model.File, links []model.Link, id uint) (*model.Report, error) {
 	newReport := new(model.Report)
 	db := db.GetDB()
 
 	err := db.Model(&newReport).Updates(report).Error
+	db.Model(&newReport).Association("evidences").Replace(evidences)
 	db.Model(&newReport).Association("files").Replace(files)
 	db.Model(&newReport).Association("links").Replace(links)
 	return report, err

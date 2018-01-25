@@ -186,7 +186,7 @@ func UpdateReport(c echo.Context) error {
 	evidenceModel.UserID = UserID
 	evidenceModel.Status = c.FormValue("evidence_status")
 
-	report, err := store.UpdateReport(&reportModel, modelFiles, modelLinks, uint(id))
+	report, err := store.UpdateReport(&reportModel, &evidenceModel, modelFiles, modelLinks, uint(id))
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, err)
