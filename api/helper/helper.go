@@ -2,6 +2,7 @@ package helper
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"mime/multipart"
 	"os"
@@ -66,4 +67,21 @@ func AddFileToS3(bucketPath, path string, file *multipart.FileHeader) (string, e
 	s3path := "https://s3.eu-central-1.amazonaws.com/" + os.Getenv("S3_BUCKET") + "/" + filename
 
 	return s3path, nil
+}
+
+func SaveUploadedFile(file *multipart.FileHeader, dst string) error {
+	src, err := file.Open()
+	if err != nil {
+		return err
+	}
+	defer src.Close()
+
+	out, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	io.Copy(out, src)
+	return nil
 }

@@ -1,10 +1,7 @@
 package handler
 
 import (
-	"fmt"
-	"io"
 	"net/http"
-	"os"
 	"strconv"
 
 	"github.com/factlist/factlist-api/api/helper"
@@ -52,22 +49,7 @@ func CreateReport(c echo.Context) error {
 	files := m.File["files[]"]
 
 	for i := range files {
-		file, err := files[i].Open()
-		defer file.Close()
-		if err != nil {
-			fmt.Println(err)
-			return c.JSON(http.StatusInternalServerError, err)
-		}
-
-		dst, err := os.Create(files[i].Filename)
-		defer dst.Close()
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, err)
-		}
-
-		if _, err := io.Copy(dst, file); err != nil {
-			return c.JSON(http.StatusInternalServerError, err)
-		}
+		err := helper.SaveUploadedFile(files[i], files[i].Filename)
 
 		location, err := helper.AddFileToS3("uploads", "./"+files[i].Filename, files[i])
 
@@ -83,11 +65,7 @@ func CreateReport(c echo.Context) error {
 	reportModel.Text = c.FormValue("text")
 	reportModel.UserID = UserID
 
-	report, err := store.CreateReport(&reportModel, modelFiles, modelLinks)
-
-	if err != nil {
-		c.JSON(http.StatusNotFound, err)
-	}
+	report, _ := store.CreateReport(&reportModel, modelFiles, modelLinks)
 
 	return c.JSON(http.StatusOK, report)
 }
@@ -108,75 +86,58 @@ func UpdateReport(c echo.Context) error {
 
 	m, _ := c.MultipartForm()
 
-	for _, link := range m.Value["links[]"] {
+	for _, link := range m.Value["report_links[]"] {
 		l := model.Link{URL: string(link)}
-		modelEvidenceLinks = append(modelEvidenceLinks, l)
+		modelLinks = append(modelEvidenceLinks, l)
 	}
 
 	for _, link := range m.Value["evidence_links[]"] {
 		l := model.Link{URL: string(link)}
-		modelLinks = append(modelLinks, l)
+		modelEvidenceLinks = append(modelLinks, l)
 	}
 
-	files := m.File["files[]"]
+	reportfiles := m.File["report_files[]"]
 	evidenceFiles := m.File["evidence_files[]"]
 
-	for i := range files {
-		file, err := files[i].Open()
-		defer file.Close()
-		if err != nil {
-			fmt.Println(err)
-			return c.JSON(http.StatusInternalServerError, err)
-		}
+	if len(reportfiles) != 0 {
+		for i := range reportfiles {
+			err := helper.SaveUploadedFile(reportfiles[i], reportfiles[i].Filename)
 
-		dst, err := os.Create(files[i].Filename)
-		defer dst.Close()
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, err)
-		}
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, err)
+			}
 
-		if _, err := io.Copy(dst, file); err != nil {
-			return c.JSON(http.StatusInternalServerError, err)
-		}
+			location, err := helper.AddFileToS3("uploads", "./"+reportfiles[i].Filename, reportfiles[i])
 
-		location, err := helper.AddFileToS3("uploads", "./"+files[i].Filename, files[i])
+			f := model.File{Type: reportfiles[i].Header["Content-Type"][0], Source: location, UserID: UserID}
 
-		f := model.File{Type: files[i].Header["Content-Type"][0], Source: location, UserID: UserID}
+			modelFiles = append(modelFiles, f)
 
-		modelFiles = append(modelFiles, f)
-
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, err)
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, err)
+			}
 		}
 	}
 
-	for i := range evidenceFiles {
-		file, err := files[i].Open()
-		defer file.Close()
-		if err != nil {
-			fmt.Println(err)
-			return c.JSON(http.StatusInternalServerError, err)
+	if len(evidenceFiles) != 0 {
+		for i := range evidenceFiles {
+			err := helper.SaveUploadedFile(evidenceFiles[i], evidenceFiles[i].Filename)
+
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, err)
+			}
+
+			location, err := helper.AddFileToS3("uploads", "./"+evidenceFiles[i].Filename, evidenceFiles[i])
+
+			f := model.File{Type: evidenceFiles[i].Header["Content-Type"][0], Source: location, UserID: UserID}
+
+			modelEvidenceFiles = append(modelEvidenceFiles, f)
+
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, err)
+			}
 		}
 
-		dst, err := os.Create(evidenceFiles[i].Filename)
-		defer dst.Close()
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, err)
-		}
-
-		if _, err := io.Copy(dst, file); err != nil {
-			return c.JSON(http.StatusInternalServerError, err)
-		}
-
-		location, err := helper.AddFileToS3("uploads", "./"+evidenceFiles[i].Filename, evidenceFiles[i])
-
-		f := model.File{Type: files[i].Header["Content-Type"][0], Source: location, UserID: UserID}
-
-		modelEvidenceFiles = append(modelEvidenceFiles, f)
-
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, err)
-		}
 	}
 
 	reportModel.Text = c.FormValue("report_text")
@@ -186,7 +147,7 @@ func UpdateReport(c echo.Context) error {
 	evidenceModel.UserID = UserID
 	evidenceModel.Status = c.FormValue("evidence_status")
 
-	report, err := store.UpdateReport(&reportModel, &evidenceModel, modelFiles, modelLinks, uint(id))
+	report, err := store.UpdateReport(&reportModel, &evidenceModel, modelFiles, modelLinks, modelEvidenceFiles, modelEvidenceLinks, uint(id))
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, err)

@@ -8,10 +8,10 @@ import (
 //Report Model
 type Report struct {
 	gorm.Model
-	UserID    int    `json:"user_id"`
-	Text      string `json:"text"`
-	Files     []File
-	Links     []Link
+	UserID    int        `json:"user_id"`
+	Text      string     `json:"text"`
+	Files     []File     `gorm:"many2many:report_files"`
+	Links     []Link     `gorm:"many2many:report_links"`
 	Evidences []Evidence `gorm:"many2many:report_evidences"`
 }
 
