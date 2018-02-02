@@ -71,18 +71,18 @@ func Init() *echo.Echo {
 
 	/*
 		|--------------------------------------------------------------------------
-		| Reports Handler Routes
+		| Claims Handler Routes
 		|--------------------------------------------------------------------------
 		|
-		| Endpoint: /api/reports
+		| Endpoint: /api/claims
 		|
 	*/
 
-	api.GET("/reports", handler.GetReportList)
-	api.GET("/reports/:id", handler.GetReport)
-	api.POST("/reports", handler.CreateReport)
-	api.DELETE("/reports/:id", handler.DeleteReport)
-	api.PATCH("/reports/:id", handler.UpdateReport)
+	api.GET("/claims", handler.GetClaimList)
+	api.GET("/claims/:id", handler.GetClaim)
+	api.POST("/claims", handler.CreateClaim)
+	api.DELETE("/claims/:id", handler.DeleteClaim)
+	api.PATCH("/claims/:id", handler.UpdateClaim)
 
 	/*
 		|--------------------------------------------------------------------------

@@ -19,12 +19,12 @@ func main() {
 	db.GetDB().AutoMigrate(&model.Evidence{})
 	db.GetDB().AutoMigrate(&model.EvidenceFile{})
 	db.GetDB().AutoMigrate(&model.EvidenceLink{})
-	db.GetDB().AutoMigrate(&model.Report{})
+	db.GetDB().AutoMigrate(&model.Claim{})
 	db.GetDB().AutoMigrate(&model.Link{})
 	db.GetDB().AutoMigrate(&model.File{})
-	db.GetDB().AutoMigrate(&model.ReportEvidence{})
-	db.GetDB().AutoMigrate(&model.ReportFile{})
-	db.GetDB().AutoMigrate(&model.ReportLink{})
+	db.GetDB().AutoMigrate(&model.ClaimEvidence{})
+	db.GetDB().AutoMigrate(&model.ClaimFile{})
+	db.GetDB().AutoMigrate(&model.ClaimLink{})
 
 	// //Initialize Router
 	r := router.Init()

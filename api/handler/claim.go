@@ -10,31 +10,31 @@ import (
 	"github.com/labstack/echo"
 )
 
-//GetReportList is func
-func GetReportList(c echo.Context) error {
-	reports, err := store.GetReportList()
+//GetClaimList is func
+func GetClaimList(c echo.Context) error {
+	claims, err := store.GetClaimList()
 	if err != nil {
 		c.JSON(http.StatusNotFound, err)
 	}
-	return c.JSON(http.StatusOK, reports)
+	return c.JSON(http.StatusOK, claims)
 }
 
-//GetReport is func
-func GetReport(c echo.Context) error {
+//GetClaim is func
+func GetClaim(c echo.Context) error {
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
-	report, err := store.GetReport(uint(id))
+	claim, err := store.GetClaim(uint(id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, err)
 	}
-	return c.JSON(http.StatusOK, report)
+	return c.JSON(http.StatusOK, claim)
 }
 
-//CreateReport is func
-func CreateReport(c echo.Context) error {
+//CreateClaim is func
+func CreateClaim(c echo.Context) error {
 
 	UserID, _ := strconv.Atoi(c.FormValue("user_id"))
 
-	reportModel := model.Report{}
+	claimModel := model.Claim{}
 
 	var modelFiles []model.File
 	var modelLinks []model.Link
@@ -62,21 +62,21 @@ func CreateReport(c echo.Context) error {
 		}
 	}
 
-	reportModel.Text = c.FormValue("text")
-	reportModel.UserID = UserID
+	claimModel.Text = c.FormValue("text")
+	claimModel.UserID = UserID
 
-	report, _ := store.CreateReport(&reportModel, modelFiles, modelLinks)
+	claim, _ := store.CreateClaim(&claimModel, modelFiles, modelLinks)
 
-	return c.JSON(http.StatusOK, report)
+	return c.JSON(http.StatusOK, claim)
 }
 
-//UpdateReport is func
-func UpdateReport(c echo.Context) error {
+//UpdateClaim is func
+func UpdateClaim(c echo.Context) error {
 
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
 	UserID, _ := strconv.Atoi(c.FormValue("user_id"))
 
-	reportModel := model.Report{}
+	claimModel := model.Claim{}
 	evidenceModel := model.Evidence{}
 
 	var modelFiles []model.File
@@ -86,7 +86,7 @@ func UpdateReport(c echo.Context) error {
 
 	m, _ := c.MultipartForm()
 
-	for _, link := range m.Value["report_links[]"] {
+	for _, link := range m.Value["claim_links[]"] {
 		l := model.Link{URL: string(link)}
 		modelLinks = append(modelEvidenceLinks, l)
 	}
@@ -96,20 +96,20 @@ func UpdateReport(c echo.Context) error {
 		modelEvidenceLinks = append(modelLinks, l)
 	}
 
-	reportfiles := m.File["report_files[]"]
+	claimfiles := m.File["claim_files[]"]
 	evidenceFiles := m.File["evidence_files[]"]
 
-	if len(reportfiles) != 0 {
-		for i := range reportfiles {
-			err := helper.SaveUploadedFile(reportfiles[i], reportfiles[i].Filename)
+	if len(claimfiles) != 0 {
+		for i := range claimfiles {
+			err := helper.SaveUploadedFile(claimfiles[i], claimfiles[i].Filename)
 
 			if err != nil {
 				return c.JSON(http.StatusInternalServerError, err)
 			}
 
-			location, err := helper.AddFileToS3("uploads", "./"+reportfiles[i].Filename, reportfiles[i])
+			location, err := helper.AddFileToS3("uploads", "./"+claimfiles[i].Filename, claimfiles[i])
 
-			f := model.File{Type: reportfiles[i].Header["Content-Type"][0], Source: location, UserID: UserID}
+			f := model.File{Type: claimfiles[i].Header["Content-Type"][0], Source: location, UserID: UserID}
 
 			modelFiles = append(modelFiles, f)
 
@@ -140,27 +140,27 @@ func UpdateReport(c echo.Context) error {
 
 	}
 
-	reportModel.Text = c.FormValue("report_text")
-	reportModel.UserID = UserID
+	claimModel.Text = c.FormValue("claim_text")
+	claimModel.UserID = UserID
 
 	evidenceModel.Text = c.FormValue("evidence_text")
 	evidenceModel.UserID = UserID
 	evidenceModel.Status = c.FormValue("evidence_status")
 
-	report, err := store.UpdateReport(&reportModel, &evidenceModel, modelFiles, modelLinks, modelEvidenceFiles, modelEvidenceLinks, uint(id))
+	claim, err := store.UpdateClaim(&claimModel, &evidenceModel, modelFiles, modelLinks, modelEvidenceFiles, modelEvidenceLinks, uint(id))
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, err)
 
 	}
 
-	return c.JSON(http.StatusOK, report)
+	return c.JSON(http.StatusOK, claim)
 }
 
-//DeleteReport is func
-func DeleteReport(c echo.Context) error {
+//DeleteClaim is func
+func DeleteClaim(c echo.Context) error {
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
-	if err := store.DeleteReport(uint(id)); err != nil {
+	if err := store.DeleteClaim(uint(id)); err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 		return nil
 	}
