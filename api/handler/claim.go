@@ -62,7 +62,7 @@ func CreateClaim(c echo.Context) error {
 		}
 	}
 
-	claimModel.Text = c.FormValue("text")
+	claimModel.Text = c.FormValue("claim_text")
 	claimModel.UserID = UserID
 
 	claim, _ := store.CreateClaim(&claimModel, modelFiles, modelLinks)
