@@ -11,7 +11,7 @@ type Link struct {
 	gorm.Model
 	URL        string `json:"url"`
 	ArchiveURL string `json:"archive_url"`
-	UserID     int    `json:"user_Id"`
+	UserID     int    `json:"user_id"`
 }
 
 //Validate for user model

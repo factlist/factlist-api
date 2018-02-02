@@ -34,14 +34,28 @@ func CreateReport(report *model.Report, files []model.File, links []model.Link) 
 }
 
 //UpdateReport is report update method
-func UpdateReport(report *model.Report, files []model.File, links []model.Link, id uint) (*model.Report, error) {
-	newReport := new(model.Report)
+func UpdateReport(report *model.Report, evidences *model.Evidence, files []model.File, links []model.Link,
+	evidenceFiles []model.File, evidenceLinks []model.Link, id uint) (*model.Report, error) {
 	db := db.GetDB()
+	newReport := new(model.Report)
+	// newEvidence := new(model.Evidence)
+
+	db.First(&newReport, id)
 
 	err := db.Model(&newReport).Updates(report).Error
+
+	db.Model(&newReport).Association("evidences").Replace(evidences)
 	db.Model(&newReport).Association("files").Replace(files)
 	db.Model(&newReport).Association("links").Replace(links)
-	return report, err
+	db.Model(&newReport.Evidences[0]).Association("links").Replace(evidenceLinks)
+	db.Model(&newReport.Evidences[0]).Association("files").Replace(evidenceFiles)
+
+	// db.First(&newEvidence, newReport.Evidences[0].ID)
+
+	// db.Model(&newEvidence).Association("files").Replace(evidenceFiles)
+	// db.Model(&newEvidence).Association("links").Replace(evidenceLinks)
+
+	return newReport, err
 }
 
 // DeleteReport is delete func
