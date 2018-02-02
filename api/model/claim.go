@@ -11,8 +11,9 @@ type Claim struct {
 	UserID    int        `json:"user_id"`
 	Text      string     `json:"text"`
 	Files     []File     `gorm:"many2many:claim_files"`
-	Links     []Link     `gorm:"many2many:claim_files"`
+	Links     []Link     `gorm:"many2many:claim_links"`
 	Evidences []Evidence `gorm:"many2many:claim_evidences"`
+	User      User
 }
 
 //ClaimEvidence Model
