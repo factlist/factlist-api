@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <title> API Documentation </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .hidden {
+            display:none;
+        }
+        pre {
+            outline: 1px solid #ccc;
+            padding: 5px; margin: 5px;
+        }
+
+        .string { color: green; }
+        .number { color: darkorange; }
+        .boolean { color: blue; }
+        .null { color: magenta; }
+        .key { color: red; }
+
+    </style>
+    <style type="text/css">
+        pre.prettyprint {
+            border: 1px solid #ccc;
+            margin-bottom: 0;
+            padding: 9.5px;
+        }
+    </style>
+    <script>
+         
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        function spaceJson(json){
+            var validJson = JSON.parse(json);
+            return JSON.stringify(validJson, undefined, 4);
+        }
+    </script>
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Factlist</a>
+            <p class="navbar-text">Developed by Gophers at <a href="http://betacraft.co">Betacraft</a></p>
+        </div>
+            
+        
+    </div>
+    
+</nav>
+<div class="container-fluid" style="margin-top: 70px;margin-bottom: 20px;">
+    <div class="container-fluid">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+              <div class="panel-heading">Base Urls</div>
+              <div class="panel-body">
+                
+                    <p>Production : <strong></strong></p>
+                
+                    <p>Staging : <strong></strong></p>
+                
+              </div>
+            </div>    
+        <ul class="nav nav-pills nav-stacked" role="tablist">
+            
+                <li role="presentation"><a href="#0top" role="tab" data-toggle="tab">POST : /api/claims</a></li>
+            
+                <li role="presentation"><a href="#1top" role="tab" data-toggle="tab">PATCH : /api/claims/12</a></li>
+            
+                <li role="presentation"><a href="#2top" role="tab" data-toggle="tab">POST : /api/register</a></li>
+            
+                <li role="presentation"><a href="#3top" role="tab" data-toggle="tab">POST : /api/login</a></li>
+            
+                <li role="presentation"><a href="#4top" role="tab" data-toggle="tab">GET : /api/claims/</a></li>
+            
+                <li role="presentation"><a href="#5top" role="tab" data-toggle="tab">GET : /api/claims</a></li>
+            
+                <li role="presentation"><a href="#6top" role="tab" data-toggle="tab">GET : /api/claims/12</a></li>
+            
+                <li role="presentation"><a href="#7top" role="tab" data-toggle="tab">DELETE : /api/claims/12</a></li>
+            
+                <li role="presentation"><a href="#8top" role="tab" data-toggle="tab">POST : /api/evidences</a></li>
+            
+                <li role="presentation"><a href="#9top" role="tab" data-toggle="tab">PATCH : /api/evidences/11</a></li>
+            
+                <li role="presentation"><a href="#10top" role="tab" data-toggle="tab">PATCH : /api/evidences/36</a></li>
+            
+                <li role="presentation"><a href="#11top" role="tab" data-toggle="tab">DELETE : /api/evidences/36</a></li>
+            
+        <ul>
+    </div>
+    <div class="col-md-8 tab-content">
+        
+        <div id="0top"  role="tabpanel" class="tab-pane col-md-10">
+            
+                
+                <p> <H4> Request Headers </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> multipart/form-data</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Postman-Token</td>
+                        <td>  011be91f-3886-4a5a-8bc2-ce1568231463</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Post Form </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>claim_links[]</td>
+                        <td> www.google.com</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>claim_text</td>
+                        <td> example claim text</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>user_id</td>
+                        <td> 1</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                
+                <p><h4> Response Code</h4></p>
+                <pre class="prettyprint lang-json">200</pre>
+                
+                <p><h4> Response Headers</h4></p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Access-Control-Allow-Origin</td>
+                        <td> *</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> application/json; charset=UTF-8</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Vary</td>
+                        <td> Origin</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Response Body </H4> </p>
+                <pre class="prettyprint" id="response-body-0-0">{&#34;ID&#34;:12,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:18.643474&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:18.643474&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;example claim text&#34;,&#34;Files&#34;:[{&#34;ID&#34;:46,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:18.646746&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:18.646746&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/png&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png&#34;}],&#34;Links&#34;:[{&#34;ID&#34;:38,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:18.649405&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:18.649405&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;url&#34;:&#34;www.google.com&#34;,&#34;archive_url&#34;:&#34;&#34;,&#34;user_id&#34;:1}],&#34;Evidences&#34;:null,&#34;User&#34;:{&#34;ID&#34;:0,&#34;CreatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;UpdatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;&#34;,&#34;email&#34;:&#34;&#34;,&#34;password&#34;:&#34;&#34;}}</pre>
+                <script>
+                     
+                    var responseHeader ={"Access-Control-Allow-Origin":"*","Content-Type":"application/json; charset=UTF-8","Vary":"Origin"};
+
+                    if (responseHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("{\"ID\":12,\"CreatedAt\":\"2018-02-02T17:50:18.643474+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:18.643474+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"example claim text\",\"Files\":[{\"ID\":46,\"CreatedAt\":\"2018-02-02T17:50:18.646746+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:18.646746+03:00\",\"DeletedAt\":null,\"type\":\"image/png\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png\"}],\"Links\":[{\"ID\":38,\"CreatedAt\":\"2018-02-02T17:50:18.649405+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:18.649405+03:00\",\"DeletedAt\":null,\"url\":\"www.google.com\",\"archive_url\":\"\",\"user_id\":1}],\"Evidences\":null,\"User\":{\"ID\":0,\"CreatedAt\":\"0001-01-01T00:00:00Z\",\"UpdatedAt\":\"0001-01-01T00:00:00Z\",\"DeletedAt\":null,\"username\":\"\",\"email\":\"\",\"password\":\"\"}}");
+                            document.getElementById('response-body-0-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <hr>
+            
+        </div>
+        
+        <div id="1top"  role="tabpanel" class="tab-pane col-md-10">
+            
+                
+                <p> <H4> Request Headers </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> multipart/form-data</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Postman-Token</td>
+                        <td>  23ea9081-1783-43d3-bbcf-8c28b70b2a86</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Post Form </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>evidence_links[]</td>
+                        <td> www.testevidencelink.com</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>evidence_status</td>
+                        <td> true</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>evidence_text</td>
+                        <td> example evidence text</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>user_id</td>
+                        <td> 1</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                
+                <p><h4> Response Code</h4></p>
+                <pre class="prettyprint lang-json">200</pre>
+                
+                <p><h4> Response Headers</h4></p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Access-Control-Allow-Origin</td>
+                        <td> *</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> application/json; charset=UTF-8</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Vary</td>
+                        <td> Origin</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Response Body </H4> </p>
+                <pre class="prettyprint" id="response-body-1-0">{&#34;ID&#34;:12,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:19&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:53.296669&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;example claim text&#34;,&#34;Files&#34;:null,&#34;Links&#34;:null,&#34;Evidences&#34;:[{&#34;ID&#34;:35,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:53.298649&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:53.298649&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;status&#34;:&#34;true&#34;,&#34;text&#34;:&#34;example evidence text&#34;,&#34;Files&#34;:[{&#34;ID&#34;:47,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:53.308393&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:53.308393&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/png&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png&#34;}],&#34;Links&#34;:[{&#34;ID&#34;:39,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:53.304057&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:53.304057&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;url&#34;:&#34;www.testevidencelink.com&#34;,&#34;archive_url&#34;:&#34;&#34;,&#34;user_id&#34;:1}],&#34;User&#34;:{&#34;ID&#34;:0,&#34;CreatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;UpdatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;&#34;,&#34;email&#34;:&#34;&#34;,&#34;password&#34;:&#34;&#34;}}],&#34;User&#34;:{&#34;ID&#34;:0,&#34;CreatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;UpdatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;&#34;,&#34;email&#34;:&#34;&#34;,&#34;password&#34;:&#34;&#34;}}</pre>
+                <script>
+                     
+                    var responseHeader ={"Access-Control-Allow-Origin":"*","Content-Type":"application/json; charset=UTF-8","Vary":"Origin"};
+
+                    if (responseHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("{\"ID\":12,\"CreatedAt\":\"2018-02-02T17:50:19+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:53.296669+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"example claim text\",\"Files\":null,\"Links\":null,\"Evidences\":[{\"ID\":35,\"CreatedAt\":\"2018-02-02T17:50:53.298649+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:53.298649+03:00\",\"DeletedAt\":null,\"user_id\":1,\"status\":\"true\",\"text\":\"example evidence text\",\"Files\":[{\"ID\":47,\"CreatedAt\":\"2018-02-02T17:50:53.308393+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:53.308393+03:00\",\"DeletedAt\":null,\"type\":\"image/png\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png\"}],\"Links\":[{\"ID\":39,\"CreatedAt\":\"2018-02-02T17:50:53.304057+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:53.304057+03:00\",\"DeletedAt\":null,\"url\":\"www.testevidencelink.com\",\"archive_url\":\"\",\"user_id\":1}],\"User\":{\"ID\":0,\"CreatedAt\":\"0001-01-01T00:00:00Z\",\"UpdatedAt\":\"0001-01-01T00:00:00Z\",\"DeletedAt\":null,\"username\":\"\",\"email\":\"\",\"password\":\"\"}}],\"User\":{\"ID\":0,\"CreatedAt\":\"0001-01-01T00:00:00Z\",\"UpdatedAt\":\"0001-01-01T00:00:00Z\",\"DeletedAt\":null,\"username\":\"\",\"email\":\"\",\"password\":\"\"}}");
+                            document.getElementById('response-body-1-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <hr>
+            
+        </div>
+        
+        <div id="2top"  role="tabpanel" class="tab-pane col-md-10">
+            
+                
+                <p> <H4> Request Headers </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td>  application/json</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Postman-Token</td>
+                        <td>  25141901-0039-4861-bdfd-ddbeba12e5ac</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                
+                
+                <p> <H4> Request Body </H4> </p>
+                <pre id="request-body-2-0" class="prettyprint">{
+	&#34;username&#34;:&#34;oner&#34;,
+	&#34;email&#34;:&#34;oner@nmobs.com&#34;,
+	&#34;password&#34;:&#34;123&#34;
+}</pre>
+                <script>
+                     
+                    var requestHeader ={"Content-Type":" application/json\r","Postman-Token":" 25141901-0039-4861-bdfd-ddbeba12e5ac\r"};
+
+                    if (requestHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("{\n\t\"username\":\"oner\",\n\t\"email\":\"oner@nmobs.com\",\n\t\"password\":\"123\"\n}");
+                            document.getElementById('request-body-2-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <p><h4> Response Code</h4></p>
+                <pre class="prettyprint lang-json">200</pre>
+                
+                <p><h4> Response Headers</h4></p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Access-Control-Allow-Origin</td>
+                        <td> *</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> application/json; charset=UTF-8</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Vary</td>
+                        <td> Origin</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Response Body </H4> </p>
+                <pre class="prettyprint" id="response-body-2-0">{&#34;ID&#34;:5,&#34;CreatedAt&#34;:&#34;2018-02-02T17:51:36.464448&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:51:36.464448&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;oner&#34;,&#34;email&#34;:&#34;oner@nmobs.com&#34;,&#34;password&#34;:&#34;$2a$10$SmIX1audHzg0iAX6nHs6Xe.YcFN7xDbe8XWlCVDRqRbG590VtH9wm&#34;}</pre>
+                <script>
+                     
+                    var responseHeader ={"Access-Control-Allow-Origin":"*","Content-Type":"application/json; charset=UTF-8","Vary":"Origin"};
+
+                    if (responseHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("{\"ID\":5,\"CreatedAt\":\"2018-02-02T17:51:36.464448+03:00\",\"UpdatedAt\":\"2018-02-02T17:51:36.464448+03:00\",\"DeletedAt\":null,\"username\":\"oner\",\"email\":\"oner@nmobs.com\",\"password\":\"$2a$10$SmIX1audHzg0iAX6nHs6Xe.YcFN7xDbe8XWlCVDRqRbG590VtH9wm\"}");
+                            document.getElementById('response-body-2-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <hr>
+            
+        </div>
+        
+        <div id="3top"  role="tabpanel" class="tab-pane col-md-10">
+            
+                
+                <p> <H4> Request Headers </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td>  application/json</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Postman-Token</td>
+                        <td>  d2a96320-9045-4e38-ab90-ba93cb4ae203</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                
+                
+                <p> <H4> Request Body </H4> </p>
+                <pre id="request-body-3-0" class="prettyprint">{
+	&#34;email&#34;:&#34;oner@nmobs.com&#34;,
+	&#34;password&#34;:&#34;123&#34;
+}</pre>
+                <script>
+                     
+                    var requestHeader ={"Content-Type":" application/json\r","Postman-Token":" d2a96320-9045-4e38-ab90-ba93cb4ae203\r"};
+
+                    if (requestHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("{\n\t\"email\":\"oner@nmobs.com\",\n\t\"password\":\"123\"\n}");
+                            document.getElementById('request-body-3-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <p><h4> Response Code</h4></p>
+                <pre class="prettyprint lang-json">200</pre>
+                
+                <p><h4> Response Headers</h4></p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Access-Control-Allow-Origin</td>
+                        <td> *</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> application/json; charset=UTF-8</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Vary</td>
+                        <td> Origin</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Response Body </H4> </p>
+                <pre class="prettyprint" id="response-body-3-0">{&#34;token&#34;:&#34;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTgwODMwOTksImlhdCI6MTUxNzU4MzA5OSwibmJmIjoxNTE4MDgzMDk5LCJzdWIiOjV9.OYCwR_7UBvo8mz-89p_MNQlAickgZd6eCU94Ecs50dU&#34;}</pre>
+                <script>
+                     
+                    var responseHeader ={"Access-Control-Allow-Origin":"*","Content-Type":"application/json; charset=UTF-8","Vary":"Origin"};
+
+                    if (responseHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTgwODMwOTksImlhdCI6MTUxNzU4MzA5OSwibmJmIjoxNTE4MDgzMDk5LCJzdWIiOjV9.OYCwR_7UBvo8mz-89p_MNQlAickgZd6eCU94Ecs50dU\"}");
+                            document.getElementById('response-body-3-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <hr>
+            
+        </div>
+        
+        <div id="4top"  role="tabpanel" class="tab-pane col-md-10">
+            
+                
+                <p> <H4> Request Headers </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td>  application/json</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Postman-Token</td>
+                        <td>  d34918d2-8dbe-49cc-80cb-8bf5773fd59b</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                
+                
+                <p><h4> Response Code</h4></p>
+                <pre class="prettyprint lang-json">200</pre>
+                
+                <p><h4> Response Headers</h4></p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Access-Control-Allow-Origin</td>
+                        <td> *</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Vary</td>
+                        <td> Origin</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <hr>
+            
+        </div>
+        
+        <div id="5top"  role="tabpanel" class="tab-pane col-md-10">
+            
+                
+                <p> <H4> Request Headers </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td>  application/json</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Postman-Token</td>
+                        <td>  e3058433-450d-4c18-bd27-0c4dc4572434</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                
+                
+                <p><h4> Response Code</h4></p>
+                <pre class="prettyprint lang-json">200</pre>
+                
+                <p><h4> Response Headers</h4></p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Access-Control-Allow-Origin</td>
+                        <td> *</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> application/json; charset=UTF-8</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Vary</td>
+                        <td> Origin</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Response Body </H4> </p>
+                <pre class="prettyprint" id="response-body-5-0">[{&#34;ID&#34;:1,&#34;CreatedAt&#34;:&#34;2018-02-02T16:10:07&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T16:10:07&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;example claim text&#34;,&#34;Files&#34;:[{&#34;ID&#34;:25,&#34;CreatedAt&#34;:&#34;2018-02-02T16:10:07&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T16:10:07&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/jpeg&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg&#34;}],&#34;Links&#34;:null,&#34;Evidences&#34;:null,&#34;User&#34;:{&#34;ID&#34;:1,&#34;CreatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;onerciller&#34;,&#34;email&#34;:&#34;onerciller@gmail.com&#34;,&#34;password&#34;:&#34;$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.&#34;}},{&#34;ID&#34;:2,&#34;CreatedAt&#34;:&#34;2018-02-02T16:15:05&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T16:15:05&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;example claim text&#34;,&#34;Files&#34;:null,&#34;Links&#34;:null,&#34;Evidences&#34;:null,&#34;User&#34;:{&#34;ID&#34;:1,&#34;CreatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;onerciller&#34;,&#34;email&#34;:&#34;onerciller@gmail.com&#34;,&#34;password&#34;:&#34;$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.&#34;}},{&#34;ID&#34;:3,&#34;CreatedAt&#34;:&#34;2018-02-02T16:15:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T16:15:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;example claim text&#34;,&#34;Files&#34;:[{&#34;ID&#34;:26,&#34;CreatedAt&#34;:&#34;2018-02-02T16:15:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T16:15:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/jpeg&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg&#34;}],&#34;Links&#34;:null,&#34;Evidences&#34;:null,&#34;User&#34;:{&#34;ID&#34;:1,&#34;CreatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;onerciller&#34;,&#34;email&#34;:&#34;onerciller@gmail.com&#34;,&#34;password&#34;:&#34;$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.&#34;}},{&#34;ID&#34;:6,&#34;CreatedAt&#34;:&#34;2018-02-02T17:07:04&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:07:04&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;example claim text&#34;,&#34;Files&#34;:null,&#34;Links&#34;:null,&#34;Evidences&#34;:null,&#34;User&#34;:{&#34;ID&#34;:1,&#34;CreatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;onerciller&#34;,&#34;email&#34;:&#34;onerciller@gmail.com&#34;,&#34;password&#34;:&#34;$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.&#34;}},{&#34;ID&#34;:7,&#34;CreatedAt&#34;:&#34;2018-02-02T17:07:12&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:07:12&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;example claim text&#34;,&#34;Files&#34;:[{&#34;ID&#34;:39,&#34;CreatedAt&#34;:&#34;2018-02-02T17:07:12&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:07:12&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/jpeg&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg&#34;}],&#34;Links&#34;:[{&#34;ID&#34;:31,&#34;CreatedAt&#34;:&#34;2018-02-02T17:07:12&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:07:12&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;url&#34;:&#34;www.google.com&#34;,&#34;archive_url&#34;:&#34;&#34;,&#34;user_id&#34;:0}],&#34;Evidences&#34;:null,&#34;User&#34;:{&#34;ID&#34;:1,&#34;CreatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;onerciller&#34;,&#34;email&#34;:&#34;onerciller@gmail.com&#34;,&#34;password&#34;:&#34;$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.&#34;}},{&#34;ID&#34;:8,&#34;CreatedAt&#34;:&#34;2018-02-02T17:07:57&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:07:57&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;example claim text&#34;,&#34;Files&#34;:[{&#34;ID&#34;:40,&#34;CreatedAt&#34;:&#34;2018-02-02T17:07:57&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:07:57&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/jpeg&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg&#34;}],&#34;Links&#34;:[{&#34;ID&#34;:32,&#34;CreatedAt&#34;:&#34;2018-02-02T17:07:57&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:07:57&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;url&#34;:&#34;www.google.com&#34;,&#34;archive_url&#34;:&#34;&#34;,&#34;user_id&#34;:1}],&#34;Evidences&#34;:null,&#34;User&#34;:{&#34;ID&#34;:1,&#34;CreatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;onerciller&#34;,&#34;email&#34;:&#34;onerciller@gmail.com&#34;,&#34;password&#34;:&#34;$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.&#34;}},{&#34;ID&#34;:9,&#34;CreatedAt&#34;:&#34;2018-02-02T17:39:36&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:39:36&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;example claim text&#34;,&#34;Files&#34;:[{&#34;ID&#34;:41,&#34;CreatedAt&#34;:&#34;2018-02-02T17:39:36&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:39:36&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/jpeg&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg&#34;}],&#34;Links&#34;:[{&#34;ID&#34;:33,&#34;CreatedAt&#34;:&#34;2018-02-02T17:39:36&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:39:36&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;url&#34;:&#34;www.google.com&#34;,&#34;archive_url&#34;:&#34;&#34;,&#34;user_id&#34;:1}],&#34;Evidences&#34;:null,&#34;User&#34;:{&#34;ID&#34;:1,&#34;CreatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;onerciller&#34;,&#34;email&#34;:&#34;onerciller@gmail.com&#34;,&#34;password&#34;:&#34;$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.&#34;}},{&#34;ID&#34;:10,&#34;CreatedAt&#34;:&#34;2018-02-02T17:41:03&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:41:03&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;&#34;,&#34;Files&#34;:[{&#34;ID&#34;:42,&#34;CreatedAt&#34;:&#34;2018-02-02T17:41:03&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:41:03&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/png&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png&#34;}],&#34;Links&#34;:[{&#34;ID&#34;:34,&#34;CreatedAt&#34;:&#34;2018-02-02T17:41:03&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:41:03&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;url&#34;:&#34;www.google.com&#34;,&#34;archive_url&#34;:&#34;&#34;,&#34;user_id&#34;:1}],&#34;Evidences&#34;:null,&#34;User&#34;:{&#34;ID&#34;:1,&#34;CreatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;onerciller&#34;,&#34;email&#34;:&#34;onerciller@gmail.com&#34;,&#34;password&#34;:&#34;$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.&#34;}},{&#34;ID&#34;:11,&#34;CreatedAt&#34;:&#34;2018-02-02T17:41:53&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:47:12&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;example claim text&#34;,&#34;Files&#34;:[{&#34;ID&#34;:43,&#34;CreatedAt&#34;:&#34;2018-02-02T17:41:53&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:41:53&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/png&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png&#34;}],&#34;Links&#34;:[{&#34;ID&#34;:35,&#34;CreatedAt&#34;:&#34;2018-02-02T17:41:53&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:41:53&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;url&#34;:&#34;www.google.com&#34;,&#34;archive_url&#34;:&#34;&#34;,&#34;user_id&#34;:1}],&#34;Evidences&#34;:null,&#34;User&#34;:{&#34;ID&#34;:1,&#34;CreatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;onerciller&#34;,&#34;email&#34;:&#34;onerciller@gmail.com&#34;,&#34;password&#34;:&#34;$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.&#34;}},{&#34;ID&#34;:12,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:19&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:53&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;example claim text&#34;,&#34;Files&#34;:[{&#34;ID&#34;:46,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:19&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:19&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/png&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png&#34;}],&#34;Links&#34;:[{&#34;ID&#34;:38,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:19&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:19&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;url&#34;:&#34;www.google.com&#34;,&#34;archive_url&#34;:&#34;&#34;,&#34;user_id&#34;:1}],&#34;Evidences&#34;:null,&#34;User&#34;:{&#34;ID&#34;:1,&#34;CreatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;onerciller&#34;,&#34;email&#34;:&#34;onerciller@gmail.com&#34;,&#34;password&#34;:&#34;$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.&#34;}}]</pre>
+                <script>
+                     
+                    var responseHeader ={"Access-Control-Allow-Origin":"*","Content-Type":"application/json; charset=UTF-8","Vary":"Origin"};
+
+                    if (responseHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("[{\"ID\":1,\"CreatedAt\":\"2018-02-02T16:10:07+03:00\",\"UpdatedAt\":\"2018-02-02T16:10:07+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"example claim text\",\"Files\":[{\"ID\":25,\"CreatedAt\":\"2018-02-02T16:10:07+03:00\",\"UpdatedAt\":\"2018-02-02T16:10:07+03:00\",\"DeletedAt\":null,\"type\":\"image/jpeg\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg\"}],\"Links\":null,\"Evidences\":null,\"User\":{\"ID\":1,\"CreatedAt\":\"2018-01-28T14:40:20+03:00\",\"UpdatedAt\":\"2018-01-28T14:40:20+03:00\",\"DeletedAt\":null,\"username\":\"onerciller\",\"email\":\"onerciller@gmail.com\",\"password\":\"$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.\"}},{\"ID\":2,\"CreatedAt\":\"2018-02-02T16:15:05+03:00\",\"UpdatedAt\":\"2018-02-02T16:15:05+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"example claim text\",\"Files\":null,\"Links\":null,\"Evidences\":null,\"User\":{\"ID\":1,\"CreatedAt\":\"2018-01-28T14:40:20+03:00\",\"UpdatedAt\":\"2018-01-28T14:40:20+03:00\",\"DeletedAt\":null,\"username\":\"onerciller\",\"email\":\"onerciller@gmail.com\",\"password\":\"$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.\"}},{\"ID\":3,\"CreatedAt\":\"2018-02-02T16:15:20+03:00\",\"UpdatedAt\":\"2018-02-02T16:15:20+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"example claim text\",\"Files\":[{\"ID\":26,\"CreatedAt\":\"2018-02-02T16:15:20+03:00\",\"UpdatedAt\":\"2018-02-02T16:15:20+03:00\",\"DeletedAt\":null,\"type\":\"image/jpeg\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg\"}],\"Links\":null,\"Evidences\":null,\"User\":{\"ID\":1,\"CreatedAt\":\"2018-01-28T14:40:20+03:00\",\"UpdatedAt\":\"2018-01-28T14:40:20+03:00\",\"DeletedAt\":null,\"username\":\"onerciller\",\"email\":\"onerciller@gmail.com\",\"password\":\"$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.\"}},{\"ID\":6,\"CreatedAt\":\"2018-02-02T17:07:04+03:00\",\"UpdatedAt\":\"2018-02-02T17:07:04+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"example claim text\",\"Files\":null,\"Links\":null,\"Evidences\":null,\"User\":{\"ID\":1,\"CreatedAt\":\"2018-01-28T14:40:20+03:00\",\"UpdatedAt\":\"2018-01-28T14:40:20+03:00\",\"DeletedAt\":null,\"username\":\"onerciller\",\"email\":\"onerciller@gmail.com\",\"password\":\"$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.\"}},{\"ID\":7,\"CreatedAt\":\"2018-02-02T17:07:12+03:00\",\"UpdatedAt\":\"2018-02-02T17:07:12+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"example claim text\",\"Files\":[{\"ID\":39,\"CreatedAt\":\"2018-02-02T17:07:12+03:00\",\"UpdatedAt\":\"2018-02-02T17:07:12+03:00\",\"DeletedAt\":null,\"type\":\"image/jpeg\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg\"}],\"Links\":[{\"ID\":31,\"CreatedAt\":\"2018-02-02T17:07:12+03:00\",\"UpdatedAt\":\"2018-02-02T17:07:12+03:00\",\"DeletedAt\":null,\"url\":\"www.google.com\",\"archive_url\":\"\",\"user_id\":0}],\"Evidences\":null,\"User\":{\"ID\":1,\"CreatedAt\":\"2018-01-28T14:40:20+03:00\",\"UpdatedAt\":\"2018-01-28T14:40:20+03:00\",\"DeletedAt\":null,\"username\":\"onerciller\",\"email\":\"onerciller@gmail.com\",\"password\":\"$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.\"}},{\"ID\":8,\"CreatedAt\":\"2018-02-02T17:07:57+03:00\",\"UpdatedAt\":\"2018-02-02T17:07:57+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"example claim text\",\"Files\":[{\"ID\":40,\"CreatedAt\":\"2018-02-02T17:07:57+03:00\",\"UpdatedAt\":\"2018-02-02T17:07:57+03:00\",\"DeletedAt\":null,\"type\":\"image/jpeg\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg\"}],\"Links\":[{\"ID\":32,\"CreatedAt\":\"2018-02-02T17:07:57+03:00\",\"UpdatedAt\":\"2018-02-02T17:07:57+03:00\",\"DeletedAt\":null,\"url\":\"www.google.com\",\"archive_url\":\"\",\"user_id\":1}],\"Evidences\":null,\"User\":{\"ID\":1,\"CreatedAt\":\"2018-01-28T14:40:20+03:00\",\"UpdatedAt\":\"2018-01-28T14:40:20+03:00\",\"DeletedAt\":null,\"username\":\"onerciller\",\"email\":\"onerciller@gmail.com\",\"password\":\"$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.\"}},{\"ID\":9,\"CreatedAt\":\"2018-02-02T17:39:36+03:00\",\"UpdatedAt\":\"2018-02-02T17:39:36+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"example claim text\",\"Files\":[{\"ID\":41,\"CreatedAt\":\"2018-02-02T17:39:36+03:00\",\"UpdatedAt\":\"2018-02-02T17:39:36+03:00\",\"DeletedAt\":null,\"type\":\"image/jpeg\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg\"}],\"Links\":[{\"ID\":33,\"CreatedAt\":\"2018-02-02T17:39:36+03:00\",\"UpdatedAt\":\"2018-02-02T17:39:36+03:00\",\"DeletedAt\":null,\"url\":\"www.google.com\",\"archive_url\":\"\",\"user_id\":1}],\"Evidences\":null,\"User\":{\"ID\":1,\"CreatedAt\":\"2018-01-28T14:40:20+03:00\",\"UpdatedAt\":\"2018-01-28T14:40:20+03:00\",\"DeletedAt\":null,\"username\":\"onerciller\",\"email\":\"onerciller@gmail.com\",\"password\":\"$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.\"}},{\"ID\":10,\"CreatedAt\":\"2018-02-02T17:41:03+03:00\",\"UpdatedAt\":\"2018-02-02T17:41:03+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"\",\"Files\":[{\"ID\":42,\"CreatedAt\":\"2018-02-02T17:41:03+03:00\",\"UpdatedAt\":\"2018-02-02T17:41:03+03:00\",\"DeletedAt\":null,\"type\":\"image/png\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png\"}],\"Links\":[{\"ID\":34,\"CreatedAt\":\"2018-02-02T17:41:03+03:00\",\"UpdatedAt\":\"2018-02-02T17:41:03+03:00\",\"DeletedAt\":null,\"url\":\"www.google.com\",\"archive_url\":\"\",\"user_id\":1}],\"Evidences\":null,\"User\":{\"ID\":1,\"CreatedAt\":\"2018-01-28T14:40:20+03:00\",\"UpdatedAt\":\"2018-01-28T14:40:20+03:00\",\"DeletedAt\":null,\"username\":\"onerciller\",\"email\":\"onerciller@gmail.com\",\"password\":\"$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.\"}},{\"ID\":11,\"CreatedAt\":\"2018-02-02T17:41:53+03:00\",\"UpdatedAt\":\"2018-02-02T17:47:12+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"example claim text\",\"Files\":[{\"ID\":43,\"CreatedAt\":\"2018-02-02T17:41:53+03:00\",\"UpdatedAt\":\"2018-02-02T17:41:53+03:00\",\"DeletedAt\":null,\"type\":\"image/png\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png\"}],\"Links\":[{\"ID\":35,\"CreatedAt\":\"2018-02-02T17:41:53+03:00\",\"UpdatedAt\":\"2018-02-02T17:41:53+03:00\",\"DeletedAt\":null,\"url\":\"www.google.com\",\"archive_url\":\"\",\"user_id\":1}],\"Evidences\":null,\"User\":{\"ID\":1,\"CreatedAt\":\"2018-01-28T14:40:20+03:00\",\"UpdatedAt\":\"2018-01-28T14:40:20+03:00\",\"DeletedAt\":null,\"username\":\"onerciller\",\"email\":\"onerciller@gmail.com\",\"password\":\"$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.\"}},{\"ID\":12,\"CreatedAt\":\"2018-02-02T17:50:19+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:53+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"example claim text\",\"Files\":[{\"ID\":46,\"CreatedAt\":\"2018-02-02T17:50:19+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:19+03:00\",\"DeletedAt\":null,\"type\":\"image/png\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png\"}],\"Links\":[{\"ID\":38,\"CreatedAt\":\"2018-02-02T17:50:19+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:19+03:00\",\"DeletedAt\":null,\"url\":\"www.google.com\",\"archive_url\":\"\",\"user_id\":1}],\"Evidences\":null,\"User\":{\"ID\":1,\"CreatedAt\":\"2018-01-28T14:40:20+03:00\",\"UpdatedAt\":\"2018-01-28T14:40:20+03:00\",\"DeletedAt\":null,\"username\":\"onerciller\",\"email\":\"onerciller@gmail.com\",\"password\":\"$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.\"}}]");
+                            document.getElementById('response-body-5-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <hr>
+            
+        </div>
+        
+        <div id="6top"  role="tabpanel" class="tab-pane col-md-10">
+            
+                
+                <p> <H4> Request Headers </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td>  application/json</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Postman-Token</td>
+                        <td>  1b1f77f4-1ff2-48a1-b9c2-0b2b94a4103a</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                
+                
+                <p><h4> Response Code</h4></p>
+                <pre class="prettyprint lang-json">200</pre>
+                
+                <p><h4> Response Headers</h4></p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Access-Control-Allow-Origin</td>
+                        <td> *</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> application/json; charset=UTF-8</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Vary</td>
+                        <td> Origin</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Response Body </H4> </p>
+                <pre class="prettyprint" id="response-body-6-0">{&#34;ID&#34;:12,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:19&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:53&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;text&#34;:&#34;example claim text&#34;,&#34;Files&#34;:[{&#34;ID&#34;:46,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:19&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:19&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/png&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png&#34;}],&#34;Links&#34;:[{&#34;ID&#34;:38,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:19&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:19&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;url&#34;:&#34;www.google.com&#34;,&#34;archive_url&#34;:&#34;&#34;,&#34;user_id&#34;:1}],&#34;Evidences&#34;:[{&#34;ID&#34;:35,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:53&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:53&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;status&#34;:&#34;true&#34;,&#34;text&#34;:&#34;example evidence text&#34;,&#34;Files&#34;:[{&#34;ID&#34;:47,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:53&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:53&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/png&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png&#34;}],&#34;Links&#34;:[{&#34;ID&#34;:39,&#34;CreatedAt&#34;:&#34;2018-02-02T17:50:53&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T17:50:53&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;url&#34;:&#34;www.testevidencelink.com&#34;,&#34;archive_url&#34;:&#34;&#34;,&#34;user_id&#34;:1}],&#34;User&#34;:{&#34;ID&#34;:0,&#34;CreatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;UpdatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;&#34;,&#34;email&#34;:&#34;&#34;,&#34;password&#34;:&#34;&#34;}}],&#34;User&#34;:{&#34;ID&#34;:1,&#34;CreatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-01-28T14:40:20&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;onerciller&#34;,&#34;email&#34;:&#34;onerciller@gmail.com&#34;,&#34;password&#34;:&#34;$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.&#34;}}</pre>
+                <script>
+                     
+                    var responseHeader ={"Access-Control-Allow-Origin":"*","Content-Type":"application/json; charset=UTF-8","Vary":"Origin"};
+
+                    if (responseHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("{\"ID\":12,\"CreatedAt\":\"2018-02-02T17:50:19+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:53+03:00\",\"DeletedAt\":null,\"user_id\":1,\"text\":\"example claim text\",\"Files\":[{\"ID\":46,\"CreatedAt\":\"2018-02-02T17:50:19+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:19+03:00\",\"DeletedAt\":null,\"type\":\"image/png\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png\"}],\"Links\":[{\"ID\":38,\"CreatedAt\":\"2018-02-02T17:50:19+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:19+03:00\",\"DeletedAt\":null,\"url\":\"www.google.com\",\"archive_url\":\"\",\"user_id\":1}],\"Evidences\":[{\"ID\":35,\"CreatedAt\":\"2018-02-02T17:50:53+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:53+03:00\",\"DeletedAt\":null,\"user_id\":1,\"status\":\"true\",\"text\":\"example evidence text\",\"Files\":[{\"ID\":47,\"CreatedAt\":\"2018-02-02T17:50:53+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:53+03:00\",\"DeletedAt\":null,\"type\":\"image/png\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/Screen Shot 2018-01-31 at 16.16.44.png\"}],\"Links\":[{\"ID\":39,\"CreatedAt\":\"2018-02-02T17:50:53+03:00\",\"UpdatedAt\":\"2018-02-02T17:50:53+03:00\",\"DeletedAt\":null,\"url\":\"www.testevidencelink.com\",\"archive_url\":\"\",\"user_id\":1}],\"User\":{\"ID\":0,\"CreatedAt\":\"0001-01-01T00:00:00Z\",\"UpdatedAt\":\"0001-01-01T00:00:00Z\",\"DeletedAt\":null,\"username\":\"\",\"email\":\"\",\"password\":\"\"}}],\"User\":{\"ID\":1,\"CreatedAt\":\"2018-01-28T14:40:20+03:00\",\"UpdatedAt\":\"2018-01-28T14:40:20+03:00\",\"DeletedAt\":null,\"username\":\"onerciller\",\"email\":\"onerciller@gmail.com\",\"password\":\"$2a$10$bWTLbkXD7nSF5m0WoQyUbe9I7MkodrrHiXbKIl8pv7adm6SvfgEk.\"}}");
+                            document.getElementById('response-body-6-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <hr>
+            
+        </div>
+        
+        <div id="7top"  role="tabpanel" class="tab-pane col-md-10">
+            
+                
+                <p> <H4> Request Headers </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> multipart/form-data</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Postman-Token</td>
+                        <td>  03495915-a7c8-422b-ba5c-49d8a958d761</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Post Form </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>claim_links[]</td>
+                        <td> www.google.com</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>evidence_links[]</td>
+                        <td> www.evidencelinks.com</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>text</td>
+                        <td> example claim text</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>user_id</td>
+                        <td> 1</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                
+                <p><h4> Response Code</h4></p>
+                <pre class="prettyprint lang-json">200</pre>
+                
+                <p><h4> Response Headers</h4></p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Access-Control-Allow-Origin</td>
+                        <td> *</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> application/json; charset=UTF-8</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Vary</td>
+                        <td> Origin</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Response Body </H4> </p>
+                <pre class="prettyprint" id="response-body-7-0">12</pre>
+                <script>
+                     
+                    var responseHeader ={"Access-Control-Allow-Origin":"*","Content-Type":"application/json; charset=UTF-8","Vary":"Origin"};
+
+                    if (responseHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("12");
+                            document.getElementById('response-body-7-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <hr>
+            
+        </div>
+        
+        <div id="8top"  role="tabpanel" class="tab-pane col-md-10">
+            
+                
+                <p> <H4> Request Headers </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> multipart/form-data</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Postman-Token</td>
+                        <td>  66004a8e-73ca-49cb-8e62-7163f5e0d1bd</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Post Form </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>evidence_links[]</td>
+                        <td> www.evidencelinks.com</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>evidence_text</td>
+                        <td> example evidence text</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>user_id</td>
+                        <td> 1</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                
+                <p><h4> Response Code</h4></p>
+                <pre class="prettyprint lang-json">200</pre>
+                
+                <p><h4> Response Headers</h4></p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Access-Control-Allow-Origin</td>
+                        <td> *</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> application/json; charset=UTF-8</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Vary</td>
+                        <td> Origin</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Response Body </H4> </p>
+                <pre class="prettyprint" id="response-body-8-0">{&#34;ID&#34;:36,&#34;CreatedAt&#34;:&#34;2018-02-02T18:00:18.219394&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T18:00:18.219394&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;status&#34;:&#34;true&#34;,&#34;text&#34;:&#34;&#34;,&#34;Files&#34;:[{&#34;ID&#34;:48,&#34;CreatedAt&#34;:&#34;2018-02-02T18:00:18.222347&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T18:00:18.222347&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/jpeg&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg&#34;}],&#34;Links&#34;:[{&#34;ID&#34;:40,&#34;CreatedAt&#34;:&#34;2018-02-02T18:00:18.225385&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T18:00:18.225385&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;url&#34;:&#34;www.evidencelinks.com&#34;,&#34;archive_url&#34;:&#34;&#34;,&#34;user_id&#34;:0}],&#34;User&#34;:{&#34;ID&#34;:0,&#34;CreatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;UpdatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;&#34;,&#34;email&#34;:&#34;&#34;,&#34;password&#34;:&#34;&#34;}}</pre>
+                <script>
+                     
+                    var responseHeader ={"Access-Control-Allow-Origin":"*","Content-Type":"application/json; charset=UTF-8","Vary":"Origin"};
+
+                    if (responseHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("{\"ID\":36,\"CreatedAt\":\"2018-02-02T18:00:18.219394+03:00\",\"UpdatedAt\":\"2018-02-02T18:00:18.219394+03:00\",\"DeletedAt\":null,\"user_id\":1,\"status\":\"true\",\"text\":\"\",\"Files\":[{\"ID\":48,\"CreatedAt\":\"2018-02-02T18:00:18.222347+03:00\",\"UpdatedAt\":\"2018-02-02T18:00:18.222347+03:00\",\"DeletedAt\":null,\"type\":\"image/jpeg\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg\"}],\"Links\":[{\"ID\":40,\"CreatedAt\":\"2018-02-02T18:00:18.225385+03:00\",\"UpdatedAt\":\"2018-02-02T18:00:18.225385+03:00\",\"DeletedAt\":null,\"url\":\"www.evidencelinks.com\",\"archive_url\":\"\",\"user_id\":0}],\"User\":{\"ID\":0,\"CreatedAt\":\"0001-01-01T00:00:00Z\",\"UpdatedAt\":\"0001-01-01T00:00:00Z\",\"DeletedAt\":null,\"username\":\"\",\"email\":\"\",\"password\":\"\"}}");
+                            document.getElementById('response-body-8-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <hr>
+            
+        </div>
+        
+        <div id="9top"  role="tabpanel" class="tab-pane col-md-10">
+            
+                
+                <p> <H4> Request Headers </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> multipart/form-data</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Postman-Token</td>
+                        <td>  4c5d33ab-214e-4de9-998e-b57f3908b01f</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Post Form </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>evidence_links[]</td>
+                        <td> www.evidencelinks.com</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>evidence_text</td>
+                        <td> update  evidence text</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>user_id</td>
+                        <td> 1</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                
+                <p><h4> Response Code</h4></p>
+                <pre class="prettyprint lang-json">200</pre>
+                
+                <p><h4> Response Headers</h4></p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Access-Control-Allow-Origin</td>
+                        <td> *</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> application/json; charset=UTF-8</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Vary</td>
+                        <td> Origin</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Response Body </H4> </p>
+                <pre class="prettyprint" id="response-body-9-0">{&#34;ID&#34;:0,&#34;CreatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T18:02:11.521408&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;status&#34;:&#34;&#34;,&#34;text&#34;:&#34;update  evidence text&#34;,&#34;Files&#34;:null,&#34;Links&#34;:null,&#34;User&#34;:{&#34;ID&#34;:0,&#34;CreatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;UpdatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;&#34;,&#34;email&#34;:&#34;&#34;,&#34;password&#34;:&#34;&#34;}}</pre>
+                <script>
+                     
+                    var responseHeader ={"Access-Control-Allow-Origin":"*","Content-Type":"application/json; charset=UTF-8","Vary":"Origin"};
+
+                    if (responseHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("{\"ID\":0,\"CreatedAt\":\"0001-01-01T00:00:00Z\",\"UpdatedAt\":\"2018-02-02T18:02:11.521408+03:00\",\"DeletedAt\":null,\"user_id\":1,\"status\":\"\",\"text\":\"update  evidence text\",\"Files\":null,\"Links\":null,\"User\":{\"ID\":0,\"CreatedAt\":\"0001-01-01T00:00:00Z\",\"UpdatedAt\":\"0001-01-01T00:00:00Z\",\"DeletedAt\":null,\"username\":\"\",\"email\":\"\",\"password\":\"\"}}");
+                            document.getElementById('response-body-9-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <hr>
+            
+        </div>
+        
+        <div id="10top"  role="tabpanel" class="tab-pane col-md-10">
+            
+                
+                <p> <H4> Request Headers </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> multipart/form-data</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Postman-Token</td>
+                        <td>  35afb49c-47e1-4b9c-81f5-36d45d998415</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Post Form </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>evidence_links[]</td>
+                        <td> www.evidencelinks.com</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>evidence_text</td>
+                        <td> update  evidence text</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>user_id</td>
+                        <td> 1</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                
+                <p><h4> Response Code</h4></p>
+                <pre class="prettyprint lang-json">200</pre>
+                
+                <p><h4> Response Headers</h4></p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Access-Control-Allow-Origin</td>
+                        <td> *</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> application/json; charset=UTF-8</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Vary</td>
+                        <td> Origin</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Response Body </H4> </p>
+                <pre class="prettyprint" id="response-body-10-0">{&#34;ID&#34;:36,&#34;CreatedAt&#34;:&#34;2018-02-02T18:00:18&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T18:02:41.483291&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;user_id&#34;:1,&#34;status&#34;:&#34;true&#34;,&#34;text&#34;:&#34;update  evidence text&#34;,&#34;Files&#34;:[{&#34;ID&#34;:49,&#34;CreatedAt&#34;:&#34;2018-02-02T18:02:41.485522&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T18:02:41.485522&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;type&#34;:&#34;image/jpeg&#34;,&#34;user_id&#34;:1,&#34;source&#34;:&#34;https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg&#34;}],&#34;Links&#34;:[{&#34;ID&#34;:41,&#34;CreatedAt&#34;:&#34;2018-02-02T18:02:41.490299&#43;03:00&#34;,&#34;UpdatedAt&#34;:&#34;2018-02-02T18:02:41.490299&#43;03:00&#34;,&#34;DeletedAt&#34;:null,&#34;url&#34;:&#34;www.evidencelinks.com&#34;,&#34;archive_url&#34;:&#34;&#34;,&#34;user_id&#34;:0}],&#34;User&#34;:{&#34;ID&#34;:0,&#34;CreatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;UpdatedAt&#34;:&#34;0001-01-01T00:00:00Z&#34;,&#34;DeletedAt&#34;:null,&#34;username&#34;:&#34;&#34;,&#34;email&#34;:&#34;&#34;,&#34;password&#34;:&#34;&#34;}}</pre>
+                <script>
+                     
+                    var responseHeader ={"Access-Control-Allow-Origin":"*","Content-Type":"application/json; charset=UTF-8","Vary":"Origin"};
+
+                    if (responseHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("{\"ID\":36,\"CreatedAt\":\"2018-02-02T18:00:18+03:00\",\"UpdatedAt\":\"2018-02-02T18:02:41.483291+03:00\",\"DeletedAt\":null,\"user_id\":1,\"status\":\"true\",\"text\":\"update  evidence text\",\"Files\":[{\"ID\":49,\"CreatedAt\":\"2018-02-02T18:02:41.485522+03:00\",\"UpdatedAt\":\"2018-02-02T18:02:41.485522+03:00\",\"DeletedAt\":null,\"type\":\"image/jpeg\",\"user_id\":1,\"source\":\"https://s3.eu-central-1.amazonaws.com/factlist.org/uploads/photo_2017-11-17_16-14-20.jpg\"}],\"Links\":[{\"ID\":41,\"CreatedAt\":\"2018-02-02T18:02:41.490299+03:00\",\"UpdatedAt\":\"2018-02-02T18:02:41.490299+03:00\",\"DeletedAt\":null,\"url\":\"www.evidencelinks.com\",\"archive_url\":\"\",\"user_id\":0}],\"User\":{\"ID\":0,\"CreatedAt\":\"0001-01-01T00:00:00Z\",\"UpdatedAt\":\"0001-01-01T00:00:00Z\",\"DeletedAt\":null,\"username\":\"\",\"email\":\"\",\"password\":\"\"}}");
+                            document.getElementById('response-body-10-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <hr>
+            
+        </div>
+        
+        <div id="11top"  role="tabpanel" class="tab-pane col-md-10">
+            
+                
+                <p> <H4> Request Headers </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> multipart/form-data</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Postman-Token</td>
+                        <td>  4415034d-bc54-46b5-b199-343133994aad</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Post Form </H4> </p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>evidence_links[]</td>
+                        <td> www.evidencelinks.com</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>evidence_text</td>
+                        <td> update  evidence text</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>user_id</td>
+                        <td> 1</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                
+                <p><h4> Response Code</h4></p>
+                <pre class="prettyprint lang-json">200</pre>
+                
+                <p><h4> Response Headers</h4></p>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Access-Control-Allow-Origin</td>
+                        <td> *</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Content-Type</td>
+                        <td> application/json; charset=UTF-8</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Vary</td>
+                        <td> Origin</td>
+                    </tr>
+                    
+                </table>
+                
+                
+                <p> <H4> Response Body </H4> </p>
+                <pre class="prettyprint" id="response-body-11-0">36</pre>
+                <script>
+                     
+                    var responseHeader ={"Access-Control-Allow-Origin":"*","Content-Type":"application/json; charset=UTF-8","Vary":"Origin"};
+
+                    if (responseHeader["Content-Type"].includes("application/json")){
+                        try {
+                            var jsonStr = spaceJson("36");
+                            document.getElementById('response-body-11-0').innerHTML = syntaxHighlight(jsonStr);
+                        } catch (e) {
+                             
+                        }
+                    }
+                </script>
+                
+                <hr>
+            
+        </div>
+        
+    </div>
+</div>
+</div>
+<hr>
+</body>
+</html>

@@ -41,12 +41,12 @@ func CreateClaim(c echo.Context) error {
 
 	m, _ := c.MultipartForm()
 
-	for _, link := range m.Value["links[]"] {
-		l := model.Link{URL: string(link)}
+	for _, link := range m.Value["claim_links[]"] {
+		l := model.Link{URL: string(link), UserID: UserID}
 		modelLinks = append(modelLinks, l)
 	}
 
-	files := m.File["files[]"]
+	files := m.File["claim_files[]"]
 
 	for i := range files {
 		err := helper.SaveUploadedFile(files[i], files[i].Filename)
@@ -62,7 +62,7 @@ func CreateClaim(c echo.Context) error {
 		}
 	}
 
-	claimModel.Text = c.FormValue("text")
+	claimModel.Text = c.FormValue("claim_text")
 	claimModel.UserID = UserID
 
 	claim, _ := store.CreateClaim(&claimModel, modelFiles, modelLinks)
@@ -92,7 +92,7 @@ func UpdateClaim(c echo.Context) error {
 	}
 
 	for _, link := range m.Value["evidence_links[]"] {
-		l := model.Link{URL: string(link)}
+		l := model.Link{URL: string(link), UserID: UserID}
 		modelEvidenceLinks = append(modelLinks, l)
 	}
 

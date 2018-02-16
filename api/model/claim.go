@@ -2,17 +2,17 @@ package model
 
 import (
 	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/jinzhu/gorm"
 )
 
 //Claim Model
 type Claim struct {
-	gorm.Model
+	BaseModel
 	UserID    int        `json:"user_id"`
 	Text      string     `json:"text"`
-	Files     []File     `gorm:"many2many:claim_files"`
-	Links     []Link     `gorm:"many2many:claim_files"`
-	Evidences []Evidence `gorm:"many2many:claim_evidences"`
+	Files     []File     `json:"files" gorm:"many2many:claim_files"`
+	Links     []Link     `json:"links" gorm:"many2many:claim_links"`
+	Evidences []Evidence `json:"evidences" gorm:"many2many:claim_evidences"`
+	User      User
 }
 
 //ClaimEvidence Model

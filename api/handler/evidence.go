@@ -44,12 +44,12 @@ func CreateEvidence(c echo.Context) error {
 
 	m, _ := c.MultipartForm()
 
-	for _, link := range m.Value["links[]"] {
-		l := model.Link{URL: string(link)}
+	for _, link := range m.Value["evidence_links[]"] {
+		l := model.Link{URL: string(link), UserID: UserID}
 		modelLinks = append(modelLinks, l)
 	}
 
-	files := m.File["files[]"]
+	files := m.File["evidence_files[]"]
 
 	for i := range files {
 		file, err := files[i].Open()
@@ -80,8 +80,8 @@ func CreateEvidence(c echo.Context) error {
 		}
 	}
 
-	evidenceModel.Text = c.FormValue("text")
-	evidenceModel.Status = c.FormValue("status")
+	evidenceModel.Text = c.FormValue("evidence_text")
+	evidenceModel.Status = c.FormValue("evidence_status")
 	evidenceModel.UserID = UserID
 
 	evidence, err := store.CreateEvidence(&evidenceModel, modelFiles, modelLinks)
@@ -112,12 +112,12 @@ func UpdateEvidence(c echo.Context) error {
 
 	m, _ := c.MultipartForm()
 
-	for _, link := range m.Value["links[]"] {
-		l := model.Link{URL: string(link)}
+	for _, link := range m.Value["evidence_links[]"] {
+		l := model.Link{URL: string(link), UserID: UserID}
 		modelLinks = append(modelLinks, l)
 	}
 
-	files := m.File["files[]"]
+	files := m.File["evidence_files[]"]
 
 	for i := range files {
 		file, err := files[i].Open()
@@ -148,8 +148,8 @@ func UpdateEvidence(c echo.Context) error {
 		}
 	}
 
-	evidenceModel.Text = c.FormValue("text")
-	evidenceModel.Status = c.FormValue("status")
+	evidenceModel.Text = c.FormValue("evidence_text")
+	evidenceModel.Status = c.FormValue("evidence_status")
 	evidenceModel.UserID = UserID
 
 	evidence, err := store.UpdateEvidence(&evidenceModel, modelFiles, modelLinks, uint(id))

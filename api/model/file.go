@@ -2,12 +2,11 @@ package model
 
 import (
 	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/jinzhu/gorm"
 )
 
 //File model
 type File struct {
-	gorm.Model
+	BaseModel
 	Type   string `json:"type"`
 	UserID int    `json:"user_id"`
 	Source string `json:"source"`

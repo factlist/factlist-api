@@ -1,6 +1,7 @@
 package router
 
 import (
+	"github.com/betacraft/yaag/yaag"
 	"github.com/factlist/factlist-api/api/handler"
 	"github.com/factlist/factlist-api/api/handler/auth"
 	"github.com/labstack/echo"
@@ -12,6 +13,13 @@ import (
 func Init() *echo.Echo {
 	e := echo.New()
 
+	yaag.Init(&yaag.Config{ // <- IMPORTANT, init the middleware.
+		On:       true,
+		DocTitle: "Factlist",
+		DocPath:  "apidoc.html",
+		BaseUrls: map[string]string{"Production": "", "Staging": ""},
+	})
+
 	/*
 		|--------------------------------------------------------------------------
 		| Global Middlewares
@@ -19,7 +27,7 @@ func Init() *echo.Echo {
 		|
 	*/
 
-	// e.Use(echoMiddleware.Logger())
+	// e.Use(middleware.Yaag())
 	e.Use(echoMiddleware.Recover())
 	e.Use(echoMiddleware.CORSWithConfig(echoMiddleware.CORSConfig{
 		AllowOrigins: []string{"*"},
@@ -107,6 +115,10 @@ func Init() *echo.Echo {
 		| Endpoint: /api/links
 		|
 	*/
+
+	api.GET("/doc", func(c echo.Context) error {
+		return c.HTML(200, "apidoc")
+	})
 
 	api.GET("/links", handler.GetLinkList)
 	api.GET("/links/:id", handler.GetLink)

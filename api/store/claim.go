@@ -18,9 +18,12 @@ func GetClaimList() ([]*model.Claim, error) {
 func GetClaim(id uint) (*model.Claim, error) {
 	db := db.GetDB()
 	claim := new(model.Claim)
+	err := db.Preload("User").First(&claim, id).Error
 	db.Model(&claim).Association("files").Find(&claim.Files)
 	db.Model(&claim).Association("links").Find(&claim.Links)
-	err := db.Preload("User").First(&claim, id).Error
+	db.Model(&claim).Association("evidences").Find(&claim.Evidences)
+	db.Model(&claim.Evidences[0]).Association("files").Find(&claim.Evidences[0].Files)
+	db.Model(&claim.Evidences[0]).Association("links").Find(&claim.Evidences[0].Links)
 	return claim, err
 }
 
@@ -43,10 +46,22 @@ func UpdateClaim(claim *model.Claim, evidences *model.Evidence, files []model.Fi
 	err := db.Model(&newClaim).Updates(claim).Error
 
 	db.Model(&newClaim).Association("evidences").Replace(evidences)
-	db.Model(&newClaim).Association("files").Replace(files)
-	db.Model(&newClaim).Association("links").Replace(links)
-	db.Model(&newClaim.Evidences[0]).Association("links").Replace(evidenceLinks)
-	db.Model(&newClaim.Evidences[0]).Association("files").Replace(evidenceFiles)
+
+	if len(files) > 0 {
+		db.Model(&newClaim).Association("files").Replace(files)
+	}
+
+	if len(links) > 0 {
+		db.Model(&newClaim).Association("links").Replace(links)
+	}
+
+	if len(evidenceLinks) > 0 {
+		db.Model(&newClaim.Evidences[0]).Association("links").Replace(evidenceLinks)
+	}
+
+	if len(evidenceFiles) > 0 {
+		db.Model(&newClaim.Evidences[0]).Association("files").Replace(evidenceFiles)
+	}
 
 	return newClaim, err
 }

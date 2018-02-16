@@ -1,3 +1,5 @@
+macbuild:
+	go build -o factlist ./cmd/factlist/api.go
 all:  # run
 	echo "MAKEFILE"
 dep:
