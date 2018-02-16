@@ -3,3 +3,4 @@ config.toml
 factlistapp
 .vscode
 tmp
+export.sh

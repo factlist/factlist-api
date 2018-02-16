@@ -2,18 +2,17 @@ package model
 
 import (
 	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/jinzhu/gorm"
 )
 
 //Evidence Model
 type Evidence struct {
-	gorm.Model
+	BaseModel
 	UserID int    `json:"user_id"`
 	Status string `json:"status" gorm:"type:enum('true','false','inconclusive'); default:'true'"`
 	Text   string `json:"text"`
-	Files  []File `gorm:"many2many:evidence_files"`
-	Links  []Link `gorm:"many2many:evidence_links"`
-	User   User
+	Files  []File `json:"files" gorm:"many2many:evidence_files"`
+	Links  []Link `json:"links" gorm:"many2many:evidence_links"`
+	User   User   `json:"user"`
 }
 
 //EvidenceFile Model

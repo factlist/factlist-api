@@ -2,12 +2,11 @@ package model
 
 import (
 	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/jinzhu/gorm"
 )
 
 // User model
 type User struct {
-	gorm.Model
+	BaseModel
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
