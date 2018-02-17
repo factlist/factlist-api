@@ -1,12 +1,9 @@
-language: go
-
-go:
-  - tip
-
-sudo: required
+language: generic
 
 services:
   - docker
+
+sudo: required
 
 script:
   - make dockerbuild
