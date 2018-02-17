@@ -16,8 +16,8 @@ import (
 type UserDataResponse struct {
 	ID       uint   `json:"id"`
 	Username string `json:"username"`
-	Email    string `json:email`
-	Data     string `json:"data "`
+	Email    string `json::email"`
+	Token    string `json:"token"`
 }
 
 // PostLogin is jwt token handler
@@ -51,7 +51,7 @@ func PostLogin(c echo.Context) error {
 		ID:       u.ID,
 		Username: u.Username,
 		Email:    u.Email,
-		Data:     tokenString,
+		Token:    tokenString,
 	}
 
 	return c.JSON(http.StatusOK, responseUser)
