@@ -16,7 +16,7 @@ import (
 type UserDataResponse struct {
 	ID       uint   `json:"id"`
 	Username string `json:"username"`
-	Email    string `json::email"`
+	Email    string `json:"email"`
 	Token    string `json:"token"`
 }
 
