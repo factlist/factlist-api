@@ -13,6 +13,13 @@ import (
 	"github.com/factlist/factlist-api/api/store"
 )
 
+type UserDataResponse struct {
+	ID       uint   `json:"id"`
+	Username string `json:"username"`
+	Email    string `json::email"`
+	Token    string `json:"token"`
+}
+
 // PostLogin is jwt token handler
 func PostLogin(c echo.Context) error {
 
@@ -25,7 +32,6 @@ func PostLogin(c echo.Context) error {
 
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, "Incorrect Email or Password")
-
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
@@ -41,12 +47,14 @@ func PostLogin(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 
-	data := map[string]string{
-		"token": tokenString,
+	responseUser := UserDataResponse{
+		ID:       u.ID,
+		Username: u.Username,
+		Email:    u.Email,
+		Token:    tokenString,
 	}
 
-	return c.JSON(http.StatusOK, data)
-
+	return c.JSON(http.StatusOK, responseUser)
 }
 
 // PostRegister is user register handler
