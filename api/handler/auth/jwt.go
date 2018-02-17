@@ -17,6 +17,7 @@ type UserDataResponse struct {
 	ID       uint   `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:email`
+	Data     string `json:"data "`
 }
 
 // PostLogin is jwt token handler
@@ -50,13 +51,10 @@ func PostLogin(c echo.Context) error {
 		ID:       u.ID,
 		Username: u.Username,
 		Email:    u.Email,
+		Data:     tokenString,
 	}
 
-	data := map[string]interface{}{
-		"token": tokenString,
-		"data":  responseUser,
-	}
-	return c.JSON(http.StatusOK, data)
+	return c.JSON(http.StatusOK, responseUser)
 }
 
 // PostRegister is user register handler
