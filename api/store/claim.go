@@ -9,7 +9,7 @@ import (
 func GetClaimList() ([]*model.Claim, error) {
 	db := db.GetDB()
 	claims := []*model.Claim{}
-	err := db.Preload("User").Preload("Files").Preload("Links").Find(&claims).Error
+	err := db.Preload("Evidences").Preload("Evidences.Files").Preload("Evidences.Links").Preload("User").Preload("Files").Preload("Links").Find(&claims).Error
 	return claims, err
 
 }
