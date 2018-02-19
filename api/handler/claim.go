@@ -109,7 +109,7 @@ func UpdateClaim(c echo.Context) error {
 
 			location, err := helper.AddFileToS3("uploads", "./"+claimfiles[i].Filename, claimfiles[i])
 
-			f := model.File{Type: claimfiles[i].Header["Content-Type"][0], Source: location, UserID: UserID}
+			f := model.File{Type: claimfiles[i].Header["Content-Type"][0], URL: location, UserID: UserID}
 
 			modelFiles = append(modelFiles, f)
 
@@ -129,7 +129,7 @@ func UpdateClaim(c echo.Context) error {
 
 			location, err := helper.AddFileToS3("uploads", "./"+evidenceFiles[i].Filename, evidenceFiles[i])
 
-			f := model.File{Type: evidenceFiles[i].Header["Content-Type"][0], Source: location, UserID: UserID}
+			f := model.File{Type: evidenceFiles[i].Header["Content-Type"][0], URL: location, UserID: UserID}
 
 			modelEvidenceFiles = append(modelEvidenceFiles, f)
 
