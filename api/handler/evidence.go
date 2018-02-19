@@ -71,7 +71,7 @@ func CreateEvidence(c echo.Context) error {
 
 		location, err := helper.AddFileToS3("uploads", "./"+files[i].Filename, files[i])
 
-		f := model.File{Type: files[i].Header["Content-Type"][0], Source: location, UserID: UserID}
+		f := model.File{Type: files[i].Header["Content-Type"][0], URL: location, UserID: UserID}
 
 		modelFiles = append(modelFiles, f)
 
@@ -139,7 +139,7 @@ func UpdateEvidence(c echo.Context) error {
 
 		location, err := helper.AddFileToS3("uploads", "./"+files[i].Filename, files[i])
 
-		f := model.File{Type: files[i].Header["Content-Type"][0], Source: location, UserID: UserID}
+		f := model.File{Type: files[i].Header["Content-Type"][0], URL: location, UserID: UserID}
 
 		modelFiles = append(modelFiles, f)
 
