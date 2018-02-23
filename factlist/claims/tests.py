@@ -12,8 +12,8 @@ class ClaimTestCase(TestCase, UserTestMixin):
         data = {
             'text': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'claim_links': [
-                {'text': 'https://djangoproject.com'},
-                {'text': 'https://django-rest-framework.org'}
+                {'link': 'https://djangoproject.com'},
+                {'link': 'https://django-rest-framework.org'}
             ]
         }
         response = client.post('/api/v1/claims/', data=data)
@@ -24,10 +24,9 @@ class ClaimTestCase(TestCase, UserTestMixin):
         user, client = self.create_user_and_user_client()
 
         data = {
-            'text': 'enisbt is the best developer in the world',
+            'text': 'Factlist is a collaborative fact-checking platform.',
             'claim_links': [
-                {'text': 'https://github.com/enisbt/'},
-                {'text': 'https://lulxd.com'}
+                {'link': 'https://factlist.org'},
             ]
         }
         response = client.post('/api/v1/claims/', data=data)
@@ -37,10 +36,10 @@ class ClaimTestCase(TestCase, UserTestMixin):
         self.assertEqual(len(response.data), 1)
 
         data = {
-            'text': 'enisbt is the best developer in the world',
+            'text': 'Factlist is a collaborative fact-checking platform.',
             'claim_links': [
-                {'text': 'https://github.com/enisbt/'},
-                {'text': 'https://lulxd.com'}
+                {'link': 'https://factlist.org'},
+                {'link': 'https://lulxd.com'}
             ]
         }
         response = client.post('/api/v1/claims/', data=data)
@@ -54,10 +53,9 @@ class ClaimTestCase(TestCase, UserTestMixin):
         serafettin, serafettin_client = self.create_user_and_user_client()
 
         data = {
-            'text': 'enisbt is the best developer in the world',
+            'text': 'Factlist is a collaborative fact-checking platform.',
             'claim_links': [
-                {'text': 'https://github.com/enisbt/'},
-                {'text': 'https://lulxd.com'}
+                {'link': 'https://factlist.org'},
             ]
         }
         response = enis_client.post('/api/v1/claims/', data=data)
@@ -65,32 +63,30 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         response = enis_client.get('/api/v1/claims/%s/' % response.data["id"])
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["text"], "enisbt is the best developer in the world")
+        self.assertEqual(response.data["text"], "Factlist is a collaborative fact-checking platform.")
 
         response = serafettin_client.get('/api/v1/claims/%s/' % response.data["id"])
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["text"], "enisbt is the best developer in the world")
+        self.assertEqual(response.data["text"], "Factlist is a collaborative fact-checking platform.")
 
     def test_modify_a_claim(self):
         enis, enis_client = self.create_user_and_user_client()
         serafettin, serafettin_client = self.create_user_and_user_client()
 
         data = {
-            'text': 'enisbt is the best developer in the world',
+            'text': 'Factlist is a collaborative fact-checking platform.',
             'claim_links': [
-                {'text': 'https://github.com/enisbt/'},
-                {'text': 'https://lulxd.com'}
+                {'link': 'https://factlist.org'},
             ]
         }
         response = enis_client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         data = {
-            'text': 'enisbt is the best developer in the world',
+            'text': 'Factlist is a collaborative fact-checking platform.',
             'claim_links': [
-                {'text': 'https://github.com/enisbt/'},
-                {'text': 'https://lulxd.com'},
-                {'text': 'https://factlist.com/api/v1/'}
+                {'link': 'https://factlist.org'},
+                {'link': 'https://factlist.com/api/v1/'}
             ]
         }
         response = enis_client.patch('/api/v1/claims/%s/' % response.data['id'], data=data)
@@ -108,10 +104,9 @@ class ClaimTestCase(TestCase, UserTestMixin):
         serafettin, serafettin_client = self.create_user_and_user_client()
 
         data = {
-            'text': 'enisbt is the best developer in the world',
+            'text': 'Factlist is a collaborative fact-checking platform.',
             'claim_links': [
-                {'text': 'https://github.com/enisbt/'},
-                {'text': 'https://lulxd.com'}
+                {'link': 'https://factlist.org'},
             ]
         }
         response = enis_client.post('/api/v1/claims/', data=data)
@@ -130,7 +125,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
             "claim_links": [
-                {"text": "https://twitter.com/factlist"}
+                {"link": "https://twitter.com/factlist"}
             ]
         }
         response = client.post('/api/v1/claims/', data=data)
@@ -141,7 +136,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
             "text": "Factlist is a collaborative fact-checking platform.",
             "status": "true",
             "evidence_links": [
-                {"text": "https://factlist.org"}
+                {"link": "https://factlist.org"}
             ]
         }
         response = client.post('/api/v1/claims/%s/evidences/' % response.data["id"], data=data)
@@ -152,10 +147,9 @@ class ClaimTestCase(TestCase, UserTestMixin):
         serafettin, serafettin_client = self.create_user_and_user_client()
 
         data = {
-            'text': 'enisbt is the best developer in the world',
+            'text': 'Factlist is a collaborative fact-checking platform.',
             'claim_links': [
-                {'text': 'https://github.com/enisbt/'},
-                {'text': 'https://lulxd.com'}
+                {'link': 'https://factlist.org'},
             ]
         }
         response = serafettin_client.post('/api/v1/claims/', data=data)
@@ -165,7 +159,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
             "text": "enisbt is the best developer in the universe",
             "status": "true",
             "evidence_links": [
-                {"text": "https://github.com/enisbt/referandum"}
+                {"link": "https://factlist.orgreferandum"}
             ]
         }
 
@@ -174,10 +168,10 @@ class ClaimTestCase(TestCase, UserTestMixin):
         claim_id = response.data["id"]
 
         data = {
-            "text": "enisbt is the best developer in the world",
+            "text": "Factlist is a collaborative fact-checking platform.",
             "status": "inconclusive",
             "evidence_links": [
-                {"text": "https://github.com/enisbt/"}
+                {"link": "https://factlist.org"}
             ]
         }
         response = enis_client.patch('/api/v1/claims/%s/evidences/%s/' % (claim_id, response.data["id"]), data=data)
@@ -191,10 +185,9 @@ class ClaimTestCase(TestCase, UserTestMixin):
         serafettin, serafettin_client = self.create_user_and_user_client()
 
         data = {
-            'text': 'enisbt is the best developer in the world',
+            'text': 'Factlist is a collaborative fact-checking platform.',
             'claim_links': [
-                {'text': 'https://github.com/enisbt/'},
-                {'text': 'https://lulxd.com'}
+                {'link': 'https://factlist.org'},
             ]
         }
         response = serafettin_client.post('/api/v1/claims/', data=data)
@@ -202,10 +195,10 @@ class ClaimTestCase(TestCase, UserTestMixin):
         claim_id = response.data["id"]
 
         data = {
-            "text": "enisbt is the best developer in the universe",
+            "text": "Factlist is a collaborative fact-checking platform.",
             "status": "true",
             "evidence_links": [
-                {"text": "https://github.com/enisbt/referandum"}
+                {"link": "https://factlist.org"}
             ]
         }
 
