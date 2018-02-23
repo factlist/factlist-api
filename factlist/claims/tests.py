@@ -10,11 +10,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
         user, client = self.create_user_and_user_client()
 
         data = {
-            'text': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'claim_links': [
-                {'link': 'https://djangoproject.com'},
-                {'link': 'https://django-rest-framework.org'}
-            ]
+            'text': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
         }
         response = client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -156,10 +152,10 @@ class ClaimTestCase(TestCase, UserTestMixin):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         data = {
-            "text": "enisbt is the best developer in the universe",
+            "text": "Factlist is a collaborative fact-checking platform.",
             "status": "true",
             "evidence_links": [
-                {"link": "https://factlist.orgreferandum"}
+                {"link": "https://factlist.org"}
             ]
         }
 
