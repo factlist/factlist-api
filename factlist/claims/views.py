@@ -1,8 +1,9 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import ValidationError
 
 from .models import Claim, Evidence
-from .serializers import ClaimSerializer, EvidenceSerializer
+from .serializers import ClaimSerializer, EvidenceSerializer, ClaimFileSerializer, EvidenceFileSerializer
 
 
 class ListAndCreateClaimView(ListCreateAPIView):
@@ -20,6 +21,17 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
             return Claim.objects.filter(pk=self.kwargs["pk"])
         else:
             return Claim.objects.filter(pk=self.kwargs["pk"], created_by=self.request.user)
+
+
+class ClaimFileView(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ClaimFileSerializer
+
+    def perform_create(self, serializer):
+        claim = Claim.objects.filter(pk=self.kwargs['pk'])
+        if not claim.exists():
+            raise ValidationError('Claim is not found for the file')
+        serializer.save(claim=claim.first())
 
 
 class ListAndCreateEvidenceView(ListCreateAPIView):
@@ -45,3 +57,14 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
             return Evidence.objects.filter(pk=self.kwargs["pk"])
         else:
             return Evidence.objects.filter(pk=self.kwargs["pk"], created_by=self.request.user)
+
+
+class EvidenceFileView(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = EvidenceFileSerializer
+
+    def perform_create(self, serializer):
+        evidence = Evidence.objects.filter(pk=self.kwargs['evidence_pk'])
+        if not evidence.exists():
+            raise ValidationError('Claim is not found for the file')
+        serializer.save(evidence=evidence.first())

@@ -9,20 +9,20 @@ class EvidenceFileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EvidenceFile
-        fields = ('file', 'id')
+        fields = ('file', 'evidence', 'id')
+        extra_kwargs = {'evidence': {'required': False}}
 
 
 class EvidenceLinkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EvidenceLink
-        fields = ('text', "id")
+        fields = ('link',)
 
 
 class EvidenceSerializer(serializers.ModelSerializer):
     created_by = SimpleUserSerializer(read_only=True)
     evidence_links = EvidenceLinkSerializer(many=True)
-    evidence_files = EvidenceFileSerializer(many=True)
 
     class Meta:
         model = Evidence
@@ -36,26 +36,27 @@ class EvidenceSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        if "evidence_links" not in validated_data and "evidence_files" not in validated_data:
-            raise ValidationError("Files and links cannot be empty at the same time")
-        links = validated_data.pop('evidence_links')
         evidence = Evidence(
             text=validated_data.pop('text'),
             status=validated_data.pop('status'),
-            created_by=self.context["request"].user,
-            claim_id=self.context["claim_id"],
+            created_by=self.context['request'].user,
+            claim_id=self.context['claim_id'],
         )
         evidence.save()
-        for link in links:
-            EvidenceLink.objects.create(evidence=evidence, **link)
+        if 'evidence_links' not in validated_data:
+            pass
+        else:
+            links = validated_data.pop('evidence_links')
+            for link in links:
+                EvidenceLink.objects.create(evidence=evidence, link=link)
         return evidence
 
     def update(self, instance, validated_data):
-        instance.text = validated_data.pop("text")
-        instance.status = validated_data.pop("status")
+        instance.text = validated_data.pop('text')
+        instance.status = validated_data.pop('status')
         instance.save()
 
-        links = validated_data.pop("evidence_links")
+        links = validated_data.pop('evidence_links')
         EvidenceLink.objects.filter(evidence=instance).delete()
         for link in links:
             EvidenceLink.objects.create(evidence=instance, **link)
@@ -66,14 +67,15 @@ class ClaimFileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ClaimFile
-        fields = ("file",)
+        fields = ('file', 'claim', 'id')
+        extra_kwargs = {'claim': {'required': False}}
 
 
 class ClaimLinkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ClaimLink
-        fields = ('text',)
+        fields = ('link',)
 
 
 class ClaimSerializer(serializers.ModelSerializer):
@@ -96,23 +98,23 @@ class ClaimSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         claim = Claim(
-            text=validated_data.pop("text"),
-            created_by=self.context["request"].user,
+            text=validated_data.pop('text'),
+            created_by=self.context['request'].user,
         )
         claim.save()
-        if "claim_links" not in validated_data:
+        if 'claim_links' not in validated_data:
             pass
         else:
             links = validated_data.pop('claim_links')
             for link in links:
-                ClaimLink.objects.create(claim=claim, text=link)
+                ClaimLink.objects.create(claim=claim, link=link)
         return claim
 
     def update(self, instance, validated_data):
-        instance.text = validated_data.pop("text")
+        instance.text = validated_data.pop('text')
         instance.save()
 
-        links = validated_data.pop("claim_links")
+        links = validated_data.pop('claim_links')
         ClaimLink.objects.filter(claim=instance).delete()
         for link in links:
             ClaimLink.objects.create(claim=instance, **link)

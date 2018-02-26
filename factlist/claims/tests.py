@@ -87,10 +87,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
         }
         response = enis_client.patch('/api/v1/claims/%s/' % response.data['id'], data=data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        response = enis_client.patch('/api/v1/claims/%s/' % response.data['id'], data=data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["claim_links"]), 3)
+        self.assertEqual(len(response.data["claim_links"]), 2)
 
         response = serafettin_client.patch('/api/v1/claims/%s/' % response.data['id'], data=data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
