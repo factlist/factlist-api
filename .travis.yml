@@ -1,15 +1,24 @@
-language: go
+language: python
 
-go:
-  - tip
-
-sudo: required
+python:
+  - "3.5"
 
 services:
+  - mysql
   - docker
 
+install:
+  - python -V
+  - pip install -r requirements.txt
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS $DB_NAME;'
+
+test:
+  script:
+  - python manage.py migrate
+  - python manage.py test
+
 script:
-  - make dockerbuild
+  - docker build -t factlist/factlist-api .
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
