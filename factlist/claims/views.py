@@ -1,5 +1,5 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import ValidationError
 
 from .models import Claim, Evidence
@@ -13,8 +13,13 @@ class ListAndCreateClaimView(ListCreateAPIView):
 
 
 class ClaimView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
     serializer_class = ClaimSerializer
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return AllowAny(),
+        else:
+            return IsAuthenticated(),
 
     def get_queryset(self):
         if self.request.method == "GET":
@@ -49,9 +54,14 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
 
 
 class EvidenceView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
     serializer_class = EvidenceSerializer
 
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return AllowAny(),
+        else:
+            return IsAuthenticated(),
+            
     def get_queryset(self):
         if self.request.method == "GET":
             return Evidence.objects.filter(pk=self.kwargs["pk"])

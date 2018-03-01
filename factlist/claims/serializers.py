@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
 from factlist.users.serializers import SimpleUserSerializer
 from .models import Claim, ClaimLink, ClaimFile, Evidence, EvidenceLink, EvidenceFile
