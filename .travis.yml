@@ -1,0 +1,24 @@
+image: python:3.5.2
+
+services:
+  - mysql
+  - docker
+
+before_script:
+  - python -V
+  - pip install -r requirements.txt
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS $DB_NAME;'
+
+test:
+  script:
+  - python manage.py migrate
+  - python manage.py test
+
+script:
+  - docker build -t factlist/factlist-api .
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker push factlist/factlist-api;
+    fi
