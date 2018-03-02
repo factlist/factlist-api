@@ -21,7 +21,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'claim_links': [
+            'links': [
                 {'link': 'https://factlist.org'},
             ]
         }
@@ -33,7 +33,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'claim_links': [
+            'links': [
                 {'link': 'https://factlist.org'},
                 {'link': 'https://lulxd.com'}
             ]
@@ -50,7 +50,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'claim_links': [
+            'links': [
                 {'link': 'https://factlist.org'},
             ]
         }
@@ -71,7 +71,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'claim_links': [
+            'links': [
                 {'link': 'https://factlist.org'},
             ]
         }
@@ -80,14 +80,14 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'claim_links': [
+            'links': [
                 {'link': 'https://factlist.org'},
                 {'link': 'https://factlist.com/api/v1/'}
             ]
         }
         response = enis_client.patch('/api/v1/claims/%s/' % response.data['id'], data=data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["claim_links"]), 2)
+        self.assertEqual(len(response.data["links"]), 2)
 
         response = serafettin_client.patch('/api/v1/claims/%s/' % response.data['id'], data=data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -98,7 +98,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'claim_links': [
+            'links': [
                 {'link': 'https://factlist.org'},
             ]
         }
@@ -117,7 +117,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
-            "claim_links": [
+            "links": [
                 {"link": "https://twitter.com/factlist"}
             ]
         }
@@ -128,7 +128,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
             "claim": response.data['id'],
             "text": "Factlist is a collaborative fact-checking platform.",
             "status": "true",
-            "evidence_links": [
+            "links": [
                 {"link": "https://factlist.org"}
             ]
         }
@@ -141,7 +141,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'claim_links': [
+            'links': [
                 {'link': 'https://factlist.org'},
             ]
         }
@@ -151,7 +151,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
             "status": "true",
-            "evidence_links": [
+            "links": [
                 {"link": "https://factlist.org"}
             ]
         }
@@ -163,7 +163,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
             "status": "inconclusive",
-            "evidence_links": [
+            "links": [
                 {"link": "https://factlist.org"}
             ]
         }
@@ -179,7 +179,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'claim_links': [
+            'links': [
                 {'link': 'https://factlist.org'},
             ]
         }
@@ -190,7 +190,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
             "status": "true",
-            "evidence_links": [
+            "links": [
                 {"link": "https://factlist.org"}
             ]
         }

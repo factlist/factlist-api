@@ -11,6 +11,12 @@ class ListAndCreateClaimView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ClaimSerializer
 
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return AllowAny(),
+        else:
+            return IsAuthenticated(),
+
 
 class ClaimView(RetrieveUpdateDestroyAPIView):
     serializer_class = ClaimSerializer
@@ -61,7 +67,7 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
             return AllowAny(),
         else:
             return IsAuthenticated(),
-            
+
     def get_queryset(self):
         if self.request.method == "GET":
             return Evidence.objects.filter(pk=self.kwargs["pk"])

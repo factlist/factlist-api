@@ -21,7 +21,7 @@ class EvidenceLinkSerializer(serializers.ModelSerializer):
 
 class EvidenceSerializer(serializers.ModelSerializer):
     created_by = SimpleUserSerializer(read_only=True)
-    evidence_links = EvidenceLinkSerializer(many=True)
+    links = EvidenceLinkSerializer(many=True)
 
     class Meta:
         model = Evidence
@@ -31,7 +31,7 @@ class EvidenceSerializer(serializers.ModelSerializer):
             'status',
             'date_created',
             'created_by',
-            'evidence_links',
+            'links',
         )
 
     def create(self, validated_data):
@@ -45,7 +45,7 @@ class EvidenceSerializer(serializers.ModelSerializer):
         if 'evidence_links' not in validated_data:
             pass
         else:
-            links = validated_data.pop('evidence_links')
+            links = validated_data.pop('links')
             for link in links:
                 EvidenceLink.objects.create(evidence=evidence, link=link)
         return evidence
@@ -55,7 +55,7 @@ class EvidenceSerializer(serializers.ModelSerializer):
         instance.status = validated_data.pop('status')
         instance.save()
 
-        links = validated_data.pop('evidence_links')
+        links = validated_data.pop('links')
         EvidenceLink.objects.filter(evidence=instance).delete()
         for link in links:
             EvidenceLink.objects.create(evidence=instance, **link)
@@ -79,8 +79,8 @@ class ClaimLinkSerializer(serializers.ModelSerializer):
 
 class ClaimSerializer(serializers.ModelSerializer):
     created_by = SimpleUserSerializer(read_only=True)
-    claim_links = ClaimLinkSerializer(many=True, required=False)
-    claim_files = ClaimFileSerializer(many=True, required=False)
+    links = ClaimLinkSerializer(many=True, required=False)
+    files = ClaimFileSerializer(many=True, required=False)
     evidences = EvidenceSerializer(many=True, required=False)
 
     class Meta:
@@ -89,10 +89,10 @@ class ClaimSerializer(serializers.ModelSerializer):
             'id',
             'text',
             'created_by',
-            'claim_links',
+            'links',
             'date_created',
             'evidences',
-            'claim_files',
+            'files',
         )
 
     def create(self, validated_data):
@@ -101,10 +101,10 @@ class ClaimSerializer(serializers.ModelSerializer):
             created_by=self.context['request'].user,
         )
         claim.save()
-        if 'claim_links' not in validated_data:
+        if 'links' not in validated_data:
             pass
         else:
-            links = validated_data.pop('claim_links')
+            links = validated_data.pop('links')
             for link in links:
                 ClaimLink.objects.create(claim=claim, link=link)
         return claim
@@ -113,7 +113,7 @@ class ClaimSerializer(serializers.ModelSerializer):
         instance.text = validated_data.pop('text')
         instance.save()
 
-        links = validated_data.pop('claim_links')
+        links = validated_data.pop('links')
         ClaimLink.objects.filter(claim=instance).delete()
         for link in links:
             ClaimLink.objects.create(claim=instance, **link)

@@ -13,7 +13,7 @@ class Claim(models.Model):
 
 class ClaimLink(models.Model):
     link = models.CharField(max_length=255)
-    claim = models.ForeignKey(Claim, related_name='claim_links')
+    claim = models.ForeignKey(Claim, related_name='links')
 
     def __unicode__(self):
         return self.text
@@ -21,7 +21,7 @@ class ClaimLink(models.Model):
 
 class ClaimFile(models.Model):
     file = models.FileField(upload_to="files/claims/%Y/%m/%d/")
-    claim = models.ForeignKey(Claim)
+    claim = models.ForeignKey(Claim, related_name='files')
 
 
 class Evidence(models.Model):
@@ -34,9 +34,9 @@ class Evidence(models.Model):
 
 class EvidenceLink(models.Model):
     link = models.CharField(max_length=255)
-    evidence = models.ForeignKey(Evidence, related_name='evidence_links')
+    evidence = models.ForeignKey(Evidence, related_name='links')
 
 
 class EvidenceFile(models.Model):
     file = models.FileField(upload_to="files/evidence/%Y/%m/%d/")
-    evidence = models.ForeignKey(Evidence)
+    evidence = models.ForeignKey(Evidence, related_name='files')
