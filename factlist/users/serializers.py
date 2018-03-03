@@ -4,6 +4,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
 
 from .models import User
+from factlist.claims.models import Claim
 
 
 class UserSignupSerializer(serializers.ModelSerializer):
@@ -30,14 +31,22 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
 class UserMeSerializer(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
+    claims = serializers.SerializerMethodField()
+    avatar = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'token')
+        fields = ('id', 'username', 'email', 'token', "claims", "avatar")
 
     def get_token(self, user):
         token = Token.objects.get(user=user)
         return token.key
+
+    def get_claims(self, user):
+        return Claim.objects.filter(user=user).count()
+
+    def get_avatar(self, user):
+        return None
 
 
 class UserAuthSerializer(serializers.Serializer):
