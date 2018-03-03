@@ -6,6 +6,7 @@ from .serializers import UserSignupSerializer, UserMeSerializer, UserAuthSeriali
 
 
 class UserSignupView(CreateAPIView):
+    queryset = ''
     authentication_classes = []
     permission_classes = []
     serializer_class = UserSignupSerializer

@@ -31,7 +31,7 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return Claim.objects.filter(pk=self.kwargs["pk"])
         else:
-            return Claim.objects.filter(pk=self.kwargs["pk"], created_by=self.request.user)
+            return Claim.objects.filter(pk=self.kwargs["pk"], user=self.request.user)
 
 
 class ClaimFileView(CreateAPIView):
@@ -53,7 +53,7 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
         return {"claim_id": self.kwargs["pk"], "request": self.request}
 
     def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
+        serializer.save(user=self.request.user)
 
     def get_queryset(self):
         return Evidence.objects.filter(claim_id=self.kwargs["pk"])
@@ -72,7 +72,7 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return Evidence.objects.filter(pk=self.kwargs["pk"])
         else:
-            return Evidence.objects.filter(pk=self.kwargs["pk"], created_by=self.request.user)
+            return Evidence.objects.filter(pk=self.kwargs["pk"], user=self.request.user)
 
 
 class EvidenceFileView(CreateAPIView):

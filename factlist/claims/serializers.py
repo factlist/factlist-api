@@ -19,7 +19,7 @@ class LinkSerializer(serializers.ModelSerializer):
 
 
 class EvidenceSerializer(serializers.ModelSerializer):
-    created_by = SimpleUserSerializer(read_only=True)
+    user = SimpleUserSerializer(read_only=True)
     links = LinkSerializer(many=True)
 
     class Meta:
@@ -29,7 +29,7 @@ class EvidenceSerializer(serializers.ModelSerializer):
             'text',
             'status',
             'date_created',
-            'created_by',
+            'user',
             'links',
         )
 
@@ -37,7 +37,7 @@ class EvidenceSerializer(serializers.ModelSerializer):
         evidence = Evidence(
             text=validated_data.pop('text'),
             status=validated_data.pop('status'),
-            created_by=self.context['request'].user,
+            user=self.context['request'].user,
             claim_id=self.context['claim_id'],
         )
         evidence.save()
@@ -62,7 +62,7 @@ class EvidenceSerializer(serializers.ModelSerializer):
 
 
 class ClaimSerializer(serializers.ModelSerializer):
-    created_by = SimpleUserSerializer(read_only=True)
+    user = SimpleUserSerializer(read_only=True)
     evidences = EvidenceSerializer(many=True, required=False)
     links = LinkSerializer(many=True, required=False)
 
@@ -71,7 +71,7 @@ class ClaimSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'text',
-            'created_by',
+            'user',
             'links',
             'date_created',
             'evidences',
@@ -80,7 +80,7 @@ class ClaimSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         claim = Claim(
             text=validated_data.pop('text'),
-            created_by=self.context['request'].user,
+            user=self.context['request'].user,
         )
         claim.save()
         if not 'links' in validated_data:
