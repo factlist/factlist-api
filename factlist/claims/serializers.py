@@ -20,7 +20,8 @@ class LinkSerializer(serializers.ModelSerializer):
 
 class EvidenceSerializer(serializers.ModelSerializer):
     user = SimpleUserSerializer(read_only=True)
-    links = LinkSerializer(many=True)
+    links = LinkSerializer(many=True, required=False)
+    files = FileSerializer(many=True, required=False)
 
     class Meta:
         model = Evidence
@@ -28,9 +29,10 @@ class EvidenceSerializer(serializers.ModelSerializer):
             'id',
             'text',
             'status',
-            'date_created',
+            'created_at',
             'user',
             'links',
+            'files',
         )
 
     def create(self, validated_data):
@@ -65,6 +67,7 @@ class ClaimSerializer(serializers.ModelSerializer):
     user = SimpleUserSerializer(read_only=True)
     evidences = EvidenceSerializer(many=True, required=False)
     links = LinkSerializer(many=True, required=False)
+    files = FileSerializer(many=True, required=False)
 
     class Meta:
         model = Claim
@@ -73,8 +76,9 @@ class ClaimSerializer(serializers.ModelSerializer):
             'text',
             'user',
             'links',
-            'date_created',
+            'created_at',
             'evidences',
+            'files',
         )
 
     def create(self, validated_data):
