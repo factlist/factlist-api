@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import ValidationError
 
 from .models import Claim, Evidence
-from .serializers import ClaimSerializer, EvidenceSerializer, ClaimFileSerializer, EvidenceFileSerializer
+from .serializers import ClaimSerializer, EvidenceSerializer, FileSerializer
 
 
 class ListAndCreateClaimView(ListCreateAPIView):
@@ -36,7 +36,7 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
 
 class ClaimFileView(CreateAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = ClaimFileSerializer
+    serializer_class = FileSerializer
 
     def perform_create(self, serializer):
         claim = Claim.objects.filter(pk=self.kwargs['pk'])
@@ -77,7 +77,7 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
 
 class EvidenceFileView(CreateAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = EvidenceFileSerializer
+    serializer_class = FileSerializer
 
     def perform_create(self, serializer):
         evidence = Evidence.objects.filter(pk=self.kwargs['evidence_pk'])

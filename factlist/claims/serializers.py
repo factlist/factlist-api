@@ -1,27 +1,26 @@
 from rest_framework import serializers
 
 from factlist.users.serializers import SimpleUserSerializer
-from .models import Claim, ClaimLink, ClaimFile, Evidence, EvidenceLink, EvidenceFile
+from .models import Claim, Evidence, File, Link
 
 
-class EvidenceFileSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = EvidenceFile
-        fields = ('file', 'evidence', 'id')
-        extra_kwargs = {'evidence': {'required': False}}
-
-
-class EvidenceLinkSerializer(serializers.ModelSerializer):
+class FileSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = EvidenceLink
-        fields = ('link',)
+        model = File
+        fields = ('file', 'id')
+
+
+class LinkSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Link
+        fields = ('link', 'id')
 
 
 class EvidenceSerializer(serializers.ModelSerializer):
     created_by = SimpleUserSerializer(read_only=True)
-    links = EvidenceLinkSerializer(many=True)
+    links = LinkSerializer(many=True)
 
     class Meta:
         model = Evidence
@@ -47,7 +46,7 @@ class EvidenceSerializer(serializers.ModelSerializer):
         else:
             links = validated_data.pop('links')
             for link in links:
-                EvidenceLink.objects.create(evidence=evidence, link=link)
+                Link.objects.create(evidence=evidence, link=link)
         return evidence
 
     def update(self, instance, validated_data):
@@ -56,32 +55,16 @@ class EvidenceSerializer(serializers.ModelSerializer):
         instance.save()
 
         links = validated_data.pop('links')
-        EvidenceLink.objects.filter(evidence=instance).delete()
+        Link.objects.filter(evidence=instance).delete()
         for link in links:
-            EvidenceLink.objects.create(evidence=instance, **link)
+            Link.objects.create(evidence=instance, **link)
         return instance
-
-
-class ClaimFileSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = ClaimFile
-        fields = ('file', 'claim', 'id')
-        extra_kwargs = {'claim': {'required': False}}
-
-
-class ClaimLinkSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = ClaimLink
-        fields = ('link',)
 
 
 class ClaimSerializer(serializers.ModelSerializer):
     created_by = SimpleUserSerializer(read_only=True)
-    links = ClaimLinkSerializer(many=True, required=False)
-    files = ClaimFileSerializer(many=True, required=False)
     evidences = EvidenceSerializer(many=True, required=False)
+    links = LinkSerializer(many=True, required=False)
 
     class Meta:
         model = Claim
@@ -92,7 +75,6 @@ class ClaimSerializer(serializers.ModelSerializer):
             'links',
             'date_created',
             'evidences',
-            'files',
         )
 
     def create(self, validated_data):
@@ -101,12 +83,14 @@ class ClaimSerializer(serializers.ModelSerializer):
             created_by=self.context['request'].user,
         )
         claim.save()
-        if 'links' not in validated_data:
+        if not 'links' in validated_data:
             pass
         else:
             links = validated_data.pop('links')
             for link in links:
-                ClaimLink.objects.create(claim=claim, link=link)
+                claim_link = Link.objects.create(claim=claim, **link)
+                claim.links.add(claim_link)
+        claim.save()
         return claim
 
     def update(self, instance, validated_data):
@@ -114,7 +98,8 @@ class ClaimSerializer(serializers.ModelSerializer):
         instance.save()
 
         links = validated_data.pop('links')
-        ClaimLink.objects.filter(claim=instance).delete()
+        Link.objects.filter(claim=instance).delete()
         for link in links:
-            ClaimLink.objects.create(claim=instance, **link)
+            claim_link = Link.objects.create(claim=instance, **link)
+            instance.links.add(claim_link)
         return instance

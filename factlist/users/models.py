@@ -11,6 +11,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    class Meta:
+        db_table = 'users'
+
 
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
