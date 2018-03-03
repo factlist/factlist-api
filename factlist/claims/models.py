@@ -26,6 +26,30 @@ class Claim(models.Model):
     links = models.ManyToManyField(Link, db_table="claim_links")
     files = models.ManyToManyField(File, db_table="claim_files")
 
+    @property
+    def true_count(self):
+        evidences = Evidence.objects.filter(claim=self, status="true")
+        if evidences.exists():
+            return evidences.count()
+        else:
+            return 0
+
+    @property
+    def false_count(self):
+        evidences = Evidence.objects.filter(claim=self, status="false")
+        if evidences.exists():
+            return evidences.count()
+        else:
+            return 0
+
+    @property
+    def inconclusive_count(self):
+        evidences = Evidence.objects.filter(claim=self, status="inconclusive")
+        if evidences.exists():
+            return evidences.count()
+        else:
+            return 0
+
     class Meta:
         db_table = 'claims'
 

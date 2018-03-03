@@ -65,7 +65,6 @@ class EvidenceSerializer(serializers.ModelSerializer):
 
 class ClaimSerializer(serializers.ModelSerializer):
     user = SimpleUserSerializer(read_only=True)
-    evidences = EvidenceSerializer(many=True, required=False)
     links = LinkSerializer(many=True, required=False)
     files = FileSerializer(many=True, required=False)
 
@@ -77,8 +76,10 @@ class ClaimSerializer(serializers.ModelSerializer):
             'user',
             'links',
             'created_at',
-            'evidences',
             'files',
+            'true_count',
+            'false_count',
+            'inconclusive_count'
         )
 
     def create(self, validated_data):
