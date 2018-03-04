@@ -13,14 +13,14 @@ class Link(models.Model):
 
 
 class File(models.Model):
-    file = models.FileField(upload_to="files/%Y/%m/%d/")
+    file = models.FileField(upload_to="files/%Y/%m/%d/", max_length=400)
 
     class Meta:
         db_table = 'files'
 
 
 class Claim(models.Model):
-    text = models.CharField(max_length=255)
+    text = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User)
     links = models.ManyToManyField(Link, db_table="claim_links")
@@ -56,7 +56,7 @@ class Claim(models.Model):
 
 class Evidence(models.Model):
     claim = models.ForeignKey(Claim, related_name='evidences')
-    text = models.CharField(max_length=255)
+    text = models.TextField()
     status = models.CharField(max_length=100, choices=EVIDENCE_STATUS_CHOICES)
     user = models.ForeignKey(User)
     created_at = models.DateTimeField(default=timezone.now)
