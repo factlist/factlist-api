@@ -6,7 +6,7 @@ from .serializers import ClaimSerializer, EvidenceSerializer, FileSerializer
 
 
 class ListAndCreateClaimView(ListCreateAPIView):
-    queryset = Claim.objects.all()
+    queryset = Claim.objects.filter(active=True)
     permission_classes = [IsAuthenticated]
     serializer_class = ClaimSerializer
 
@@ -28,9 +28,9 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         if self.request.method == "GET":
-            return Claim.objects.filter(pk=self.kwargs["pk"])
+            return Claim.objects.filter(pk=self.kwargs["pk"], active=True)
         else:
-            return Claim.objects.filter(pk=self.kwargs["pk"], user=self.request.user)
+            return Claim.objects.filter(pk=self.kwargs["pk"], user=self.request.user, active=True)
 
 
 class ListAndCreateEvidenceView(ListCreateAPIView):
@@ -49,7 +49,7 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        return Evidence.objects.filter(claim_id=self.kwargs["pk"])
+        return Evidence.objects.filter(claim_id=self.kwargs["pk"], active=True)
 
 
 class EvidenceView(RetrieveUpdateDestroyAPIView):
@@ -63,6 +63,6 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         if self.request.method == "GET":
-            return Evidence.objects.filter(pk=self.kwargs["pk"])
+            return Evidence.objects.filter(pk=self.kwargs["pk"], active=True)
         else:
-            return Evidence.objects.filter(pk=self.kwargs["pk"], user=self.request.user)
+            return Evidence.objects.filter(pk=self.kwargs["pk"], user=self.request.user, active=True)

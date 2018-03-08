@@ -22,6 +22,9 @@ class File(models.Model):
 class Claim(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(null=True, blank=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
+    active = models.BooleanField(default=True)
     user = models.ForeignKey(User)
     links = models.ManyToManyField(Link, db_table="claim_links")
     files = models.ManyToManyField(File, db_table="claim_files")
@@ -53,6 +56,16 @@ class Claim(models.Model):
     class Meta:
         db_table = 'claims'
 
+    def update(self, *args, **kwargs):
+        self.updated_at = timezone.now()
+        self.save()
+        super(Claim, self).update(self, *args, **kwargs)
+
+    def delete(self):
+        self.deleted_at = timezone.now()
+        self.active = False
+        self.save()
+
 
 class Evidence(models.Model):
     claim = models.ForeignKey(Claim, related_name='evidences')
@@ -60,8 +73,21 @@ class Evidence(models.Model):
     status = models.CharField(max_length=100, choices=EVIDENCE_STATUS_CHOICES)
     user = models.ForeignKey(User)
     created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(null=True, blank=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
+    active = models.BooleanField(default=True)
     links = models.ManyToManyField(Link, db_table="evidence_links")
     files = models.ManyToManyField(File, db_table="evidence_files")
 
     class Meta:
         db_table = 'evidences'
+
+    def update(self, *args, **kwargs):
+        self.updated_at = timezone.now()
+        self.save()
+        super(Evidence, self).update(self, *args, **kwargs)
+
+    def delete(self):
+        self.deleted_at = timezone.now()
+        self.active = False
+        self.save()
