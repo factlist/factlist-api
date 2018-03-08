@@ -87,6 +87,17 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "IGNORE_EXCEPTIONS": True,
+        }
+    }
+}
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -115,5 +126,5 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-MEDIA_ROOT = '/home/enis/Workspace/factlist-api/media/'
+MEDIA_ROOT = '/path/to/project/'
 MEDIA_URL = '/media/'

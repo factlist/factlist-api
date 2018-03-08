@@ -1,5 +1,6 @@
 import os
 
+from django.core.cache import cache
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -23,5 +24,10 @@ class EmbedView(APIView):
                 - version
               from the embed.ly response
         '''
-        r = requests.get("https://api.embedly.com/1/oembed", params=query)
-        return Response(r.json())
+        cache_control = cache.get(query['url'])
+        if cache_control is not None:
+            return Response(cache_control)
+        else:
+            r = requests.get("https://api.embedly.com/1/oembed", params=query)
+            cache.set(query['url'], r.json())
+            return Response(r.json())
