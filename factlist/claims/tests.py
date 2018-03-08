@@ -2,6 +2,7 @@ from rest_framework import status
 from django.test import TestCase
 
 from factlist.users.tests import UserTestMixin
+from factlist.claims.models import Claim, Evidence
 
 
 class ClaimTestCase(TestCase, UserTestMixin):
@@ -111,6 +112,8 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         response = enis_client.delete('/api/v1/claims/%s/' % claim_id)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        claim = Claim.objects.get(pk=claim_id)
+        self.assertFalse(claim.active)
 
     def test_post_an_evidence_to_claim(self):
         user, client = self.create_user_and_user_client()
@@ -204,3 +207,5 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         response = enis_client.delete('/api/v1/claims/%s/evidences/%s/' % (claim_id, evidence_id))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        evidence = Evidence.objects.get(pk=evidence_id)
+        self.assertFalse(evidence.active)

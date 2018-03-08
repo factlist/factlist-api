@@ -1,8 +1,8 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from .models import Claim, Evidence
-from .serializers import ClaimSerializer, EvidenceSerializer, FileSerializer
+from .serializers import ClaimSerializer, EvidenceSerializer
 
 
 class ListAndCreateClaimView(ListCreateAPIView):
