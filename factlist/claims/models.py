@@ -31,7 +31,7 @@ class Claim(models.Model):
 
     @property
     def true_count(self):
-        evidences = Evidence.objects.filter(claim=self, status="true")
+        evidences = Evidence.objects.filter(claim=self, status="true", active=True)
         if evidences.exists():
             return evidences.count()
         else:
@@ -39,7 +39,7 @@ class Claim(models.Model):
 
     @property
     def false_count(self):
-        evidences = Evidence.objects.filter(claim=self, status="false")
+        evidences = Evidence.objects.filter(claim=self, status="false", active=True)
         if evidences.exists():
             return evidences.count()
         else:
@@ -47,7 +47,7 @@ class Claim(models.Model):
 
     @property
     def inconclusive_count(self):
-        evidences = Evidence.objects.filter(claim=self, status="inconclusive")
+        evidences = Evidence.objects.filter(claim=self, status="inconclusive", active=True)
         if evidences.exists():
             return evidences.count()
         else:
@@ -65,6 +65,10 @@ class Claim(models.Model):
         self.deleted_at = timezone.now()
         self.active = False
         self.save()
+        evidences = Evidence.objects.filter(claim=self, active=True)
+        for evidence in evidences:
+            evidence.active = False
+            evidence.save()
 
 
 class Evidence(models.Model):
