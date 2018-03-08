@@ -29,7 +29,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = client.get('/api/v1/claims/')
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data['count'], 1)
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
@@ -42,7 +42,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = client.get('/api/v1/claims/')
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data['count'], 2)
 
     def test_get_a_claim(self):
         enis, enis_client = self.create_user_and_user_client()
