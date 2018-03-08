@@ -15,19 +15,21 @@ class EmbedView(APIView):
             "url": request.GET.get("link"),
             "key": os.environ.get("EMBEDLY_API_KEY"),
         }
-        '''
-        TODO: Remove
-                - provider name
-                - provider url
-                - author name
-                - author url
-                - version
-              from the embed.ly response
-        '''
         cache_control = cache.get(query['url'])
         if cache_control is not None:
             return Response(cache_control)
         else:
             r = requests.get("https://api.embedly.com/1/oembed", params=query)
-            cache.set(query['url'], r.json())
-            return Response(r.json())
+            json_response = r.json()
+            deleted_fields = [
+                'provider_name',
+                'provider_url',
+                'author_name',
+                'author_url',
+                'version',
+            ]
+            for field in deleted_fields:
+                if field in json_response:
+                    del json_response[field]
+            cache.set(query['url'], json_response)
+            return Response(json_response)
