@@ -58,7 +58,7 @@ class EvidenceSerializer(serializers.ModelSerializer):
             files = validated_data.pop('links')
             for file in files:
                 evidence_files = File.objects.create(**file)
-                evidence.links.add(evidence_files)
+                evidence.files.add(evidence_files)
         return evidence
 
     def update(self, instance, validated_data):
@@ -100,7 +100,7 @@ class ClaimSerializer(serializers.ModelSerializer):
             user=self.context['request'].user,
         )
         claim.save()
-        if not 'links' in validated_data:
+        if 'links' not in validated_data:
             pass
         else:
             links = validated_data.pop('links')
@@ -110,10 +110,10 @@ class ClaimSerializer(serializers.ModelSerializer):
         if 'files' not in validated_data:
             pass
         else:
-            files = validated_data.pop('links')
+            files = validated_data.pop('files')
             for file in files:
                 claim_files = File.objects.create(**file)
-                claim.links.add(claim_files)
+                claim.files.add(claim_files)
         claim.save()
         return claim
 

@@ -1,14 +1,26 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.exceptions import ValidationError
 
 from .models import Claim, Evidence
 from .serializers import ClaimSerializer, EvidenceSerializer
+from factlist.users.models import User
 
 
 class ListAndCreateClaimView(ListCreateAPIView):
-    queryset = Claim.objects.filter(active=True)
     permission_classes = [IsAuthenticated]
     serializer_class = ClaimSerializer
+
+    def get_queryset(self):
+        if self.request.GET.get('filter') is None:
+            return Claim.objects.filter(active=True)
+        else:
+            username = self.request.GET.get('filter').split(':')[1]
+            user = User.objects.filter(username=username)
+            if user.exists():
+                return Claim.objects.filter(user=user)
+            else:
+                raise ValidationError('There is no user found with the given username')
 
     def get_permissions(self):
         if self.request.method == "GET":
