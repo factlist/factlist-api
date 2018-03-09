@@ -77,6 +77,7 @@ class ClaimSerializer(serializers.ModelSerializer):
     user = SimpleUserSerializer(read_only=True)
     links = LinkSerializer(many=True, required=False)
     files = FileSerializer(many=True, required=False)
+    evidences = EvidenceSerializer(many=True, read_only=True)
 
     class Meta:
         model = Claim
@@ -88,6 +89,7 @@ class ClaimSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
             'deleted_at',
+            'evidences',
             'files',
             'true_count',
             'false_count',
