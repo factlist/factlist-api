@@ -1,3 +1,5 @@
+from ast import literal_eval
+
 from rest_framework import serializers
 
 from factlist.users.serializers import SimpleUserSerializer
@@ -45,13 +47,13 @@ class EvidenceSerializer(serializers.ModelSerializer):
             claim_id=self.context['claim_id'],
         )
         evidence.save()
-        if 'links' not in validated_data:
-            pass
-        else:
-            links = validated_data.pop('links')
+        if 'links' in self.context['request'].POST:
+            links = literal_eval(self.context['request'].POST['links'])
             for link in links:
-                evidence_link = Link.objects.create(**link)
-                evidence.links.add(evidence_link)
+                link_object = Link.objects.create(**link)
+                evidence.links.add(link_object)
+        else:
+            pass
         if 'files' not in validated_data:
             pass
         else:
@@ -102,21 +104,21 @@ class ClaimSerializer(serializers.ModelSerializer):
             user=self.context['request'].user,
         )
         claim.save()
-        if 'links' not in validated_data:
-            pass
-        else:
-            links = validated_data.pop('links')
+        print(self.context['request'].FILES)
+        if 'links' in self.context['request'].POST:
+            links = literal_eval(self.context['request'].POST['links'])
             for link in links:
-                claim_link = Link.objects.create(**link)
-                claim.links.add(claim_link)
-        if 'files' not in validated_data:
-            pass
+                print(link)
+                link_object = Link.objects.create(**link)
+                claim.links.add(link_object)
         else:
-            files = validated_data.pop('files')
-            for file in files:
-                claim_files = File.objects.create(**file)
-                claim.files.add(claim_files)
-        claim.save()
+            pass
+        if 'files' in self.context['request'].FILES:
+            files = literal_eval(self.context['request'].FILES['files'])
+            print(files)
+            print(type(files))
+        else:
+            pass
         return claim
 
     def update(self, instance, validated_data):
