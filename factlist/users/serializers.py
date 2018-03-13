@@ -37,10 +37,6 @@ class UserMeSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'email', 'token', 'claims', 'avatar')
 
-    def validate(self, attrs):
-        print(attrs['avatar'])
-        return attrs
-
     def get_token(self, user):
         token = Token.objects.get(user=user)
         return token.key
