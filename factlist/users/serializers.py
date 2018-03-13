@@ -12,7 +12,7 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password', 'token')
+        fields = ('id', 'username', 'email', 'password', 'token', 'avatar')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -32,11 +32,14 @@ class UserSignupSerializer(serializers.ModelSerializer):
 class UserMeSerializer(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
     claims = serializers.SerializerMethodField()
-    avatar = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'token', "claims", "avatar")
+        fields = ('id', 'username', 'email', 'token', 'claims', 'avatar')
+
+    def validate(self, attrs):
+        print(attrs['avatar'])
+        return attrs
 
     def get_token(self, user):
         token = Token.objects.get(user=user)
@@ -44,9 +47,6 @@ class UserMeSerializer(serializers.ModelSerializer):
 
     def get_claims(self, user):
         return Claim.objects.filter(user=user).count()
-
-    def get_avatar(self, user):
-        return None
 
 
 class UserAuthSerializer(serializers.Serializer):
@@ -71,4 +71,4 @@ class SimpleUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'username')
+        fields = ('id', 'email', 'username', 'avatar')

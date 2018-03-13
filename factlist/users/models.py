@@ -7,6 +7,9 @@ from rest_framework.authtoken.models import Token
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
+    avatar = models.ImageField(width_field="avatar_width", height_field="avatar_height", upload_to="users/images/%Y/%m/%d", null=True, blank=True)
+    avatar_width = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    avatar_height = models.PositiveIntegerField(editable=False, null=True, blank=True)
 
     def __str__(self):
         return self.username
