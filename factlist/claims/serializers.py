@@ -1,6 +1,7 @@
 from ast import literal_eval
 
 from rest_framework import serializers
+from django.core.cache import cache
 
 from factlist.users.serializers import SimpleUserSerializer
 from .models import Claim, Evidence, File, Link
@@ -14,10 +15,14 @@ class FileSerializer(serializers.ModelSerializer):
 
 
 class LinkSerializer(serializers.ModelSerializer):
+    embed = serializers.SerializerMethodField()
 
     class Meta:
         model = Link
-        fields = ('link', 'id')
+        fields = ('link', 'id', 'embed')
+
+    def get_embed(self, link):
+        return cache.get(link.link)
 
 
 class EvidenceSerializer(serializers.ModelSerializer):
@@ -104,19 +109,11 @@ class ClaimSerializer(serializers.ModelSerializer):
             user=self.context['request'].user,
         )
         claim.save()
-        print(self.context['request'].FILES)
         if 'links' in self.context['request'].POST:
             links = literal_eval(self.context['request'].POST['links'])
             for link in links:
-                print(link)
                 link_object = Link.objects.create(**link)
                 claim.links.add(link_object)
-        else:
-            pass
-        if 'files' in self.context['request'].FILES:
-            files = literal_eval(self.context['request'].FILES['files'])
-            print(files)
-            print(type(files))
         else:
             pass
         return claim
