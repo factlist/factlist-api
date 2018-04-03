@@ -1,6 +1,8 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import ValidationError
+from rest_framework.parsers import MultiPartParser, JSONParser
+from rest_framework.response import Response
 
 from .models import Claim, Evidence
 from .serializers import ClaimSerializer, EvidenceSerializer
@@ -10,6 +12,7 @@ from factlist.users.models import User
 class ListAndCreateClaimView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ClaimSerializer
+    parser_classes = (MultiPartParser, JSONParser)
 
     def get_queryset(self):
         if self.request.GET.get('filter') is None:
@@ -31,6 +34,7 @@ class ListAndCreateClaimView(ListCreateAPIView):
 
 class ClaimView(RetrieveUpdateDestroyAPIView):
     serializer_class = ClaimSerializer
+    parser_classes = (MultiPartParser, JSONParser)
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -47,6 +51,7 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
 
 class ListAndCreateEvidenceView(ListCreateAPIView):
     serializer_class = EvidenceSerializer
+    parser_classes = (MultiPartParser, JSONParser)
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -66,6 +71,7 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
 
 class EvidenceView(RetrieveUpdateDestroyAPIView):
     serializer_class = EvidenceSerializer
+    parser_classes = (MultiPartParser, JSONParser)
 
     def get_permissions(self):
         if self.request.method == "GET":

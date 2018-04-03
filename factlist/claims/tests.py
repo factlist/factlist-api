@@ -22,9 +22,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': [
-                {'link': 'https://factlist.org'},
-            ]
+            'links': ['https://factlist.org']
         }
         response = client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -34,10 +32,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': [
-                {'link': 'https://factlist.org'},
-                {'link': 'https://lulxd.com'}
-            ]
+            'links': ['https://factlist.org', 'https://lulxd.com']
         }
         response = client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -51,9 +46,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': [
-                {'link': 'https://factlist.org'},
-            ]
+            'links': ['https://factlist.org']
         }
         response = enis_client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -72,23 +65,17 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': [
-                {'link': 'https://factlist.org'},
-            ]
+            'links': ['https://factlist.org']
         }
         response = enis_client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': [
-                {'link': 'https://factlist.org'},
-                {'link': 'https://factlist.com/api/v1/'}
-            ]
+            'links': ['https://factlist.org', 'https://factlist.com/api/v1/']
         }
         response = enis_client.patch('/api/v1/claims/%s/' % response.data['id'], data=data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["links"]), 2)
 
         response = serafettin_client.patch('/api/v1/claims/%s/' % response.data['id'], data=data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -99,9 +86,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': [
-                {'link': 'https://factlist.org'},
-            ]
+            'links': ['https://factlist.org']
         }
         response = enis_client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -120,9 +105,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
-            "links": [
-                {"link": "https://twitter.com/factlist"}
-            ]
+            "links": ["https://twitter.com/factlist"]
         }
         response = client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -131,9 +114,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
             "claim": response.data['id'],
             "text": "Factlist is a collaborative fact-checking platform.",
             "status": "true",
-            "links": [
-                {"link": "https://factlist.org"}
-            ]
+            "links": ["https://factlist.org"]
         }
         response = client.post('/api/v1/claims/%s/evidences/' % response.data["id"], data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -144,9 +125,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': [
-                {'link': 'https://factlist.org'},
-            ]
+            'links': ['https://factlist.org']
         }
         response = serafettin_client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -154,9 +133,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
             "status": "true",
-            "links": [
-                {"link": "https://factlist.org"}
-            ]
+            "links": ["https://factlist.org"]
         }
 
         response = enis_client.post('/api/v1/claims/%s/evidences/' % response.data["id"], data=data)
@@ -166,9 +143,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
             "status": "inconclusive",
-            "links": [
-                {"link": "https://factlist.org"}
-            ]
+            "links": ["https://factlist.org"]
         }
         response = enis_client.patch('/api/v1/claims/%s/evidences/%s/' % (claim_id, response.data["id"]), data=data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -182,9 +157,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': [
-                {'link': 'https://factlist.org'},
-            ]
+            'links': ['https://factlist.org'],
         }
         response = serafettin_client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -193,9 +166,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
             "status": "true",
-            "links": [
-                {"link": "https://factlist.org"}
-            ]
+            "links": ["https://factlist.org"]
         }
 
         response = enis_client.post('/api/v1/claims/%s/evidences/' % claim_id, data=data)

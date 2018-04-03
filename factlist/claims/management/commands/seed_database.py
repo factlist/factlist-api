@@ -23,7 +23,6 @@ class Command(BaseCommand):
         with open("./factlist/claims/management/commands/seed.json") as json_raw:
             json_file = json.load(json_raw)
             for key, value in json_file.items():
-                print(key)
                 claim = Claim(
                     text=value["text"],
                     user=mock_user,
