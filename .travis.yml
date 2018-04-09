@@ -21,7 +21,7 @@ script:
   - docker build -t factlist/factlist-api .
 
 after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-      docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
       docker push factlist/factlist-api;
     fi
