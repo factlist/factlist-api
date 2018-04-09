@@ -16,7 +16,7 @@ class ListAndCreateClaimView(ListCreateAPIView):
 
     def get_queryset(self):
         if self.request.GET.get('filter') is None:
-            return Claim.objects.filter(active=True)
+            return Claim.objects.filter(active=True).order_by('-id')
         else:
             username = self.request.GET.get('filter').split(':')[1]
             user = User.objects.filter(username=username)
