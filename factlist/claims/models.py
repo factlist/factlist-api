@@ -55,6 +55,7 @@ class Claim(models.Model):
 
     class Meta:
         db_table = 'claims'
+        ordering = ('-id',)
 
     def update(self, *args, **kwargs):
         self.updated_at = timezone.now()
