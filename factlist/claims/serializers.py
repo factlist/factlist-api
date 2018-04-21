@@ -52,6 +52,7 @@ class EvidenceSerializer(serializers.ModelSerializer):
             user=self.context['request'].user,
             claim_id=self.context['claim_id'],
         )
+        evidence.save()
         if 'links' in self.context['request'].POST:
             links = literal_eval(self.context['request'].POST['links'])
             for link in links:

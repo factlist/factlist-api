@@ -111,7 +111,6 @@ class ClaimTestCase(TestCase, UserTestMixin):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         data = {
-            "claim": response.data['id'],
             "text": "Factlist is a collaborative fact-checking platform.",
             "status": "true",
             "links": ["https://factlist.org"]

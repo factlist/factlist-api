@@ -60,10 +60,12 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
             return IsAuthenticated(),
 
     def get_serializer_context(self):
-        return {"claim_id": self.kwargs["pk"], "request": self.request}
+        context = super().get_serializer_context()
+        context['claim_id'] = self.kwargs['pk']
+        return context
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save(user=self.request.user, claim=self.kwargs['pk'])
 
     def get_queryset(self):
         return Evidence.objects.filter(claim_id=self.kwargs["pk"], active=True)
