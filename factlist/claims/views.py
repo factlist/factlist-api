@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
+from rest_framework import status
 
 from .models import Claim, Evidence
 from .serializers import ClaimSerializer, EvidenceSerializer, CreateClaimSerializer, CreateEvidenceSerializer
@@ -35,6 +36,13 @@ class ListAndCreateClaimView(ListCreateAPIView):
             return ClaimSerializer
         else:
             return CreateClaimSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid()
+        self.perform_create(serializer)
+        claim = Claim.objects.get(pk=serializer.data['id'])
+        return Response(ClaimSerializer(claim).data, status=status.HTTP_201_CREATED)
 
 
 class ClaimView(RetrieveUpdateDestroyAPIView):
@@ -84,6 +92,13 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
             return EvidenceSerializer
         else:
             return CreateEvidenceSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid()
+        self.perform_create(serializer)
+        evidence = Evidence.objects.get(pk=serializer.data['id'])
+        return Response(EvidenceSerializer(evidence).data, status=status.HTTP_201_CREATED)
 
 
 class EvidenceView(RetrieveUpdateDestroyAPIView):
