@@ -12,7 +12,7 @@ class FileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = File
-        fields = ('file',)
+        fields = ('file', 'id')
 
 
 class LinkSerializer(serializers.ModelSerializer):
@@ -26,10 +26,7 @@ class LinkSerializer(serializers.ModelSerializer):
         return cache.get(link.link)
 
 
-class EvidenceSerializer(serializers.ModelSerializer):
-    user = SimpleUserSerializer(read_only=True)
-    files = serializers.SerializerMethodField()
-    links = serializers.SerializerMethodField()
+class CreateEvidenceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evidence
@@ -37,12 +34,6 @@ class EvidenceSerializer(serializers.ModelSerializer):
             'id',
             'text',
             'status',
-            'created_at',
-            'updated_at',
-            'deleted_at',
-            'user',
-            'links',
-            'files',
         )
 
     def create(self, validated_data):
@@ -68,15 +59,6 @@ class EvidenceSerializer(serializers.ModelSerializer):
         evidence.save()
         return evidence
 
-    def get_links(self, evidence):
-        return list(evidence.links.all().values_list('link', flat=True))
-
-    def get_files(self, evidence):
-        files = list(evidence.files.all().values_list('file', flat=True))
-        for x in range(len(files)):
-            files[x] = "https://" + settings.AWS_S3_CUSTOM_DOMAIN + '/' + files[x]
-        return files
-
     def update(self, instance, validated_data):
         instance.text = validated_data.pop('text')
         instance.status = validated_data.pop('status')
@@ -98,27 +80,33 @@ class EvidenceSerializer(serializers.ModelSerializer):
         return instance
 
 
-class ClaimSerializer(serializers.ModelSerializer):
+class EvidenceSerializer(serializers.ModelSerializer):
     user = SimpleUserSerializer(read_only=True)
-    files = serializers.SerializerMethodField()
-    links = serializers.SerializerMethodField()
-    evidences = EvidenceSerializer(many=True, read_only=True)
+    files = FileSerializer(many=True)
+    links = LinkSerializer(many=True)
+
+    class Meta:
+        model = Evidence
+        fields = (
+            'id',
+            'text',
+            'status',
+            'created_at',
+            'updated_at',
+            'deleted_at',
+            'user',
+            'links',
+            'files',
+        )
+
+
+class CreateClaimSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Claim
         fields = (
             'id',
             'text',
-            'user',
-            'created_at',
-            'updated_at',
-            'deleted_at',
-            'evidences',
-            'links',
-            'files',
-            'true_count',
-            'false_count',
-            'inconclusive_count'
         )
 
     def create(self, validated_data):
@@ -135,15 +123,6 @@ class ClaimSerializer(serializers.ModelSerializer):
                 claim.files.add(file_object.id)
         claim.save()
         return claim
-
-    def get_links(self, claim):
-        return list(claim.links.all().values_list('link', flat=True))
-
-    def get_files(self, claim):
-        files = list(claim.files.all().values_list('file', flat=True))
-        for x in range(len(files)):
-            files[x] = "https://" + settings.AWS_S3_CUSTOM_DOMAIN + '/' + files[x]
-        return files
 
     def update(self, instance, validated_data):
         if 'text' in validated_data:
@@ -164,3 +143,27 @@ class ClaimSerializer(serializers.ModelSerializer):
                 instance.files.add(file_object.id)
         instance.save()
         return instance
+
+
+class ClaimSerializer(serializers.ModelSerializer):
+    user = SimpleUserSerializer(read_only=True)
+    files = FileSerializer(many=True)
+    links = LinkSerializer(many=True)
+    evidences = EvidenceSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Claim
+        fields = (
+            'id',
+            'text',
+            'user',
+            'created_at',
+            'updated_at',
+            'deleted_at',
+            'evidences',
+            'links',
+            'files',
+            'true_count',
+            'false_count',
+            'inconclusive_count'
+        )

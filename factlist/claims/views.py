@@ -5,13 +5,12 @@ from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
 
 from .models import Claim, Evidence
-from .serializers import ClaimSerializer, EvidenceSerializer
+from .serializers import ClaimSerializer, EvidenceSerializer, CreateClaimSerializer, CreateEvidenceSerializer
 from factlist.users.models import User
 
 
 class ListAndCreateClaimView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = ClaimSerializer
     parser_classes = (MultiPartParser, JSONParser)
 
     def get_queryset(self):
@@ -31,9 +30,14 @@ class ListAndCreateClaimView(ListCreateAPIView):
         else:
             return IsAuthenticated(),
 
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return ClaimSerializer
+        else:
+            return CreateClaimSerializer
+
 
 class ClaimView(RetrieveUpdateDestroyAPIView):
-    serializer_class = ClaimSerializer
     parser_classes = (MultiPartParser, JSONParser)
 
     def get_permissions(self):
@@ -48,9 +52,14 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
         else:
             return Claim.objects.filter(pk=self.kwargs["pk"], user=self.request.user, active=True)
 
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return ClaimSerializer
+        else:
+            return CreateClaimSerializer
+
 
 class ListAndCreateEvidenceView(ListCreateAPIView):
-    serializer_class = EvidenceSerializer
     parser_classes = (MultiPartParser, JSONParser)
 
     def get_permissions(self):
@@ -70,9 +79,14 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
     def get_queryset(self):
         return Evidence.objects.filter(claim_id=self.kwargs["pk"], active=True)
 
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return EvidenceSerializer
+        else:
+            return CreateEvidenceSerializer
+
 
 class EvidenceView(RetrieveUpdateDestroyAPIView):
-    serializer_class = EvidenceSerializer
     parser_classes = (MultiPartParser, JSONParser)
 
     def get_permissions(self):
@@ -86,3 +100,9 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
             return Evidence.objects.filter(pk=self.kwargs["pk"], active=True)
         else:
             return Evidence.objects.filter(pk=self.kwargs["pk"], user=self.request.user, active=True)
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return EvidenceSerializer
+        else:
+            return CreateEvidenceSerializer
