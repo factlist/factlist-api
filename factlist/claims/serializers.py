@@ -4,6 +4,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.core.cache import cache
 from django.conf import settings
+from django.core.validators import URLValidator
 
 from factlist.users.serializers import SimpleUserSerializer
 from .models import Claim, Evidence, File, Link
@@ -53,6 +54,11 @@ class CreateEvidenceSerializer(serializers.ModelSerializer):
         if 'links' in request.POST:
             links = literal_eval(request.POST['links'])
             for link in links:
+                try:
+                    validate = URLValidator()
+                    validate(link)
+                except:
+                    raise ValidationError({"links": "Invalid link"})
                 link_object = Link.objects.create(link=link)
                 evidence.links.add(link_object)
         if 'files' in request.FILES:
@@ -124,6 +130,11 @@ class CreateClaimSerializer(serializers.ModelSerializer):
         if 'links' in request.POST:
             links = literal_eval(request.POST['links'])
             for link in links:
+                try:
+                    validate = URLValidator()
+                    validate(link)
+                except:
+                    raise ValidationError({"links": "Invalid link"})
                 link_object = Link.objects.create(link=link)
                 claim.links.add(link_object)
         if 'files' in request.FILES:
