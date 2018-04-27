@@ -12,7 +12,7 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password', 'token', 'avatar')
+        fields = ('id', 'username', 'email', 'password', 'token', 'avatar', 'bio', 'name')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -35,7 +35,7 @@ class UserMeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'token', 'claims', 'avatar')
+        fields = ('id', 'username', 'email', 'token', 'claims', 'avatar', 'bio', 'name')
 
     def get_token(self, user):
         token = Token.objects.get(user=user)
@@ -67,4 +67,4 @@ class SimpleUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'username', 'avatar')
+        fields = ('id', 'email', 'username', 'avatar', 'name')
