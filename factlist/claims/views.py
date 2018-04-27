@@ -83,6 +83,11 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
 
         return Response(ClaimSerializer(instance).data, status=status.HTTP_200_OK)
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({"message": "Claim deleted successfully"}, status=status.HTTP_200_OK)
+
 
 class ListAndCreateEvidenceView(ListCreateAPIView):
     parser_classes = (MultiPartParser, JSONParser)
@@ -139,7 +144,6 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
         else:
             return CreateEvidenceSerializer
 
-
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
@@ -153,3 +157,8 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
             instance._prefetched_objects_cache = {}
 
         return Response(EvidenceSerializer(instance).data, status=status.HTTP_200_OK)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({"message": "Evidence deleted successfully"}, status=status.HTTP_200_OK)
