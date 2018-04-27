@@ -1,6 +1,7 @@
 from ast import literal_eval
 
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from django.core.cache import cache
 from django.conf import settings
 
@@ -37,20 +38,25 @@ class CreateEvidenceSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        evidence = Evidence(
-            text=validated_data.pop('text'),
-            status=validated_data.pop('status'),
-            user=self.context['request'].user,
-            claim_id=self.context['claim_id'],
-        )
+        request = self.context['request']
+        if not 'links' in request.POST and not "files" in request.FILES:
+            raise ValidationError("Claim must contain at least a file or link")
+        evidence = Evidence()
+        if "text" in validated_data:
+            evidence.text = validated_data.pop("text")
+        if "status" in validated_data:
+            evidence.status = validated_data.pop("status")
+        claim_id = self.context['claim_id']
+        evidence.user = request.user
+        evidence.claim_id = claim_id
         evidence.save()
-        if 'links' in self.context['request'].POST:
-            links = literal_eval(self.context['request'].POST['links'])
+        if 'links' in request.POST:
+            links = literal_eval(request.POST['links'])
             for link in links:
                 link_object = Link.objects.create(link=link)
                 evidence.links.add(link_object)
-        if 'files' in self.context['request'].FILES:
-            files = self.context["request"].FILES.getlist("files")
+        if 'files' in request.FILES:
+            files = request.FILES.getlist("files")
             for file in files:
                 file_object = File.objects.create(file=file)
                 evidence.files.add(file_object.id)
@@ -60,19 +66,20 @@ class CreateEvidenceSerializer(serializers.ModelSerializer):
         return evidence
 
     def update(self, instance, validated_data):
-        instance.text = validated_data.pop('text')
-        instance.status = validated_data.pop('status')
-        instance.save()
-
-        if 'links' in self.context['request'].POST:
+        request = self.context["request"]
+        if "text" in validated_data:
+            instance.text = validated_data.pop("text")
+        if "status" in validated_data:
+            instance.status = validated_data.pop("status")
+        if 'links' in request.POST:
             instance.links.all().delete()
-            links = literal_eval(self.context['request'].POST['links'])
+            links = literal_eval(request.POST['links'])
             for link in links:
                 link_object = Link.objects.create(link=link)
                 instance.links.add(link_object)
-        if 'files' in self.context['request'].FILES:
+        if 'files' in request.FILES:
             instance.files.all().delete()
-            files = self.context["request"].FILES.getlist("files")
+            files = request.FILES.getlist("files")
             for file in files:
                 file_object = File.objects.create(file=file)
                 instance.files.add(file_object.id)
@@ -110,14 +117,17 @@ class CreateClaimSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        claim = Claim.objects.create(text=validated_data.pop('text'), user=self.context['request'].user)
-        if 'links' in self.context['request'].POST:
-            links = literal_eval(self.context['request'].POST['links'])
+        claim = Claim.objects.create(**validated_data)
+        request = self.context["request"]
+        if not 'links' in request.POST and not "files" in request.FILES:
+            raise ValidationError("Claim must contain at least a file or link")
+        if 'links' in request.POST:
+            links = literal_eval(request.POST['links'])
             for link in links:
                 link_object = Link.objects.create(link=link)
                 claim.links.add(link_object)
-        if 'files' in self.context['request'].FILES:
-            files = self.context["request"].FILES.getlist("files")
+        if 'files' in request.FILES:
+            files = request.FILES.getlist("files")
             for file in files:
                 file_object = File.objects.create(file=file)
                 claim.files.add(file_object.id)
@@ -125,19 +135,19 @@ class CreateClaimSerializer(serializers.ModelSerializer):
         return claim
 
     def update(self, instance, validated_data):
-        if 'text' in validated_data:
-            instance.text = validated_data.pop('text')
-        if 'status' in validated_data:
-            instance.status = validated_data.pop('status')
-        if 'links' in self.context['request'].POST:
+        if "text" in validated_data:
+            instance.text = validated_data.pop("text")
+
+        request = self.context['request']
+        if 'links' in request.POST:
             instance.links.all().delete()
-            links = literal_eval(self.context['request'].POST['links'])
+            links = literal_eval(request.POST['links'])
             for link in links:
                 link_object = Link.objects.create(link=link)
                 instance.links.add(link_object)
-        if 'files' in self.context['request'].FILES:
+        if 'files' in request.FILES:
             instance.files.all().delete()
-            files = self.context["request"].FILES.getlist("files")
+            files = request.FILES.getlist("files")
             for file in files:
                 file_object = File.objects.create(file=file)
                 instance.files.add(file_object.id)

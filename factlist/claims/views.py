@@ -44,6 +44,9 @@ class ListAndCreateClaimView(ListCreateAPIView):
         claim = Claim.objects.get(pk=serializer.data['id'])
         return Response(ClaimSerializer(claim).data, status=status.HTTP_201_CREATED)
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 class ClaimView(RetrieveUpdateDestroyAPIView):
     parser_classes = (MultiPartParser, JSONParser)
@@ -65,6 +68,20 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
             return ClaimSerializer
         else:
             return CreateClaimSerializer
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(ClaimSerializer(instance).data, status=status.HTTP_200_OK)
 
 
 class ListAndCreateEvidenceView(ListCreateAPIView):
@@ -121,3 +138,18 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
             return EvidenceSerializer
         else:
             return CreateEvidenceSerializer
+
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(EvidenceSerializer(instance).data, status=status.HTTP_200_OK)
