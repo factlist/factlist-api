@@ -6,6 +6,8 @@ from rest_framework.authtoken.models import Token
 
 
 class User(AbstractUser):
+    name = models.CharField(max_length=255)
+    bio = models.CharField(max_length=160)
     email = models.EmailField(unique=True)
     avatar = models.ImageField(width_field="avatar_width", height_field="avatar_height", upload_to="users/images/%Y/%m/%d", null=True, blank=True)
     avatar_width = models.PositiveIntegerField(editable=False, null=True, blank=True)
