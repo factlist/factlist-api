@@ -20,7 +20,7 @@ class UserSignupSerializer(serializers.ModelSerializer):
         try:
             password_validation.validate_password(password)
         except:
-            raise ValidationError('Password is not valid')
+            raise ValidationError({"password": "Password is not strong enough"})
         user = User.objects.create_user(**validated_data)
         return user
 
