@@ -33,7 +33,7 @@ class EmbedView(APIView):
                 'version',
             ]
             if "error_message" in json_response:
-                return Response({"message": "Invalid link"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": "Invalid link"}, status=status.HTTP_404_NOT_FOUND)
             for field in deleted_fields:
                 if field in json_response:
                     del json_response[field]
