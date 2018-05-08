@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
+from rest_framework import status
 import requests
 
 
@@ -31,6 +32,8 @@ class EmbedView(APIView):
                 'author_url',
                 'version',
             ]
+            if "error_message" in json_response:
+                return Response({"message": "Invalid link"}, status=status.HTTP_400_BAD_REQUEST)
             for field in deleted_fields:
                 if field in json_response:
                     del json_response[field]

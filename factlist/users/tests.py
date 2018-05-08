@@ -28,6 +28,7 @@ class UserTestCase(TestCase, UserTestMixin):
             'username': 'enis',
             'email': 'enis@factlist.org',
             'password': 'factlist_is_awesome',
+            'name': 'Enis B. Tuysuz',
         }
 
         response = user_client.post('/api/v1/users/register/', data=data)
@@ -42,6 +43,7 @@ class UserTestCase(TestCase, UserTestMixin):
             'username': 'enis',
             'email': 'enis@factlist.org',
             'password': 'factlist_is_awesome',
+            'name': 'Enis B. Tuysuz',
         }
         response = user_client.post('/api/v1/users/register/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

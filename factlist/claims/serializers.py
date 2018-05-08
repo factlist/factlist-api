@@ -40,7 +40,7 @@ class CreateEvidenceSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context['request']
-        if not 'links' in request.POST and not "files" in request.FILES:
+        if 'links' not in request.POST and "files" not in request.FILES:
             raise ValidationError("Claim must contain at least a file or link")
         evidence = Evidence()
         if "text" in validated_data:
