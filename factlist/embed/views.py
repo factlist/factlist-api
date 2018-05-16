@@ -1,6 +1,6 @@
 import os
 
-from django.core.cache import cache
+from django.core.cache import caches
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -19,7 +19,7 @@ class EmbedView(APIView):
             "url": request.GET.get("link"),
             "key": os.environ.get("EMBEDLY_API_KEY"),
         }
-        cache_control = cache.get(query['url'])
+        cache_control = caches["default"].get(query['url'])
         if cache_control is not None:
             return Response(cache_control)
         else:
@@ -37,5 +37,5 @@ class EmbedView(APIView):
             for field in deleted_fields:
                 if field in json_response:
                     del json_response[field]
-            cache.set(query['url'], json_response)
+            caches["default"].set(query['url'], json_response)
             return Response(json_response)
