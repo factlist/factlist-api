@@ -1,8 +1,11 @@
+import os
+
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
+import tweepy
 
 from .serializers import UserSignupSerializer, UserMeSerializer, UserAuthSerializer
 
@@ -43,3 +46,11 @@ class UserLogoutView(APIView):
         Token.objects.filter(user=request.user).delete()
         Token.objects.create(user=request.user)
         return Response({'message': 'User logged out successfully'})
+
+
+class UserTwitterRequestTokenView(APIView):
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        auth = tweepy.OAuthHandler(os.environ.get("TWITTER_CONSUMER_KEY"), os.environ.get("TWITTER_CONSUMER_SECRET"))
+        return Response({"redirect_link": auth.get_authorization_url()})
