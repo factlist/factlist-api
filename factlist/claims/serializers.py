@@ -35,7 +35,7 @@ class CreateEvidenceSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'text',
-            'status',
+            'conclusion',
         )
 
     def create(self, validated_data):
@@ -45,8 +45,8 @@ class CreateEvidenceSerializer(serializers.ModelSerializer):
         evidence = Evidence()
         if "text" in validated_data:
             evidence.text = validated_data.pop("text")
-        if "status" in validated_data:
-            evidence.status = validated_data.pop("status")
+        if "conclusion" in validated_data:
+            evidence.conclusion = validated_data.pop("conclusion")
         claim_id = self.context['claim_id']
         evidence.user = request.user
         evidence.claim_id = claim_id
@@ -75,8 +75,8 @@ class CreateEvidenceSerializer(serializers.ModelSerializer):
         request = self.context["request"]
         if "text" in validated_data:
             instance.text = validated_data.pop("text")
-        if "status" in validated_data:
-            instance.status = validated_data.pop("status")
+        if "conclusion" in validated_data:
+            instance.conclusion = validated_data.pop("conclusion")
         if 'links' in request.POST:
             instance.links.all().delete()
             links = literal_eval(request.POST['links'])
@@ -103,7 +103,7 @@ class EvidenceSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'text',
-            'status',
+            'conclusion',
             'created_at',
             'updated_at',
             'deleted_at',

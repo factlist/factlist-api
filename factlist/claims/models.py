@@ -31,7 +31,7 @@ class Claim(models.Model):
 
     @property
     def true_count(self):
-        evidences = Evidence.objects.filter(claim=self, status="true", active=True)
+        evidences = Evidence.objects.filter(claim=self, conclusion="true", active=True)
         if evidences.exists():
             return evidences.count()
         else:
@@ -39,7 +39,7 @@ class Claim(models.Model):
 
     @property
     def false_count(self):
-        evidences = Evidence.objects.filter(claim=self, status="false", active=True)
+        evidences = Evidence.objects.filter(claim=self, conclusion="false", active=True)
         if evidences.exists():
             return evidences.count()
         else:
@@ -47,7 +47,7 @@ class Claim(models.Model):
 
     @property
     def inconclusive_count(self):
-        evidences = Evidence.objects.filter(claim=self, status="inconclusive", active=True)
+        evidences = Evidence.objects.filter(claim=self, conclusion="inconclusive", active=True)
         if evidences.exists():
             return evidences.count()
         else:
@@ -75,7 +75,7 @@ class Claim(models.Model):
 class Evidence(models.Model):
     claim = models.ForeignKey(Claim, related_name='evidences')
     text = models.TextField()
-    status = models.CharField(max_length=100, choices=EVIDENCE_STATUS_CHOICES)
+    conclusion = models.CharField(max_length=100, choices=EVIDENCE_STATUS_CHOICES)
     user = models.ForeignKey(User)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(null=True, blank=True)

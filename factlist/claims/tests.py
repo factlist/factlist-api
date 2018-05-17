@@ -119,7 +119,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
-            "status": "true",
+            "conclusion": "true",
             "links": '["https://factlist.org"]'
         }
         response = client.post('/api/v1/claims/%s/evidences/' % response.data["id"], data=data, format="multipart")
@@ -138,7 +138,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
-            "status": "true",
+            "conclusion": "true",
             "links": '["https://factlist.org"]'
         }
 
@@ -148,7 +148,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
-            "status": "inconclusive",
+            "conclusion": "inconclusive",
             "links": '["https://factlist.org"]'
         }
         response = enis_client.patch('/api/v1/claims/%s/evidences/%s/' % (claim_id, response.data["id"]), data=data, format="multipart")
@@ -171,7 +171,7 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
-            "status": "true",
+            "conclusion": "true",
             "links": '["https://factlist.org"]'
         }
 
