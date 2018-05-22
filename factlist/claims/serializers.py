@@ -39,9 +39,18 @@ class CreateEvidenceSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
+        if len(validated_data["text"]) < 30:
+            raise ValidationError("Claim text must have minimum length of 30 characters")
         request = self.context['request']
         if 'links' not in request.POST and "files" not in request.FILES:
             raise ValidationError("Claim must contain at least a file or link")
+        files = request.FILES.getlist("files")
+        if "links" in request.POST:
+            if request.POST["links"] == "" and len(files) == 0:
+                raise ValidationError("Claim must contain at least a file or link")
+        else:
+            if len(files) == 0:
+                raise ValidationError("Claim must contain at least a file or link")
         evidence = Evidence()
         if "text" in validated_data:
             evidence.text = validated_data.pop("text")
@@ -53,6 +62,8 @@ class CreateEvidenceSerializer(serializers.ModelSerializer):
         evidence.save()
         if 'links' in request.POST:
             links = literal_eval(request.POST['links'])
+            if len(links) > 6:
+                raise ValidationError("Maximum of 6 links are allowed per evidence")
             for link in links:
                 try:
                     validate = URLValidator()
@@ -62,7 +73,8 @@ class CreateEvidenceSerializer(serializers.ModelSerializer):
                 link_object = Link.objects.create(link=link)
                 evidence.links.add(link_object)
         if 'files' in request.FILES:
-            files = request.FILES.getlist("files")
+            if len(files) > 5:
+                raise ValidationError("Maximum of 5 files allowed per evidence")
             for file in files:
                 file_object = File.objects.create(file=file)
                 evidence.files.add(file_object.id)
@@ -74,18 +86,24 @@ class CreateEvidenceSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         request = self.context["request"]
         if "text" in validated_data:
+            if len(validated_data["text"]) < 30:
+                raise ValidationError("Claim text must have minimum length of 30 characters")
             instance.text = validated_data.pop("text")
         if "conclusion" in validated_data:
             instance.conclusion = validated_data.pop("conclusion")
         if 'links' in request.POST:
             instance.links.all().delete()
             links = literal_eval(request.POST['links'])
+            if len(links) > 6:
+                raise ValidationError("Maximum of 6 links are allowed per evidence")
             for link in links:
                 link_object = Link.objects.create(link=link)
                 instance.links.add(link_object)
         if 'files' in request.FILES:
             instance.files.all().delete()
             files = request.FILES.getlist("files")
+            if len(files) > 5:
+                raise ValidationError("Maximum of 5 files allowed per evidence")
             for file in files:
                 file_object = File.objects.create(file=file)
                 instance.files.add(file_object.id)
@@ -123,12 +141,23 @@ class CreateClaimSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
+        if len(validated_data["text"]) < 30:
+            raise ValidationError("Claim text must have minimum length of 30 characters")
         claim = Claim.objects.create(**validated_data)
         request = self.context["request"]
         if not 'links' in request.POST and not "files" in request.FILES:
             raise ValidationError("Claim must contain at least a file or link")
+        files = request.FILES.getlist("files")
+        if "links" in request.POST:
+            if request.POST["links"] == "" and len(files) == 0:
+                raise ValidationError("Claim must contain at least a file or link")
+        else:
+            if len(files) == 0:
+                raise ValidationError("Claim must contain at least a file or link")
         if 'links' in request.POST:
             links = literal_eval(request.POST['links'])
+            if len(links) > 6:
+                raise ValidationError("Maximum of 6 links are allowed per claim")
             for link in links:
                 try:
                     validate = URLValidator()
@@ -138,7 +167,8 @@ class CreateClaimSerializer(serializers.ModelSerializer):
                 link_object = Link.objects.create(link=link)
                 claim.links.add(link_object)
         if 'files' in request.FILES:
-            files = request.FILES.getlist("files")
+            if len(files) > 5:
+                raise ValidationError("Maximum of 5 files allowed per claim")
             for file in files:
                 file_object = File.objects.create(file=file)
                 claim.files.add(file_object.id)
@@ -147,18 +177,24 @@ class CreateClaimSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         if "text" in validated_data:
+            if len(validated_data["text"]) < 30:
+                raise ValidationError("Claim text must have minimum length of 30 characters")
             instance.text = validated_data.pop("text")
 
         request = self.context['request']
         if 'links' in request.POST:
             instance.links.all().delete()
             links = literal_eval(request.POST['links'])
+            if len(links) > 6:
+                raise ValidationError("Maximum of 6 links are allowed per claim")
             for link in links:
                 link_object = Link.objects.create(link=link)
                 instance.links.add(link_object)
         if 'files' in request.FILES:
             instance.files.all().delete()
             files = request.FILES.getlist("files")
+            if len(files) > 5:
+                raise ValidationError("Maximum of 5 files allowed per claim")
             for file in files:
                 file_object = File.objects.create(file=file)
                 instance.files.add(file_object.id)
