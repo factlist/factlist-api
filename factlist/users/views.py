@@ -18,7 +18,7 @@ class UserSignupView(CreateAPIView):
 
 
 class UserMeView(RetrieveUpdateDestroyAPIView):
-    authentication_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     serializer_class = UserMeSerializer
 
     def get_object(self):
