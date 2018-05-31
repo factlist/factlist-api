@@ -14,7 +14,7 @@ class EmbedView(APIView):
 
     def get(self, request, *args, **kwargs):
         if request.GET.get('link') is None:
-            raise ValidationError('Missing the url argument')
+            raise ValidationError({'link': ['Missing the url argument']})
         query = {
             "url": request.GET.get("link"),
             "key": os.environ.get("EMBEDLY_API_KEY"),

@@ -23,7 +23,7 @@ class ListAndCreateClaimView(ListCreateAPIView):
             if user.exists():
                 return Claim.objects.filter(user=user)
             else:
-                raise ValidationError('There is no user found with the given username')
+                raise ValidationError({'filter': ['There is no user with given username']})
 
     def get_permissions(self):
         if self.request.method == "GET":
