@@ -60,6 +60,7 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
+    os.environ.get("CLIENT_HOST")
 )
 
 ROOT_URLCONF = 'factlist.urls'
