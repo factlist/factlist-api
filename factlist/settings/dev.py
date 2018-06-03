@@ -1,4 +1,5 @@
 from .base import *
+import os
 
 DEBUG = True
 
@@ -13,3 +14,5 @@ CACHES = {
         "TIMEOUT": None,
     }
 }
+
+ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOST")]
