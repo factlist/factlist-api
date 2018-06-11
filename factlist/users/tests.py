@@ -66,14 +66,14 @@ class UserTestCase(TestCase, UserTestMixin):
         client.credentials(HTTP_AUTHORIZATION='Token ' + user.auth_token.key)
 
         data = {
-            "old_password": "#this_password_is_wrong",
+            "current_password": "#this_password_is_wrong",
             "new_password": "#that_password_is_wrong"
         }
         response = client.patch("/api/v1/users/password/", data=data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         data = {
-            "old_password": "factlist_is_awesome",
+            "current_password": "factlist_is_awesome",
             "new_password": "#factlist_is_awesome"
         }
         response = client.patch("/api/v1/users/password/", data=data)
