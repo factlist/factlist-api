@@ -1,13 +1,14 @@
 import os
 
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
+from rest_framework import status
 import tweepy
 
-from .serializers import UserSignupSerializer, UserMeSerializer, UserAuthSerializer
+from .serializers import UserSignupSerializer, UserMeSerializer, UserAuthSerializer, ChangePasswordSerializer
 
 
 class UserSignupView(CreateAPIView):
@@ -54,3 +55,27 @@ class UserTwitterRequestTokenView(APIView):
     def get(self, request, *args, **kwargs):
         auth = tweepy.OAuthHandler(os.environ.get("TWITTER_CONSUMER_KEY"), os.environ.get("TWITTER_CONSUMER_SECRET"))
         return Response({"redirect_link": auth.get_authorization_url()})
+
+
+class PasswordChangeView(UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ChangePasswordSerializer
+
+    def get_object(self):
+        object = self.request.user
+        self.check_object_permissions(self.request, object)
+        return object
+
+    def update(self, request, *args, **kwargs):
+        object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            if not object.check_password(serializer.data.get("old_password")):
+                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+            object.set_password(serializer.data.get("new_password"))
+            object.save()
+            return Response(UserMeSerializer(object).data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

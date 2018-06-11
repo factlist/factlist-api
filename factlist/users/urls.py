@@ -1,6 +1,7 @@
 from django.conf.urls import url
 
-from .views import UserLoginView, UserSignupView, UserMeView, UserLogoutView, UserTwitterRequestTokenView
+from .views import UserLoginView, UserSignupView, UserMeView, UserLogoutView, UserTwitterRequestTokenView, \
+    PasswordChangeView
 
 urlpatterns = [
     url(r'^users/login/$', UserLoginView.as_view(), name='login'),
@@ -8,4 +9,5 @@ urlpatterns = [
     url(r'^users/me/$', UserMeView.as_view(), name='me'),
     url(r'^users/logout/$', UserLogoutView.as_view()),
     url(r'^users/auth/twitter/$', UserTwitterRequestTokenView.as_view()),
+    url(r'^users/password/$', PasswordChangeView.as_view()),
 ]

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.crypto import get_random_string
 from rest_framework.authtoken.models import Token
 
 
@@ -12,6 +13,20 @@ class User(AbstractUser):
     avatar = models.ImageField(width_field="avatar_width", height_field="avatar_height", upload_to="users/images/%Y/%m/%d", null=True, blank=True)
     avatar_width = models.PositiveIntegerField(editable=False, null=True, blank=True)
     avatar_height = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    verified = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        created = self.pk is None
+        super(User, self).save(*args, **kwargs)
+        if created:
+            Token.objects.create(user=self)
+            # Twitter users don't need to verify, that is why we check if the user is verified or not
+            if not self.verified:
+                key = get_random_string(50)
+                while EmailVerification.objects.filter(key=key).exists():
+                    key = get_random_string(50)
+                EmailVerification.objects.create(key=key, user=self)
+                # Send verification email
 
     def __str__(self):
         return self.username
@@ -20,7 +35,6 @@ class User(AbstractUser):
         db_table = 'users'
 
 
-@receiver(post_save, sender=User)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
+class EmailVerification(models.Model):
+    key = models.CharField(max_length=50, unique=True)
+    user = models.ForeignKey(User)
