@@ -5,6 +5,7 @@ from rest_framework.authtoken.models import Token
 
 from .models import User
 from factlist.claims.models import Claim
+from factlist.claims.serializers import ClaimSerializer
 
 
 class UserSignupSerializer(serializers.ModelSerializer):
@@ -61,11 +62,22 @@ class UserAuthSerializer(serializers.Serializer):
         return attrs
 
 
-class SimpleUserSerializer(serializers.ModelSerializer):
+class UserProfileSerializer(serializers.ModelSerializer):
+    claim_count = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'username', 'avatar', 'name')
+        fields = [
+            "id",
+            "username",
+            "name",
+            "bio",
+            "claim_count",
+            "avatar",
+        ]
+
+    def get_claim_count(self, user):
+        return Claim.objects.filter(user=user).count()
 
 
 class ChangePasswordSerializer(serializers.Serializer):

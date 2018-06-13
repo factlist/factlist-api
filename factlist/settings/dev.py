@@ -15,4 +15,4 @@ CACHES = {
     }
 }
 
-ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOST")]
+ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOST"), "localhost"]

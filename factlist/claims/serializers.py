@@ -3,11 +3,17 @@ from ast import literal_eval
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.core.cache import cache
-from django.conf import settings
 from django.core.validators import URLValidator
 
-from factlist.users.serializers import SimpleUserSerializer
+from factlist.users.models import User
 from .models import Claim, Evidence, File, Link
+
+
+class SimpleUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'avatar', 'name', 'bio')
 
 
 class FileSerializer(serializers.ModelSerializer):

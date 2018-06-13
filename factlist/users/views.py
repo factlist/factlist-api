@@ -1,14 +1,17 @@
 import os
 
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, UpdateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, UpdateAPIView, \
+    RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 import tweepy
 
-from .serializers import UserSignupSerializer, UserMeSerializer, UserAuthSerializer, ChangePasswordSerializer
+from .serializers import UserSignupSerializer, UserMeSerializer, UserAuthSerializer, ChangePasswordSerializer, \
+    UserProfileSerializer
+from .models import User
 
 
 class UserSignupView(CreateAPIView):
@@ -79,3 +82,16 @@ class PasswordChangeView(UpdateAPIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class UserView(RetrieveAPIView):
+    serializer_class = UserProfileSerializer
+    lookup_field = "username"
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return AllowAny(),
+        else:
+            return IsAuthenticated(),
+
+    def get_queryset(self):
+        return User.objects.filter(username=self.kwargs["username"])
