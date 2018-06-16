@@ -83,3 +83,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class ChangePasswordSerializer(serializers.Serializer):
     current_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+
+
+class ResetPasswordCreationSerializer(serializers.Serializer):
+    user_identifier = serializers.CharField(required=True)
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    key = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)

@@ -1,8 +1,11 @@
+from datetime import timedelta
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.crypto import get_random_string
+from django.utils import timezone
 from rest_framework.authtoken.models import Token
 
 
@@ -38,3 +41,9 @@ class User(AbstractUser):
 class EmailVerification(models.Model):
     key = models.CharField(max_length=50, unique=True)
     user = models.ForeignKey(User)
+
+
+class PasswordReset(models.Model):
+    key = models.CharField(max_length=50, unique=True)
+    user = models.ForeignKey(User)
+    until = models.DateTimeField(default=timezone.now() + timedelta(hours=24))

@@ -7,11 +7,15 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework import status
+from django.core import exceptions
+from django.contrib.auth import password_validation
+from django.utils import timezone
+from django.utils.crypto import get_random_string
 import tweepy
 
 from .serializers import UserSignupSerializer, UserMeSerializer, UserAuthSerializer, ChangePasswordSerializer, \
-    UserProfileSerializer
-from .models import User
+    UserProfileSerializer, ResetPasswordSerializer, ResetPasswordCreationSerializer
+from .models import User, PasswordReset
 
 
 class UserSignupView(CreateAPIView):
@@ -95,3 +99,55 @@ class UserView(RetrieveAPIView):
 
     def get_queryset(self):
         return User.objects.filter(username=self.kwargs["username"])
+
+
+class PasswordResetCreationView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = ResetPasswordCreationSerializer(data=request.data)
+        if serializer.is_valid():
+            sender = None
+            user = User.objects.filter(username=serializer.data["user_identifier"])
+            if user.exists():
+                sender = user.first()
+            user = User.objects.filter(email=serializer.data["user_identifier"])
+            if user.exists():
+                sender = user.first()
+            if sender:
+                key = get_random_string(50)
+                while PasswordReset.objects.filter(key=key):
+                    key = get_random_string(50)
+                PasswordReset.objects.create(user=sender, key=key)
+            else:
+                pass
+            return Response(status=status.HTTP_200_OK)
+        return Response([{"user_identifier": "This field is required"}], status=status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordResetView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = ResetPasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            password_reset = PasswordReset.objects.filter(key=serializer.data["key"])
+            if password_reset.exists():
+                # Checking if the key is valid
+                until = password_reset.first().until
+                if timezone.now() > until:
+                    return Response([{"key": "The key is expired"}], status=status.HTTP_400_BAD_REQUEST)
+                user = password_reset.first().user
+                # Password validation
+                try:
+                    password_validation.validate_password(serializer.data["password"])
+                except exceptions.ValidationError:
+                    return Response([{"password": "Invalid password"}], status=status.HTTP_400_BAD_REQUEST)
+                user.set_password(serializer.data["password"])
+                user.save()
+                password_reset.delete()
+                return Response({"Password changed successfully"}, status=status.HTTP_200_OK)
+            else:
+                return Response([{"key": "The key doesn't exists"}], status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

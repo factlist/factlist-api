@@ -1,9 +1,12 @@
+from datetime import timedelta
+
 from django.test import TestCase
 from django.utils.crypto import get_random_string
+from django.utils import timezone
 from rest_framework.test import APIClient
 from rest_framework import status
 
-from .models import User
+from .models import User, PasswordReset
 
 
 class UserTestMixin(object):
@@ -77,4 +80,98 @@ class UserTestCase(TestCase, UserTestMixin):
             "new_password": "#factlist_is_awesome"
         }
         response = client.patch("/api/v1/users/password/", data=data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_create_password_reset(self):
+        enis, enis_client = self.create_user_and_user_client()
+
+        password_reset = PasswordReset.objects.filter(user=enis)
+        self.assertFalse(password_reset.exists())
+
+        data = {
+            "user_identifier": enis.username
+        }
+        response = enis_client.post("/api/v1/users/forgot_password/", data=data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        password_reset = PasswordReset.objects.filter(user=enis)
+        self.assertTrue(password_reset.exists())
+        password_reset.delete()
+
+        password_reset = PasswordReset.objects.filter(user=enis)
+        self.assertFalse(password_reset.exists())
+
+        data = {
+            "user_identifier": enis.email
+        }
+        response = enis_client.post("/api/v1/users/forgot_password/", data=data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_change_password(self):
+        enis = User.objects.create_user(
+            username="enis",
+            password="#factlist",
+            email=get_random_string(5) + '@bobmail.com',
+            first_name=get_random_string(5),
+            last_name=get_random_string(5),
+            bio="Best backend developer of the world",
+            verified=True,
+        )
+        enis_client = APIClient()
+        enis_client.default_format = 'json'
+        enis_client.credentials(HTTP_AUTHORIZATION='Token ' + enis.auth_token.key)
+
+        data = {
+            'email': enis.email,
+            'password': '#factlist'
+        }
+        response = enis_client.post('/api/v1/users/login/', data=data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        password_reset = PasswordReset.objects.filter(user=enis)
+        self.assertFalse(password_reset.exists())
+
+        data = {
+            "user_identifier": enis.username
+        }
+        response = enis_client.post("/api/v1/users/forgot_password/", data=data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        password_reset = PasswordReset.objects.filter(user=enis)
+        self.assertTrue(password_reset.exists())
+
+        password_reset = password_reset.first()
+
+        data = {
+            "key": password_reset.key,
+            "password": "1"
+        }
+        response = enis_client.post("/api/v1/users/change_password/", data=data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        password_reset.until = timezone.now() - timedelta(hours=2)
+        password_reset.save()
+
+        data = {
+            "key": password_reset.key,
+            "password": "#factlist_is_awesome"
+        }
+        response = enis_client.post("/api/v1/users/change_password/", data=data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        password_reset.until = timezone.now() + timedelta(hours=24)
+        password_reset.save()
+
+        data = {
+            "key": password_reset.key,
+            "password": "#factlist_is_awesome"
+        }
+        response = enis_client.post("/api/v1/users/change_password/", data=data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = {
+            'email': enis.email,
+            'password': '#factlist_is_awesome'
+        }
+        response = enis_client.post('/api/v1/users/login/', data=data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
