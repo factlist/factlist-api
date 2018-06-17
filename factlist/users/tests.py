@@ -58,6 +58,22 @@ class UserTestCase(TestCase, UserTestMixin):
         response = user_client.post('/api/v1/users/login/', data=data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    def test_update_user(self):
+        enis, enis_client = self.create_user_and_user_client()
+
+        data = {
+            "username": "enisbt",
+            "name": "Enis B. Tuysuz",
+            "bio": "Factlist is awesome",
+            "email": "e@t.com"
+        }
+        response = enis_client.patch("/api/v1/users/me/", data=data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["username"], "enisbt")
+        self.assertEqual(response.data["name"], "Enis B. Tuysuz")
+        self.assertEqual(response.data["email"], "e@t.com")
+        self.assertEqual(response.data["bio"], "Factlist is awesome")
+
     def test_change_password(self):
         user = User.objects.create_user(
             username=get_random_string(10),
