@@ -14,8 +14,8 @@ from django.utils.crypto import get_random_string
 import tweepy
 
 from .serializers import UserSignupSerializer, UserMeSerializer, UserAuthSerializer, ChangePasswordSerializer, \
-    UserProfileSerializer, ResetPasswordSerializer, ResetPasswordCreationSerializer
-from .models import User, PasswordReset
+    UserProfileSerializer, ResetPasswordSerializer, ResetPasswordCreationSerializer, EmailVerificationSerializer
+from .models import User, PasswordReset, EmailVerification
 
 
 class UserSignupView(CreateAPIView):
@@ -151,3 +151,18 @@ class PasswordResetView(APIView):
                 return Response([{"key": "The key doesn't exists"}], status=status.HTTP_404_NOT_FOUND)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class EmailVerificationView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = EmailVerificationSerializer(data=request.data)
+        if serializer.is_valid():
+            verification = EmailVerification.objects.filter(key=serializer.data["key"])
+            if verification.exists():
+                user = verification.first().user
+                user.verified = True
+                user.save()
+                return Response(status=status.HTTP_200_OK)
+        return Response([{"key": "Verification key doesn't exists"}], status=status.HTTP_400_BAD_REQUEST)

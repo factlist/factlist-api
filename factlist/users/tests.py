@@ -6,7 +6,7 @@ from django.utils import timezone
 from rest_framework.test import APIClient
 from rest_framework import status
 
-from .models import User, PasswordReset
+from .models import User, PasswordReset, EmailVerification
 
 
 class UserTestMixin(object):
@@ -191,3 +191,32 @@ class UserTestCase(TestCase, UserTestMixin):
         }
         response = enis_client.post('/api/v1/users/login/', data=data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_verify_email(self):
+        enis = User.objects.create_user(
+            username="enis",
+            password="#factlist",
+            email=get_random_string(5) + '@bobmail.com',
+            first_name=get_random_string(5),
+            last_name=get_random_string(5),
+            bio="Best backend developer of the world",
+            verified=False,
+        )
+        enis_client = APIClient()
+        enis_client.default_format = 'json'
+        enis_client.credentials(HTTP_AUTHORIZATION='Token ' + enis.auth_token.key)
+
+        user = User.objects.get(id=enis.id)
+        self.assertFalse(user.verified)
+
+        email_verification = EmailVerification.objects.filter(user=enis)
+        self.assertTrue(email_verification.exists())
+
+        data = {
+            "key": email_verification.first().key
+        }
+        response = enis_client.post("/api/v1/users/verify_email/", data=data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        user = User.objects.get(id=enis.id)
+        self.assertTrue(user.verified)

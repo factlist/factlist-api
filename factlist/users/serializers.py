@@ -92,3 +92,7 @@ class ResetPasswordCreationSerializer(serializers.Serializer):
 class ResetPasswordSerializer(serializers.Serializer):
     key = serializers.CharField(required=True)
     password = serializers.CharField(required=True)
+
+
+class EmailVerificationSerializer(serializers.Serializer):
+    key = serializers.CharField(required=True)

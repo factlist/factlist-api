@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from .views import UserLoginView, UserSignupView, UserMeView, UserLogoutView, UserTwitterRequestTokenView, \
-    PasswordChangeView, UserView, PasswordResetView, PasswordResetCreationView
+    PasswordChangeView, UserView, PasswordResetView, PasswordResetCreationView, EmailVerificationView
 
 urlpatterns = [
     url(r'^users/login/$', UserLoginView.as_view(), name='login'),
@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^users/password/$', PasswordChangeView.as_view()),
     url(r'^users/forgot_password/$', PasswordResetCreationView.as_view()),
     url(r'^users/change_password/$', PasswordResetView.as_view()),
+    url(r'^users/verify_email/$', EmailVerificationView.as_view()),
     url(r'^users/(?P<username>.+)/$', UserView.as_view()),
 ]
