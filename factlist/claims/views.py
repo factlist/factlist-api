@@ -8,6 +8,7 @@ from rest_framework import status
 from .models import Claim, Evidence
 from .serializers import ClaimSerializer, EvidenceSerializer, CreateClaimSerializer, CreateEvidenceSerializer
 from factlist.users.models import User
+# from factlist.users.permissions import IsVerified
 
 
 class ListAndCreateClaimView(ListCreateAPIView):
