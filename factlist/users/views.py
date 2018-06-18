@@ -89,7 +89,7 @@ class PasswordChangeView(UpdateAPIView):
                 "email": object.email,
                 "name": object.name,
             }
-            send_sns(message, "password-changed")
+            send_sns(message, "user-password-changed")
             return Response(UserMeSerializer(object).data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -129,13 +129,13 @@ class PasswordResetCreationView(APIView):
                 PasswordReset.objects.create(user=sender, key=key)
                 # TODO: Send password reset email
                 message = {
-                    "id": user.id,
-                    "username": user.username,
-                    "email": user.email,
-                    "name": user.name,
+                    "id": sender.id,
+                    "username": sender.username,
+                    "email": sender.email,
+                    "name": sender.name,
                     "key": key
                 }
-                send_sns(message, "password-reset")
+                send_sns(message, "user-password-reset")
             else:
                 pass
             return Response(status=status.HTTP_200_OK)
