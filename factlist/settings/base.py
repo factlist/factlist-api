@@ -22,9 +22,10 @@ INSTALLED_APPS = [
 
     'factlist.users',
     'factlist.claims',
+    'factlist.core',
 ]
 
-
+# DRF
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -36,6 +37,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 25,
 }
 
+# S3
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
@@ -58,6 +60,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# CORS
 CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
     os.environ.get("CLIENT_HOST")
@@ -94,6 +97,7 @@ DATABASES = {
     }
 }
 
+# Redis
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",

@@ -16,6 +16,7 @@ import tweepy
 from .serializers import UserSignupSerializer, UserMeSerializer, UserAuthSerializer, ChangePasswordSerializer, \
     UserProfileSerializer, ResetPasswordSerializer, ResetPasswordCreationSerializer, EmailVerificationSerializer
 from .models import User, PasswordReset, EmailVerification
+from factlist.core.utils import send_sns
 
 
 class UserSignupView(CreateAPIView):
@@ -82,6 +83,13 @@ class PasswordChangeView(UpdateAPIView):
                 return Response({"current_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
             object.set_password(serializer.data.get("new_password"))
             object.save()
+            message = {
+                "id": object.id,
+                "username": object.username,
+                "email": object.email,
+                "name": object.name,
+            }
+            send_sns(message, "password-changed")
             return Response(UserMeSerializer(object).data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -119,6 +127,15 @@ class PasswordResetCreationView(APIView):
                 while PasswordReset.objects.filter(key=key):
                     key = get_random_string(50)
                 PasswordReset.objects.create(user=sender, key=key)
+                # TODO: Send password reset email
+                message = {
+                    "id": user.id,
+                    "username": user.username,
+                    "email": user.email,
+                    "name": user.name,
+                    "key": key
+                }
+                send_sns(message, "password-reset")
             else:
                 pass
             return Response(status=status.HTTP_200_OK)

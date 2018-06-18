@@ -213,6 +213,12 @@ class UserTestCase(TestCase, UserTestMixin):
         self.assertTrue(email_verification.exists())
 
         data = {
+            "key": "1"
+        }
+        response = enis_client.post("/api/v1/users/verify_email/", data=data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = {
             "key": email_verification.first().key
         }
         response = enis_client.post("/api/v1/users/verify_email/", data=data)

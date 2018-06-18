@@ -1,3 +1,5 @@
+import json
+
 from datetime import timedelta
 
 from django.db import models
@@ -5,6 +7,10 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.crypto import get_random_string
 from django.utils import timezone
 from rest_framework.authtoken.models import Token
+from rest_framework.serializers import ModelSerializer
+import boto3
+
+from factlist.core.utils import send_sns
 
 
 class User(AbstractUser):
@@ -27,7 +33,14 @@ class User(AbstractUser):
                 while EmailVerification.objects.filter(key=key).exists():
                     key = get_random_string(50)
                 EmailVerification.objects.create(key=key, user=self)
-                # Send verification email
+                message = {
+                    "id": self.id,
+                    "username": self.username,
+                    "email": self.email,
+                    "name": self.name,
+                    "key": key
+                }
+                send_sns(message, "user-verification")
 
     def __str__(self):
         return self.username
