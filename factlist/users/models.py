@@ -1,5 +1,3 @@
-import json
-
 from datetime import timedelta
 
 from django.db import models
@@ -7,8 +5,6 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.crypto import get_random_string
 from django.utils import timezone
 from rest_framework.authtoken.models import Token
-from rest_framework.serializers import ModelSerializer
-import boto3
 
 from factlist.core.utils import send_sns
 

@@ -5,15 +5,15 @@ from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
 from rest_framework import status
 
-from .models import Claim, Evidence
+from .models import Claim, Evidence, Link, File
 from .serializers import ClaimSerializer, EvidenceSerializer, CreateClaimSerializer, CreateEvidenceSerializer
 from factlist.users.models import User
+from .constants import EVIDENCE_STATUS
 # from factlist.users.permissions import IsVerified
 
 
 class ListAndCreateClaimView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    parser_classes = (MultiPartParser, JSONParser)
 
     def get_queryset(self):
         if self.request.GET.get('filter') is None:
@@ -39,14 +39,22 @@ class ListAndCreateClaimView(ListCreateAPIView):
             return CreateClaimSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid()
-        self.perform_create(serializer)
-        claim = Claim.objects.get(pk=serializer.data['id'])
-        return Response(ClaimSerializer(claim).data, status=status.HTTP_201_CREATED)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer = CreateClaimSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            user = self.request.user
+            claim = Claim.objects.create(text=serializer.data["text"], user=user)
+            if "links" in serializer.data:
+                links = serializer.data["links"]
+                for link in links:
+                    link_object = Link.objects.create(link=link)
+                    claim.links.add(link_object)
+            if "files" in serializer.data:
+                files = serializer.data["files"]
+                for file in files:
+                    file_object = File.objects.create(file=file)
+                    claim.files.add(file_object)
+            claim.save()
+            return Response(ClaimSerializer(claim).data, status=status.HTTP_201_CREATED)
 
 
 class ClaimView(RetrieveUpdateDestroyAPIView):
@@ -73,16 +81,24 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
-
-        return Response(ClaimSerializer(instance).data, status=status.HTTP_200_OK)
+        serializer = CreateClaimSerializer(data=request.data, partial=partial)
+        if serializer.is_valid(raise_exception=True):
+            if "text" in serializer.data:
+                instance.text = serializer.data["text"]
+            if "links" in serializer.data:
+                links = serializer.data["links"]
+                instance.links.all().delete()
+                for link in links:
+                    link_object = Link.objects.create(link=link)
+                    instance.links.add(link_object)
+            if "files" in serializer.data:
+                files = serializer.data["files"]
+                instance.files.all().delete()
+                for file in files:
+                    file_object = File.objects.create(file=file)
+                    instance.files.add(file_object)
+            instance.save()
+            return Response(ClaimSerializer(instance).data, status=status.HTTP_200_OK)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -104,9 +120,6 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
         context['claim_id'] = self.kwargs['pk']
         return context
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user, claim=self.kwargs['pk'])
-
     def get_queryset(self):
         return Evidence.objects.filter(claim_id=self.kwargs["pk"], active=True)
 
@@ -117,11 +130,28 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
             return CreateEvidenceSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid()
-        self.perform_create(serializer)
-        evidence = Evidence.objects.get(pk=serializer.data['id'])
-        return Response(EvidenceSerializer(evidence).data, status=status.HTTP_201_CREATED)
+        serializer = CreateEvidenceSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            user = self.request.user
+            claim_id = self.kwargs["pk"]
+            evidence = Evidence.objects.create(
+                text=serializer.data["text"],
+                user=user,
+                claim_id=claim_id,
+                conclusion=serializer.data["conclusion"]
+            )
+            if "links" in serializer.data:
+                links = serializer.data["links"]
+                for link in links:
+                    link_object = Link.objects.create(link=link)
+                    evidence.links.add(link_object)
+            if "files" in serializer.data:
+                files = serializer.data["files"]
+                for file in files:
+                    file_object = File.objects.create(file=file)
+                    evidence.files.add(file_object)
+            evidence.save()
+            return Response(EvidenceSerializer(evidence).data, status=status.HTTP_201_CREATED)
 
 
 class EvidenceView(RetrieveUpdateDestroyAPIView):
@@ -148,16 +178,28 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
-
-        return Response(EvidenceSerializer(instance).data, status=status.HTTP_200_OK)
+        serializer = CreateEvidenceSerializer(data=request.data, partial=partial)
+        if serializer.is_valid(raise_exception=True):
+            if "text" in serializer.data:
+                instance.text = serializer.data["text"]
+            if "conclusion" in serializer.data:
+                if serializer.data["conclusion"] not in EVIDENCE_STATUS:
+                    raise ValidationError({"conclusion": ["Evidence conclusion can be 'true', 'false' or 'inconclusive'."]})
+                instance.conclusion = serializer.data["conclusion"]
+            if "links" in serializer.data:
+                links = serializer.data["links"]
+                instance.links.all().delete()
+                for link in links:
+                    link_object = Link.objects.create(link=link)
+                    instance.links.add(link_object)
+            if "files" in serializer.data:
+                files = serializer.data["files"]
+                instance.links.all().delete()
+                for file in files:
+                    file_object = File.objects.create(file=file)
+                    instance.files.add(file_object)
+            instance.save()
+            return Response(EvidenceSerializer(instance).data, status=status.HTTP_200_OK)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

@@ -11,16 +11,11 @@ class ClaimTestCase(TestCase, UserTestMixin):
         user, client = self.create_user_and_user_client()
 
         data = {
-            'text': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+            'text': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'links': ['https://factlist.org'],
+            'files': ['https://factlist.org']
         }
         response = client.post('/api/v1/claims/', data=data)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        data = {
-            'text': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'links': "['https://factlist.org']"
-        }
-        response = client.post('/api/v1/claims/', data=data, format="multipart")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['text'], 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
 
@@ -29,9 +24,9 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': '["https://factlist.org"]'
+            'links': ["https://factlist.org"]
         }
-        response = client.post('/api/v1/claims/', data=data, format="multipart")
+        response = client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = client.get('/api/v1/claims/')
@@ -39,9 +34,9 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': "['https://factlist.org', 'https://lulxd.com']"
+            'links': ['https://factlist.org', 'https://lulxd.com']
         }
-        response = client.post('/api/v1/claims/', data=data, format="multipart")
+        response = client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = client.get('/api/v1/claims/')
@@ -53,9 +48,9 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': '["https://factlist.org"]'
+            'links': ["https://factlist.org"]
         }
-        response = enis_client.post('/api/v1/claims/', data=data, format="multipart")
+        response = enis_client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = enis_client.get('/api/v1/claims/%s/' % response.data["id"])
@@ -72,19 +67,19 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': "['https://factlist.org']"
+            'links': ['https://factlist.org']
         }
-        response = enis_client.post('/api/v1/claims/', data=data, format="multipart")
+        response = enis_client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': "['https://factlist.org', 'https://factlist.com/api/v1/']"
+            'links': ['https://factlist.org', 'https://factlist.com/api/v1/']
         }
-        response = enis_client.patch('/api/v1/claims/%s/' % response.data['id'], data=data, format="multipart")
+        response = enis_client.patch('/api/v1/claims/%s/' % response.data['id'], data=data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        response = serafettin_client.patch('/api/v1/claims/%s/' % response.data['id'], data=data, format="multipart")
+        response = serafettin_client.patch('/api/v1/claims/%s/' % response.data['id'], data=data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_claim(self):
@@ -93,9 +88,9 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': '["https://factlist.org"]'
+            'links': ["https://factlist.org"]
         }
-        response = enis_client.post('/api/v1/claims/', data=data, format="multipart")
+        response = enis_client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         claim_id = response.data['id']
 
@@ -112,17 +107,17 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
-            "links": '["https://twitter.com/factlist"]'
+            "links": ["https://twitter.com/factlist"]
         }
-        response = client.post('/api/v1/claims/', data=data, format="multipart")
+        response = client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
             "conclusion": "true",
-            "links": '["https://factlist.org"]'
+            "links": ["https://factlist.org"]
         }
-        response = client.post('/api/v1/claims/%s/evidences/' % response.data["id"], data=data, format="multipart")
+        response = client.post('/api/v1/claims/%s/evidences/' % response.data["id"], data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_modify_an_evidence(self):
@@ -131,30 +126,30 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': '["https://factlist.org"]'
+            'links': ["https://factlist.org"]
         }
-        response = serafettin_client.post('/api/v1/claims/', data=data, format="multipart")
+        response = serafettin_client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
             "conclusion": "true",
-            "links": '["https://factlist.org"]'
+            "links": ["https://factlist.org"]
         }
 
-        response = enis_client.post('/api/v1/claims/%s/evidences/' % response.data["id"], data=data, format="multipart")
+        response = enis_client.post('/api/v1/claims/%s/evidences/' % response.data["id"], data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         claim_id = response.data["id"]
 
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
             "conclusion": "inconclusive",
-            "links": '["https://factlist.org"]'
+            "links": ["https://factlist.org"]
         }
-        response = enis_client.patch('/api/v1/claims/%s/evidences/%s/' % (claim_id, response.data["id"]), data=data, format="multipart")
+        response = enis_client.patch('/api/v1/claims/%s/evidences/%s/' % (claim_id, response.data["id"]), data=data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        response = serafettin_client.patch('/api/v1/claims/%s/evidences/%s/' % (claim_id, response.data["id"]), data=data, format="multipart")
+        response = serafettin_client.patch('/api/v1/claims/%s/evidences/%s/' % (claim_id, response.data["id"]), data=data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_an_evidence(self):
@@ -163,19 +158,19 @@ class ClaimTestCase(TestCase, UserTestMixin):
 
         data = {
             'text': 'Factlist is a collaborative fact-checking platform.',
-            'links': '["https://factlist.org"]',
+            'links': ["https://factlist.org"],
         }
-        response = serafettin_client.post('/api/v1/claims/', data=data, format="multipart")
+        response = serafettin_client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         claim_id = response.data["id"]
 
         data = {
             "text": "Factlist is a collaborative fact-checking platform.",
             "conclusion": "true",
-            "links": '["https://factlist.org"]'
+            "links": ["https://factlist.org"]
         }
 
-        response = enis_client.post('/api/v1/claims/%s/evidences/' % claim_id, data=data, format="multipart")
+        response = enis_client.post('/api/v1/claims/%s/evidences/' % claim_id, data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         evidence_id = response.data["id"]
 

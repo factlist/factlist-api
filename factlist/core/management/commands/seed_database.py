@@ -20,7 +20,7 @@ class Command(BaseCommand):
             email="serafettin@factlist.org",
             password="#factlist2018",
         )
-        with open("./factlist/claims/management/commands/seed.json") as json_raw:
+        with open("./factlist/core/management/commands/seed.json") as json_raw:
             json_file = json.load(json_raw)
             for key, value in json_file.items():
                 claim = Claim(

@@ -13,7 +13,7 @@ class Link(models.Model):
 
 
 class File(models.Model):
-    file = models.FileField(upload_to="files/%Y/%m/%d/", max_length=400)
+    file = models.TextField()
 
     class Meta:
         db_table = 'files'

@@ -6,3 +6,9 @@ EVIDENCE_STATUS_CHOICES = [
     (EVIDENCE_STATUS_INCONCLUSIVE, 'Inconclusive'),
     (EVIDENCE_STATUS_FALSE, 'False')
 ]
+
+EVIDENCE_STATUS = [
+    "true",
+    "false",
+    "inconclusive"
+]
