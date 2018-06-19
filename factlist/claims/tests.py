@@ -13,7 +13,6 @@ class ClaimTestCase(TestCase, UserTestMixin):
         data = {
             'text': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'links': ['https://factlist.org'],
-            'files': ['https://factlist.org']
         }
         response = client.post('/api/v1/claims/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

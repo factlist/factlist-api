@@ -1,5 +1,3 @@
-from ast import literal_eval
-
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.core.cache import cache
@@ -17,11 +15,26 @@ class SimpleUserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'avatar', 'name', 'bio')
 
 
+class UploadFileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = File
+        fields = ('image', 'id')
+
+
 class FileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = File
-        fields = ('file', 'id')
+        fields = [
+            "id",
+            "image",
+            "image_width",
+            "image_height",
+            "size",
+            "extension",
+            "name"
+        ]
 
 
 class LinkSerializer(serializers.ModelSerializer):
@@ -113,3 +126,13 @@ class ClaimSerializer(serializers.ModelSerializer):
             'false_count',
             'inconclusive_count'
         )
+
+
+class UploadFileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = File
+        fields = [
+            "id",
+            "image",
+        ]

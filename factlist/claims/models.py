@@ -13,7 +13,15 @@ class Link(models.Model):
 
 
 class File(models.Model):
-    file = models.TextField()
+    """
+    Only accepting images for now
+    """
+    image = models.ImageField(width_field="image_width", height_field="image_height", upload_to="claims/images/%Y/%m/%d")
+    image_width = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    image_height = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    size = models.PositiveIntegerField(null=True, blank=True)
+    extension = models.CharField(max_length=15, null=True, blank=True)
+    name = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         db_table = 'files'

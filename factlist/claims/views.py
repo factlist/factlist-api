@@ -1,4 +1,4 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import MultiPartParser, JSONParser
@@ -6,7 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Claim, Evidence, Link, File
-from .serializers import ClaimSerializer, EvidenceSerializer, CreateClaimSerializer, CreateEvidenceSerializer
+from .serializers import ClaimSerializer, EvidenceSerializer, CreateClaimSerializer, CreateEvidenceSerializer, \
+    UploadFileSerializer
 from factlist.users.models import User
 from .constants import EVIDENCE_STATUS
 # from factlist.users.permissions import IsVerified
@@ -51,7 +52,7 @@ class ListAndCreateClaimView(ListCreateAPIView):
             if "files" in serializer.data:
                 files = serializer.data["files"]
                 for file in files:
-                    file_object = File.objects.create(file=file)
+                    file_object = File.objects.get(id=file)
                     claim.files.add(file_object)
             claim.save()
             return Response(ClaimSerializer(claim).data, status=status.HTTP_201_CREATED)
@@ -95,7 +96,7 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
                 files = serializer.data["files"]
                 instance.files.all().delete()
                 for file in files:
-                    file_object = File.objects.create(file=file)
+                    file_object = File.objects.get(id=file)
                     instance.files.add(file_object)
             instance.save()
             return Response(ClaimSerializer(instance).data, status=status.HTTP_200_OK)
@@ -148,7 +149,7 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
             if "files" in serializer.data:
                 files = serializer.data["files"]
                 for file in files:
-                    file_object = File.objects.create(file=file)
+                    file_object = File.objects.get(id=file)
                     evidence.files.add(file_object)
             evidence.save()
             return Response(EvidenceSerializer(evidence).data, status=status.HTTP_201_CREATED)
@@ -194,9 +195,9 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
                     instance.links.add(link_object)
             if "files" in serializer.data:
                 files = serializer.data["files"]
-                instance.links.all().delete()
+                instance.files.all().delete()
                 for file in files:
-                    file_object = File.objects.create(file=file)
+                    file_object = File.objects.get(id=file)
                     instance.files.add(file_object)
             instance.save()
             return Response(EvidenceSerializer(instance).data, status=status.HTTP_200_OK)
@@ -205,3 +206,21 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response({"message": "Evidence deleted successfully"}, status=status.HTTP_200_OK)
+
+
+class UploadFileView(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UploadFileSerializer
+    parser_classes = (MultiPartParser,)
+
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        size = request.data["image"].size
+        name = request.data["image"].name
+        extension = name.split(".")[-1]
+        file_object = File.objects.get(id=response.data["id"])
+        file_object.size = size
+        file_object.name = name
+        file_object.extension = extension
+        file_object.save()
+        return response

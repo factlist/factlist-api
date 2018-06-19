@@ -1,8 +1,9 @@
 from django.conf.urls import url
 
-from .views import ClaimView, ListAndCreateClaimView, ListAndCreateEvidenceView, EvidenceView
+from .views import ClaimView, ListAndCreateClaimView, ListAndCreateEvidenceView, EvidenceView, UploadFileView
 
 urlpatterns = [
+    url(r'^files/$', UploadFileView.as_view()),
     url(r'^claims/$', ListAndCreateClaimView.as_view()),
     url(r'^claims/(?P<pk>[0-9]+)/$', ClaimView.as_view()),
     url(r'^claims/(?P<pk>[0-9]+)/evidences/$', ListAndCreateEvidenceView.as_view()),
