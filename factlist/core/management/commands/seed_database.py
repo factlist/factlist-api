@@ -36,7 +36,7 @@ class Command(BaseCommand):
                             claim=claim,
                             text=evidence["text"],
                             user=mock_user,
-                            conclusion=evidence["status"],
+                            conclusion=evidence["conclusion"],
                             created_at=evidence["created_at"],
                         )
                         evidence_object.save()
