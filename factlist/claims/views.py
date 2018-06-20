@@ -52,7 +52,10 @@ class ListAndCreateClaimView(ListCreateAPIView):
             if "files" in serializer.data:
                 files = serializer.data["files"]
                 for file in files:
-                    file_object = File.objects.get(id=file)
+                    try:
+                        file_object = File.objects.get(id=file)
+                    except File.DoesNotExist:
+                        raise ValidationError({'files': ['Invalid file']})
                     claim.files.add(file_object)
             claim.save()
             return Response(ClaimSerializer(claim).data, status=status.HTTP_201_CREATED)
@@ -96,7 +99,10 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
                 files = serializer.data["files"]
                 instance.files.all().delete()
                 for file in files:
-                    file_object = File.objects.get(id=file)
+                    try:
+                        file_object = File.objects.get(id=file)
+                    except File.DoesNotExist:
+                        raise ValidationError({'files': ['Invalid file']})
                     instance.files.add(file_object)
             instance.save()
             return Response(ClaimSerializer(instance).data, status=status.HTTP_200_OK)
@@ -149,7 +155,10 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
             if "files" in serializer.data:
                 files = serializer.data["files"]
                 for file in files:
-                    file_object = File.objects.get(id=file)
+                    try:
+                        file_object = File.objects.get(id=file)
+                    except File.DoesNotExist:
+                        raise ValidationError({'files': ['Invalid file']})
                     evidence.files.add(file_object)
             evidence.save()
             return Response(EvidenceSerializer(evidence).data, status=status.HTTP_201_CREATED)
@@ -197,7 +206,10 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
                 files = serializer.data["files"]
                 instance.files.all().delete()
                 for file in files:
-                    file_object = File.objects.get(id=file)
+                    try:
+                        file_object = File.objects.get(id=file)
+                    except File.DoesNotExist:
+                        raise ValidationError({'files': ['Invalid file']})
                     instance.files.add(file_object)
             instance.save()
             return Response(EvidenceSerializer(instance).data, status=status.HTTP_200_OK)
