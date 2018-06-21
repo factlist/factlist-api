@@ -139,7 +139,7 @@ class PasswordResetCreationView(APIView):
             else:
                 pass
             return Response(status=status.HTTP_200_OK)
-        return Response([{"user_identifier": "This field is required"}], status=status.HTTP_400_BAD_REQUEST)
+        return Response({"user_identifier": ["This field is required"]}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PasswordResetView(APIView):
@@ -153,19 +153,19 @@ class PasswordResetView(APIView):
                 # Checking if the key is valid
                 until = password_reset.first().until
                 if timezone.now() > until:
-                    return Response([{"key": "The key is expired"}], status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"key": ["The key is expired"]}, status=status.HTTP_400_BAD_REQUEST)
                 user = password_reset.first().user
                 # Password validation
                 try:
                     password_validation.validate_password(serializer.data["password"])
                 except exceptions.ValidationError:
-                    return Response([{"password": "Invalid password"}], status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"password": ["Invalid password"]}, status=status.HTTP_400_BAD_REQUEST)
                 user.set_password(serializer.data["password"])
                 user.save()
                 password_reset.delete()
                 return Response({"Password changed successfully"}, status=status.HTTP_200_OK)
             else:
-                return Response([{"key": "The key doesn't exists"}], status=status.HTTP_404_NOT_FOUND)
+                return Response({"key": ["The key doesn't exists"]}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -182,4 +182,4 @@ class EmailVerificationView(APIView):
                 user.verified = True
                 user.save()
                 return Response(status=status.HTTP_200_OK)
-        return Response([{"key": "Verification key doesn't exists"}], status=status.HTTP_400_BAD_REQUEST)
+        return Response({"key": ["Verification key doesn't exists"]}, status=status.HTTP_400_BAD_REQUEST)
