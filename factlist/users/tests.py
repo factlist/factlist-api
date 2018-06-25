@@ -226,3 +226,16 @@ class UserTestCase(TestCase, UserTestMixin):
 
         user = User.objects.get(id=enis.id)
         self.assertTrue(user.verified)
+
+    def test_username_blacklist(self):
+        user_client = APIClient()
+        user_client.default_format = 'json'
+        data = {
+            'username': '.well-known',
+            'email': 'enis@factlist.org',
+            'password': '#factlist',
+            'name': 'Enis B. Tuysuz',
+        }
+
+        response = user_client.post('/api/v1/users/register/', data=data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

@@ -2,10 +2,10 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate, password_validation
 from rest_framework.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
+from the_big_username_blacklist import validate as validate_username
 
 from .models import User
 from factlist.claims.models import Claim
-from factlist.claims.serializers import ClaimSerializer
 
 
 class UserSignupSerializer(serializers.ModelSerializer):
@@ -17,6 +17,9 @@ class UserSignupSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
+        username = validated_data.get("username")
+        if not validate_username(username):
+            raise ValidationError({"username": ["Invalid username"]})
         password = validated_data.get('password')
         try:
             password_validation.validate_password(password)

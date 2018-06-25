@@ -8,3 +8,4 @@ requests==2.18.4
 django-redis==4.9.0
 Pillow==5.0.0
 tweepy==3.6.0
+the-big-username-blacklist==1.5.2
