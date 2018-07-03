@@ -43,6 +43,14 @@ class ListAndCreateClaimView(ListCreateAPIView):
         serializer = CreateClaimSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             user = self.request.user
+            if "links" in serializer.data and "files" in serializer.data:
+                if not serializer.data["links"] and not serializer.data["files"]:
+                    raise ValidationError(
+                        {
+                            "files": ["Files and links cannot be empty at the same time"],
+                            "links": ["Files and links cannot be empty at the same time"],
+                        }
+                    )
             claim = Claim.objects.create(text=serializer.data["text"], user=user)
             if "links" in serializer.data:
                 links = serializer.data["links"]
@@ -141,6 +149,14 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
         if serializer.is_valid(raise_exception=True):
             user = self.request.user
             claim_id = self.kwargs["pk"]
+            if "links" in serializer.data and "files" in serializer.data:
+                if not serializer.data["links"] and not serializer.data["files"]:
+                    raise ValidationError(
+                        {
+                            "files": ["Files and links cannot be empty at the same time"],
+                            "links": ["Files and links cannot be empty at the same time"],
+                        }
+                    )
             evidence = Evidence.objects.create(
                 text=serializer.data["text"],
                 user=user,
