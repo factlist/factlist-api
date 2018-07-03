@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.core.cache import cache
-from django.core.validators import URLValidator
 
 from factlist.users.models import User
 from .models import Claim, Evidence, File, Link

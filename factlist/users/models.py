@@ -45,6 +45,12 @@ class User(AbstractUser):
         db_table = 'users'
 
 
+class TwitterUser(models.Model):
+    user = models.ForeignKey(User)
+    oauth_token = models.CharField(max_length=255)
+    oauth_secret = models.CharField(max_length=255)
+
+
 class EmailVerification(models.Model):
     key = models.CharField(max_length=50, unique=True)
     user = models.ForeignKey(User)
