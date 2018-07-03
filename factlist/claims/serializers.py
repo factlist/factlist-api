@@ -51,8 +51,8 @@ class LinkSerializer(serializers.ModelSerializer):
 class CreateEvidenceSerializer(serializers.Serializer):
     text = serializers.CharField(required=False)
     conclusion = serializers.CharField(required=False)
-    links = serializers.ListField(child=serializers.CharField(), max_length=6, required=False)
-    files = serializers.ListField(child=serializers.IntegerField(), max_length=5, required=False)
+    links = serializers.ListField(child=serializers.CharField(), max_length=6, required=False, min_length=1)
+    files = serializers.ListField(child=serializers.IntegerField(), max_length=5, required=False, min_length=1)
 
     def validate(self, attrs):
         if self.partial:
@@ -91,8 +91,8 @@ class EvidenceSerializer(serializers.ModelSerializer):
 
 class CreateClaimSerializer(serializers.Serializer):
     text = serializers.CharField(required=False)
-    links = serializers.ListField(child=serializers.CharField(), max_length=6, required=False)
-    files = serializers.ListField(child=serializers.IntegerField(), max_length=5, required=False)
+    links = serializers.ListField(child=serializers.CharField(), max_length=6, required=False, min_length=1)
+    files = serializers.ListField(child=serializers.IntegerField(), max_length=5, required=False, min_length=1)
 
     def validate(self, attrs):
         if self.partial:
