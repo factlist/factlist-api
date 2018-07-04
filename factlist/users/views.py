@@ -11,12 +11,13 @@ from django.core import exceptions
 from django.contrib.auth import password_validation
 from django.utils import timezone
 from django.utils.crypto import get_random_string
+from django.core.files import File
 import tweepy
 
 from .serializers import UserSignupSerializer, UserMeSerializer, UserAuthSerializer, ChangePasswordSerializer, \
     UserProfileSerializer, ResetPasswordSerializer, ResetPasswordCreationSerializer, EmailVerificationSerializer
-from .models import User, PasswordReset, EmailVerification
-from factlist.core.utils import send_sns
+from .models import User, PasswordReset, EmailVerification, TwitterUser
+from factlist.core.utils import send_sns, extract_profile_image
 
 
 class UserSignupView(CreateAPIView):
@@ -183,3 +184,43 @@ class EmailVerificationView(APIView):
                 user.save()
                 return Response(status=status.HTTP_200_OK)
         return Response({"key": ["Verification key doesn't exists"]}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TwitterLoginView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        auth = tweepy.OAuthHandler(os.environ.get("TWITTER_CONSUMER_KEY"), os.environ.get("TWITTER_CONSUMER_SECRET"))
+        auth.request_token = {'oauth_token': request.GET.get("oauth_token"), 'oauth_token_secret': request.GET.get("oauth_verifier")}
+        auth.get_access_token(request.GET.get("oauth_verifier"))
+        access_token = auth.access_token
+        access_token_secret = auth.access_token_secret
+        api = tweepy.API(auth)
+        information = api.me()
+        user = TwitterUser.objects.filter(oauth_token=access_token)
+        if not user.exists():
+            # Checking if someone has the same username with the current user's Twitter handle
+            username = information.screen_name
+            user = User.objects.filter(username=username)
+            if user.exists():
+                found = True
+                while found:
+                    username = information.screen_name + "-" + get_random_string(3)
+                    if not User.objects.filter(username=username).exists():
+                        found = False
+            avatar, extension = extract_profile_image(information.profile_image_url_https)
+            user = User.objects.create(
+                username=username,
+                email=access_token + "@twitter.com",
+                password=get_random_string(10),
+                name=information.name
+            )
+            user.avatar.save(username + extension, File(avatar))
+            TwitterUser.objects.create(
+                user=user,
+                oauth_token=access_token,
+                oauth_secret=access_token_secret
+            )
+        else:
+            user = user.first().user
+        return Response(UserMeSerializer(user).data)
