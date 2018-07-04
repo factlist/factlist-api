@@ -197,6 +197,7 @@ class TwitterLoginView(APIView):
         access_token_secret = auth.access_token_secret
         api = tweepy.API(auth)
         information = api.me()
+        print(information)
         user = TwitterUser.objects.filter(oauth_token=access_token)
         if not user.exists():
             # Checking if someone has the same username with the current user's Twitter handle
@@ -215,7 +216,8 @@ class TwitterLoginView(APIView):
                 password=get_random_string(10),
                 name=information.name
             )
-            user.avatar.save(username + extension, File(avatar))
+            if avatar is not None:
+                user.avatar.save(username + extension, File(avatar))
             TwitterUser.objects.create(
                 user=user,
                 oauth_token=access_token,

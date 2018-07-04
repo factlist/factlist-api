@@ -45,6 +45,9 @@ def extract_profile_image(link):
     Three lines below splits the url by "." and cuts the "com/profile_images/751530273670594560/CbL6FI1l_normal"
     part by the last seven character. It becomes: "com/profile_images/751530273670594560/CbL6FI1l".
     """
+    if link == "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png":
+        # User doesn't have a profile image on Twitter.
+        return None, None
     url = link.split(".")
     extension = "." + url[-1]
     url[-2] = url[-2][:-7]
