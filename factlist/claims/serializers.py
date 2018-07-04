@@ -54,17 +54,30 @@ class CreateEvidenceSerializer(serializers.Serializer):
     files = serializers.ListField(child=serializers.IntegerField(), max_length=5, required=False)
 
     def validate(self, attrs):
+        errors = {}
         if self.partial:
             return attrs
+
         if "text" not in attrs:
-            raise ValidationError({"text": ["Evidence must contain a text"]})
+            errors["text"] = ["Evidence must contain a text"]
+
         if "conclusion" not in attrs:
-            raise ValidationError({"conclusion": ["Evidence must contain a conclusion"]})
+            errors["conclusion"] = ["Evidence must contain a conclusion"]
         else:
             if attrs["conclusion"] not in EVIDENCE_STATUS:
-                raise ValidationError({"conclusion": ["Evidence conclusion can be 'true', 'false' or 'inconclusive'."]})
+                errors["conclusion"] = ["Evidence conclusion can be 'true', 'false' or 'inconclusive'."]
+
         if "links" not in attrs and "files" not in attrs:
-            raise ValidationError({'links': ["Evidence must contain at least a file or link"], 'files': ["Evidence must contain at least a file or link"]})
+            errors["links"] = ["Evidence must contain at least a file or link"]
+            errors["files"] = ["Evidence must contain at least a file or link"]
+
+        if "links" in attrs and "files" in attrs:
+            if not attrs["links"] and not attrs["files"]:
+                errors["links"] = ["Ensure this field has at least 1 elements."]
+                errors["files"] = ["Ensure this field has at least 1 elements."]
+
+        if errors:
+            raise ValidationError(errors)
         return attrs
 
 
@@ -94,12 +107,24 @@ class CreateClaimSerializer(serializers.Serializer):
     files = serializers.ListField(child=serializers.IntegerField(), max_length=5, required=False)
 
     def validate(self, attrs):
+        errors = {}
         if self.partial:
             return attrs
+
         if "text" not in attrs:
-            raise ValidationError({"text": ["Claim must contain a text"]})
+            errors["text"] = ["Claim must contain a text"]
+
         if "links" not in attrs and "files" not in attrs:
-            raise ValidationError({'links': ["Claim must contain at least a file or link"], 'files': ["Claim must contain at least a file or link"]})
+            errors["links"] = ["Claim must contain at least a file or link"]
+            errors["files"] = ["Claim must contain at least a file or link"]
+
+        if "links" in attrs and "files" in attrs:
+            if not attrs["links"] and not attrs["files"]:
+                errors["links"] = ["Ensure this field has at least 1 elements."]
+                errors["files"] = ["Ensure this field has at least 1 elements."]
+
+        if errors:
+            raise ValidationError(errors)
         return attrs
 
 
