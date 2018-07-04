@@ -214,7 +214,8 @@ class TwitterLoginView(APIView):
                 username=username,
                 email=access_token + "@twitter.com",
                 password=get_random_string(10),
-                name=information.name
+                name=information.name,
+                verified=True
             )
             if avatar is not None:
                 user.avatar.save(username + extension, File(avatar))
