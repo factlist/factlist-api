@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate, password_validation
-from rest_framework.exceptions import ValidationError
+from rest_framework import exceptions
 from rest_framework.authtoken.models import Token
 from the_big_username_blacklist import validate as validate_username
 
@@ -17,14 +17,19 @@ class UserSignupSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
+        errors = {}
         username = validated_data.get("username")
         if not validate_username(username):
-            raise ValidationError({"username": ["Invalid username"]})
+            errors["username"] = ["Invalid username"]
+
         password = validated_data.get('password')
         try:
             password_validation.validate_password(password)
         except:
-            raise ValidationError({"password": ["Password is not strong enough"]})
+            errors["password"] = ["Password is not strong enough"]
+
+        if errors:
+            raise exceptions.ValidationError(errors)
         user = User.objects.create_user(**validated_data)
         return user
 
