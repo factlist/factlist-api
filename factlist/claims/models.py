@@ -79,6 +79,9 @@ class Claim(models.Model):
             evidence.active = False
             evidence.save()
 
+    def active_evidences(self):
+        return Evidence.objects.filter(claim=self, active=True)
+
 
 class Evidence(models.Model):
     claim = models.ForeignKey(Claim, related_name='evidences')

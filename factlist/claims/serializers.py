@@ -132,7 +132,7 @@ class ClaimSerializer(serializers.ModelSerializer):
     user = SimpleUserSerializer(read_only=True)
     links = LinkSerializer(many=True)
     files = FileSerializer(many=True)
-    evidences = EvidenceSerializer(many=True, read_only=True)
+    evidences = EvidenceSerializer(many=True, read_only=True, source='active_evidences')
 
     class Meta:
         model = Claim
