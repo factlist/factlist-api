@@ -1,7 +1,7 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import ValidationError
-from rest_framework.parsers import MultiPartParser, JSONParser
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -62,7 +62,6 @@ class ListAndCreateClaimView(ListCreateAPIView):
 
 
 class ClaimView(RetrieveUpdateDestroyAPIView):
-    parser_classes = (MultiPartParser, JSONParser)
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -114,7 +113,6 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
 
 
 class ListAndCreateEvidenceView(ListCreateAPIView):
-    parser_classes = (MultiPartParser, JSONParser)
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -165,7 +163,6 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
 
 
 class EvidenceView(RetrieveUpdateDestroyAPIView):
-    parser_classes = (MultiPartParser, JSONParser)
 
     def get_permissions(self):
         if self.request.method == "GET":

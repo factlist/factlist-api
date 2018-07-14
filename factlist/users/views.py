@@ -12,6 +12,7 @@ from django.contrib.auth import password_validation
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.core.files import File
+from django.http import HttpResponseRedirect
 import tweepy
 
 from .serializers import UserSignupSerializer, UserMeSerializer, UserAuthSerializer, ChangePasswordSerializer, \
@@ -190,6 +191,7 @@ class TwitterLoginView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
+        print(request.GET)
         auth = tweepy.OAuthHandler(os.environ.get("TWITTER_CONSUMER_KEY"), os.environ.get("TWITTER_CONSUMER_SECRET"))
         auth.request_token = {'oauth_token': request.GET.get("oauth_token"), 'oauth_token_secret': request.GET.get("oauth_verifier")}
         auth.get_access_token(request.GET.get("oauth_verifier"))
@@ -197,7 +199,6 @@ class TwitterLoginView(APIView):
         access_token_secret = auth.access_token_secret
         api = tweepy.API(auth)
         information = api.me()
-        print(information)
         user = TwitterUser.objects.filter(oauth_token=access_token)
         if not user.exists():
             # Checking if someone has the same username with the current user's Twitter handle
@@ -226,4 +227,5 @@ class TwitterLoginView(APIView):
             )
         else:
             user = user.first().user
-        return Response(UserMeSerializer(user).data)
+        redirect_to = os.environ.get("CLIENT_ADDRESS") + "/twitter/callback/" + str(user.auth_token)
+        return HttpResponseRedirect(redirect_to)
