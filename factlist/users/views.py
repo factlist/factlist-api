@@ -191,7 +191,9 @@ class TwitterLoginView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
-        print(request.GET)
+        if 'denied' in request.GET:
+            # User didn't authorized Factlist app, return the user to the client
+            return HttpResponseRedirect(os.environ.get("CLIENT_ADDRESS"))
         auth = tweepy.OAuthHandler(os.environ.get("TWITTER_CONSUMER_KEY"), os.environ.get("TWITTER_CONSUMER_SECRET"))
         auth.request_token = {'oauth_token': request.GET.get("oauth_token"), 'oauth_token_secret': request.GET.get("oauth_verifier")}
         auth.get_access_token(request.GET.get("oauth_verifier"))
