@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 from the_big_username_blacklist import validate as validate_username
 
 from .models import User
-from factlist.claims.models import Claim
+from factlist.claims.models import Claim, Evidence
 
 
 class UserSignupSerializer(serializers.ModelSerializer):
@@ -72,6 +72,7 @@ class UserAuthSerializer(serializers.Serializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     claim_count = serializers.SerializerMethodField()
+    evidence_count = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -81,11 +82,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "name",
             "bio",
             "claim_count",
+            "evidence_count",
             "avatar",
         ]
 
     def get_claim_count(self, user):
         return Claim.objects.filter(user=user).count()
+
+    def get_evidence_count(self, user):
+        return Evidence.objects.filter(user=user).count()
 
 
 class ChangePasswordSerializer(serializers.Serializer):
