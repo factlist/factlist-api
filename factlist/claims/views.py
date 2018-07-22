@@ -1,4 +1,4 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import MultiPartParser
@@ -233,3 +233,13 @@ class UploadFileView(CreateAPIView):
         file_object.extension = extension
         file_object.save()
         return response
+
+
+class SearchView(ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = ClaimSerializer
+
+    def get_queryset(self):
+        if self.request.GET.get('query') is None:
+            return Response({"query": ['You need to search with a query']}, status=status.HTTP_400_BAD_REQUEST)
+        return Claim.objects.filter(text__icontains=self.request.GET.get('query'))

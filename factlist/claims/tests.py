@@ -180,3 +180,26 @@ class ClaimTestCase(TestCase, UserTestMixin):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         evidence = Evidence.objects.get(pk=evidence_id)
         self.assertFalse(evidence.active)
+
+    def test_search(self):
+        enis, enis_client = self.create_user_and_user_client()
+        serafettin, serafettin_client = self.create_user_and_user_client()
+
+        data = {
+            'text': 'Factlist is a collaborative fact-checking platform.',
+            'links': ["https://factlist.org"],
+        }
+        response = serafettin_client.post('/api/v1/claims/', data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        claim_id = response.data['id']
+
+        data = {
+            'text': 'is a collaborative fact-checking platform.',
+            'links': ["https://factlist.org"],
+        }
+        response = serafettin_client.post('/api/v1/claims/', data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        response = enis_client.get('/api/v1/search/?query=factlist')
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['results'][0]['id'], claim_id)
