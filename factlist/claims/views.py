@@ -9,7 +9,8 @@ from .models import Claim, Evidence, Link, File
 from .serializers import ClaimSerializer, EvidenceSerializer, CreateClaimSerializer, CreateEvidenceSerializer, \
     UploadFileSerializer
 from factlist.users.models import User
-from .constants import EVIDENCE_STATUS
+from factlist.core.utils import send_sns
+from .constants import EVIDENCE_STATUS, IMAGE_EXTENSIONS
 # from factlist.users.permissions import IsVerified
 
 

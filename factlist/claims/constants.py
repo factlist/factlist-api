@@ -12,3 +12,9 @@ EVIDENCE_STATUS = [
     "false",
     "inconclusive"
 ]
+
+IMAGE_EXTENSIONS = [
+    'jpg',
+    'jpeg',
+    'png',
+]

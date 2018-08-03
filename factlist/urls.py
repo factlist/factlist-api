@@ -1,12 +1,12 @@
-from django.conf.urls import url, include
+from django.urls import path, include
 from django.contrib import admin
 
 from factlist.embed.views import EmbedView
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
 
-    url(r'^api/v1/', include('factlist.users.urls')),
-    url(r'^api/v1/', include('factlist.claims.urls')),
-    url(r'^api/v1/embed/', EmbedView.as_view()),
+    path('api/v1/', include('factlist.users.urls')),
+    path('api/v1/', include('factlist.claims.urls')),
+    path('api/v1/embed/', EmbedView.as_view()),
 ]

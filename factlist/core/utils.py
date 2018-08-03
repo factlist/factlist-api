@@ -21,7 +21,7 @@ class SnsThread(threading.Thread):
             aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
         )
 
-        response = client.publish(
+        client.publish(
             TopicArn=os.environ.get("AWS_SNS_ARN") + self.sns_type,
             Message=json.dumps({"default": json.dumps(self.message)}),
             MessageStructure="json"

@@ -109,3 +109,15 @@ class ResetPasswordSerializer(serializers.Serializer):
 
 class EmailVerificationSerializer(serializers.Serializer):
     key = serializers.CharField(required=True)
+
+
+class MinimalUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'username',
+            'name',
+            'avatar',
+        ]

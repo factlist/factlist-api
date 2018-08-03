@@ -46,17 +46,17 @@ class User(AbstractUser):
 
 
 class TwitterUser(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     oauth_token = models.CharField(max_length=255)
     oauth_secret = models.CharField(max_length=255)
 
 
 class EmailVerification(models.Model):
     key = models.CharField(max_length=50, unique=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class PasswordReset(models.Model):
     key = models.CharField(max_length=50, unique=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     until = models.DateTimeField(default=timezone.now() + timedelta(hours=24))

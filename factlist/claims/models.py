@@ -33,7 +33,7 @@ class Claim(models.Model):
     updated_at = models.DateTimeField(null=True, blank=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
     active = models.BooleanField(default=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     links = models.ManyToManyField(Link, db_table="claim_links")
     files = models.ManyToManyField(File, db_table="claim_files")
 
@@ -84,10 +84,10 @@ class Claim(models.Model):
 
 
 class Evidence(models.Model):
-    claim = models.ForeignKey(Claim, related_name='evidences')
+    claim = models.ForeignKey(Claim, related_name='evidences', on_delete=models.CASCADE)
     text = models.TextField()
     conclusion = models.CharField(max_length=100, choices=EVIDENCE_STATUS_CHOICES)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(null=True, blank=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
