@@ -1,15 +1,18 @@
+import json
+
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
+from django.core.serializers import serialize
 
 from .models import Claim, Evidence, Link, File
 from .serializers import ClaimSerializer, EvidenceSerializer, CreateClaimSerializer, CreateEvidenceSerializer, \
     UploadFileSerializer
 from factlist.users.models import User
-from factlist.core.utils import send_sns
+from factlist.core.utils import stream_kinesis
 from .constants import EVIDENCE_STATUS, IMAGE_EXTENSIONS
 # from factlist.users.permissions import IsVerified
 
@@ -59,6 +62,14 @@ class ListAndCreateClaimView(ListCreateAPIView):
                         raise ValidationError({'files': ['Invalid file']})
                     claim.files.add(file_object)
             claim.save()
+
+            json_obj = serialize('json', [claim, ])
+            stream_kinesis(
+                'factlist_kinesis',
+                json.dumps(json.loads(json_obj)[0]),
+                'partition'
+            )
+
             return Response(ClaimSerializer(claim).data, status=status.HTTP_201_CREATED)
 
 
@@ -160,6 +171,14 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
                         raise ValidationError({'files': ['Invalid file']})
                     evidence.files.add(file_object)
             evidence.save()
+
+            json_obj = serialize('json', [evidence, ])
+            stream_kinesis(
+                'factlist_kinesis',
+                json.dumps(json.loads(json_obj)[0]),
+                'partition'
+            )
+
             return Response(EvidenceSerializer(evidence).data, status=status.HTTP_201_CREATED)
 
 

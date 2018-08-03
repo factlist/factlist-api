@@ -32,6 +32,27 @@ def send_sns(message, sns_type):
     SnsThread(message, sns_type).start()
 
 
+class KinesisThread(threading.Thread):
+    def __init__(self, stream_name, data, partition_key):
+        self.stream_name = stream_name
+        self.data = data
+        self.partition_key = partition_key
+        threading.Thread.__init__(self)
+
+    def run(self):
+        client = boto3.client('kinesis')
+
+        client.put_record(
+            StreamName=self.stream_name,
+            Data=self.data,
+            PartitionKey=self.partition_key
+        )
+
+
+def stream_kinesis(stream_name, data, partition_key):
+    KinesisThread(stream_name, data, partition_key).start()
+
+
 def extract_profile_image(link):
     """
     Getting the profile image from Twitter
