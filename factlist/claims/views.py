@@ -6,7 +6,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
-from django.core.serializers import serialize
+from django.utils import timezone
 
 from .models import Claim, Evidence, Link, File
 from .serializers import ClaimSerializer, EvidenceSerializer, CreateClaimSerializer, CreateEvidenceSerializer, \
@@ -63,10 +63,11 @@ class ListAndCreateClaimView(ListCreateAPIView):
                     claim.files.add(file_object)
             claim.save()
 
-            json_obj = serialize('json', [claim, ])
+            claim_json = json.loads(json.dumps(ClaimSerializer(instance=claim).data))
+            claim_json['objectID'] = claim.id
             stream_kinesis(
                 'factlist_kinesis',
-                json.dumps(json.loads(json_obj)[0]),
+                json.dumps(claim_json),
                 'partition'
             )
 
@@ -172,10 +173,14 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
                     evidence.files.add(file_object)
             evidence.save()
 
-            json_obj = serialize('json', [evidence, ])
+            claim = Claim.objects.get(id=evidence.claim_id)
+            claim.updated_at = timezone.now()
+            claim.save()
+            claim_json = json.loads(json.dumps(ClaimSerializer(instance=claim).data))
+            claim_json['objectID'] = claim.id
             stream_kinesis(
                 'factlist_kinesis',
-                json.dumps(json.loads(json_obj)[0]),
+                json.dumps(claim_json),
                 'partition'
             )
 

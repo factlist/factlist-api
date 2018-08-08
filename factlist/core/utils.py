@@ -40,7 +40,7 @@ class KinesisThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        client = boto3.client('kinesis')
+        client = boto3.client("kinesis")
 
         client.put_record(
             StreamName=self.stream_name,
