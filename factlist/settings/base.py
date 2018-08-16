@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'factlist.users',
     'factlist.claims',
     'factlist.core',
+    'factlist.perspective',
 ]
 
 # DRF
