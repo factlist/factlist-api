@@ -41,7 +41,7 @@ class LinkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Link
-        fields = ('link', 'embed')
+        fields = ('id','link', 'embed')
 
     def get_embed(self, link):
         return cache.get(link.link)

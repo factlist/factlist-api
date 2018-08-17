@@ -97,3 +97,22 @@ class PerspectiveTestCase(TestCase, UserTestMixin):
 
         response = enis_client.delete('/api/v1/issues/%s/' % issue_id)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_create_a_link(self):
+        enis, enis_client = self.create_user_and_user_client()
+        ali, ali_client = self.create_user_and_user_client()
+
+        data = {
+            'title': 'Test issue',
+            'link': "https://github.com",
+        }
+        response = enis_client.post('/api/v1/issues/', data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        issue_id = response.data["id"]
+
+        data = {
+            "link": "https://twitter.com"
+        }
+        response = enis_client.post("/api/v1/issues/%s/links/" % issue_id, data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)

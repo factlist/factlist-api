@@ -77,4 +77,4 @@ class CreateLinkView(CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
-        print(serializer.data)
+        IssueLinks.objects.create(issue_id=self.kwargs["pk"], link_id=serializer.data["id"])
