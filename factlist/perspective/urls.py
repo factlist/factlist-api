@@ -1,9 +1,9 @@
 from django.urls import path
 
-from .views import ListAndCreateIssueView, IssueView, CreateLinkView
+from .views import ListAndCreateTopicView, TopicView, CreateLinkView
 
 urlpatterns = [
-    path('issues/', ListAndCreateIssueView.as_view()),
-    path('issues/<int:pk>/', IssueView.as_view()),
-    path('issues/<int:pk>/links/', CreateLinkView.as_view()),
+    path('topics/', ListAndCreateTopicView.as_view()),
+    path('topics/<int:pk>/', TopicView.as_view()),
+    path('topics/<int:pk>/links/', CreateLinkView.as_view()),
 ]

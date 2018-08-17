@@ -6,113 +6,112 @@ from factlist.users.tests import UserTestMixin
 
 class PerspectiveTestCase(TestCase, UserTestMixin):
 
-    def test_create_issue(self):
+    def test_create_topic(self):
         user, client = self.create_user_and_user_client()
 
         data = {
-            'title': 'Test issue',
+            'title': 'Test topic',
             'link': "https://github.com",
         }
-        response = client.post('/api/v1/issues/', data=data)
+        response = client.post('/api/v1/topics/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data["title"], "Test issue")
+        self.assertEqual(response.data["title"], "Test topic")
 
-    def test_get_list_of_issues(self):
+    def test_get_list_of_topics(self):
         user, client = self.create_user_and_user_client()
 
         data = {
-            'title': 'Test issue',
+            'title': 'Test topic',
             'link': "https://github.com",
         }
-        response = client.post('/api/v1/issues/', data=data)
+        response = client.post('/api/v1/topics/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        response = client.get('/api/v1/issues/')
+        response = client.get('/api/v1/topics/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['count'], 1)
 
         data = {
-            'title': 'Test issue2',
+            'title': 'Test topic2',
             'link': "https://github.com",
         }
-        response = client.post('/api/v1/issues/', data=data)
+        response = client.post('/api/v1/topics/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        response = client.get('/api/v1/issues/')
+        response = client.get('/api/v1/topics/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['count'], 2)
 
-    def test_get_an_issue(self):
+    def test_get_an_topic(self):
         user, client = self.create_user_and_user_client()
 
         data = {
-            'title': 'Test issue',
+            'title': 'Test topic',
             'link': "https://github.com",
         }
-        response = client.post('/api/v1/issues/', data=data)
+        response = client.post('/api/v1/topics/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        response = client.get("/api/v1/issues/%s/" % response.data["id"])
+        response = client.get("/api/v1/topics/%s/" % response.data["id"])
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["title"], "Test issue")
+        self.assertEqual(response.data["title"], "Test topic")
 
-    def test_update_an_issue(self):
+    def test_update_an_topic(self):
         enis, enis_client = self.create_user_and_user_client()
         ali, ali_client = self.create_user_and_user_client()
 
         data = {
-            'title': 'Test issue',
+            'title': 'Test topic',
             'link': "https://github.com",
         }
-        response = enis_client.post('/api/v1/issues/', data=data)
+        response = enis_client.post('/api/v1/topics/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         data = {
-            "title": "Test issue edit"
+            "title": "Test topic edit"
         }
-        response = enis_client.patch('/api/v1/issues/%s/' % response.data["id"], data=data)
+        response = enis_client.patch('/api/v1/topics/%s/' % response.data["id"], data=data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = {
-            "title": "Test issue edit"
+            "title": "Test topic edit"
         }
-        response = ali_client.patch('/api/v1/issues/%s/' % response.data["id"], data=data)
+        response = ali_client.patch('/api/v1/topics/%s/' % response.data["id"], data=data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_delete_an_issue(self):
+    def test_delete_an_topic(self):
         enis, enis_client = self.create_user_and_user_client()
         ali, ali_client = self.create_user_and_user_client()
 
         data = {
-            'title': 'Test issue',
+            'title': 'Test topic',
             'link': "https://github.com",
         }
-        response = enis_client.post('/api/v1/issues/', data=data)
+        response = enis_client.post('/api/v1/topics/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        issue_id = response.data["id"]
+        topic_id = response.data["id"]
 
-        response = ali_client.delete('/api/v1/issues/%s/' % issue_id)
+        response = ali_client.delete('/api/v1/topics/%s/' % topic_id)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-        response = enis_client.delete('/api/v1/issues/%s/' % issue_id)
+        response = enis_client.delete('/api/v1/topics/%s/' % topic_id)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_create_a_link(self):
         enis, enis_client = self.create_user_and_user_client()
-        ali, ali_client = self.create_user_and_user_client()
 
         data = {
-            'title': 'Test issue',
+            'title': 'Test topic',
             'link': "https://github.com",
         }
-        response = enis_client.post('/api/v1/issues/', data=data)
+        response = enis_client.post('/api/v1/topics/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        issue_id = response.data["id"]
+        topic_id = response.data["id"]
 
         data = {
             "link": "https://twitter.com"
         }
-        response = enis_client.post("/api/v1/issues/%s/links/" % issue_id, data=data)
+        response = enis_client.post("/api/v1/topics/%s/links/" % topic_id, data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

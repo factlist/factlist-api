@@ -2,8 +2,7 @@ from rest_framework import serializers
 
 from factlist.users.serializers import MinimalUserSerializer
 from factlist.claims.serializers import LinkSerializer
-from factlist.claims.models import Link
-from .models import Issue, IssueLinks, Tag
+from .models import Topic, TopicLink, Tag
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -18,13 +17,13 @@ class TagSerializer(serializers.ModelSerializer):
         )
 
 
-class IssueSerializer(serializers.ModelSerializer):
+class TopicSerializer(serializers.ModelSerializer):
     user = MinimalUserSerializer(read_only=True)
     tags = TagSerializer(many=True)
-    links = LinkSerializer(many=True, source='issue_links')
+    links = LinkSerializer(many=True, source='topic_links')
 
     class Meta:
-        model = Issue
+        model = Topic
         fields = (
             'id',
             'title',
@@ -36,10 +35,10 @@ class IssueSerializer(serializers.ModelSerializer):
         )
 
 
-class CreateIssueSerializer(serializers.Serializer):
+class CreateTopicSerializer(serializers.Serializer):
     title = serializers.CharField(required=True)
     link = serializers.CharField(required=True)
 
 
-class UpdateIssueSerializer(serializers.Serializer):
+class UpdateTopicSerializer(serializers.Serializer):
     title = serializers.CharField(required=True)
