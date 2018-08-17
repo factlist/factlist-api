@@ -7,6 +7,8 @@ from .constants import EVIDENCE_STATUS_CHOICES
 
 class Link(models.Model):
     link = models.CharField(max_length=255)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         db_table = 'links'
