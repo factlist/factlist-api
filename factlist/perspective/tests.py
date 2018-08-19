@@ -115,3 +115,89 @@ class PerspectiveTestCase(TestCase, UserTestMixin):
         }
         response = enis_client.post("/api/v1/topics/%s/links/" % topic_id, data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_get_list_of_links(self):
+        enis, enis_client = self.create_user_and_user_client()
+
+        data = {
+            'title': 'Test topic',
+            'link': "https://github.com",
+        }
+        response = enis_client.post('/api/v1/topics/', data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        topic_id = response.data["id"]
+
+        data = {
+            "link": "https://twitter.com"
+        }
+        response = enis_client.post("/api/v1/topics/%s/links/" % topic_id, data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        response = enis_client.get('/api/v1/topics/%s/links/' % topic_id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = {
+            "link": "https://github.com"
+        }
+        response = enis_client.post("/api/v1/topics/%s/links/" % topic_id, data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        response = enis_client.get('/api/v1/topics/%s/links/' % topic_id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_tag_links(self):
+        enis, enis_client = self.create_user_and_user_client()
+
+        data = {
+            'title': 'Test topic',
+            'link': "https://github.com",
+        }
+        response = enis_client.post('/api/v1/topics/', data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        topic_id = response.data["id"]
+
+        data = {
+            "link": "https://twitter.com"
+        }
+        response = enis_client.post("/api/v1/topics/%s/links/" % topic_id, data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        first_link_id = response.data['id']
+
+        data = {
+            "link": "https://github.com"
+        }
+        response = enis_client.post("/api/v1/topics/%s/links/" % topic_id, data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        second_link_id = response.data['id']
+
+        data = {
+            'title': 'tag1'
+        }
+        response = enis_client.post('/api/v1/topics/%s/links/%s/tags/' % (topic_id, first_link_id), data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        response = enis_client.get('/api/v1/topics/%s/tags/' % topic_id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 1)
+
+        data = {
+            'title': 'tag2'
+        }
+        response = enis_client.post('/api/v1/topics/%s/links/%s/tags/' % (topic_id, first_link_id), data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        response = enis_client.get('/api/v1/topics/%s/tags/' % topic_id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 2)
+
+        data = {
+            'title': 'tag1'
+        }
+        response = enis_client.post('/api/v1/topics/%s/links/%s/tags/' % (topic_id, second_link_id), data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        response = enis_client.get('/api/v1/topics/%s/tags/' % topic_id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 2)

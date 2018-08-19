@@ -1,8 +1,9 @@
+from django.core.cache import cache
 from rest_framework import serializers
 
 from factlist.users.serializers import MinimalUserSerializer
-from factlist.claims.serializers import LinkSerializer
-from .models import Topic, TopicLink, Tag
+from factlist.claims.models import Link
+from .models import Topic, TopicLink, Tag, LinkTag
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -15,6 +16,31 @@ class TagSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
+
+
+class LinkSerializer(serializers.ModelSerializer):
+    tags = serializers.SerializerMethodField()
+    embed = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Link
+        fields = (
+            "id",
+            "link",
+            "created_at",
+            "updated_at",
+            "tags",
+            'embed',
+        )
+
+    def get_tags(self, link):
+        tag_ids = list(LinkTag.objects.filter(link=link).values_list("tag_id", flat=True))
+        tags = Tag.objects.filter(id__in=tag_ids)
+        tags = TagSerializer(tags, many=True)
+        return tags.data
+
+    def get_embed(self, link):
+        return cache.get(link.link)
 
 
 class TopicSerializer(serializers.ModelSerializer):
@@ -40,5 +66,5 @@ class CreateTopicSerializer(serializers.Serializer):
     link = serializers.CharField(required=True)
 
 
-class UpdateTopicSerializer(serializers.Serializer):
+class TitleSerializer(serializers.Serializer):
     title = serializers.CharField(required=True)
