@@ -42,7 +42,7 @@ class PerspectiveTestCase(TestCase, UserTestMixin):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['count'], 2)
 
-    def test_get_an_topic(self):
+    def test_get_a_topic(self):
         user, client = self.create_user_and_user_client()
 
         data = {
@@ -56,7 +56,7 @@ class PerspectiveTestCase(TestCase, UserTestMixin):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], "Test topic")
 
-    def test_update_an_topic(self):
+    def test_update_a_topic(self):
         enis, enis_client = self.create_user_and_user_client()
         ali, ali_client = self.create_user_and_user_client()
 
@@ -79,7 +79,7 @@ class PerspectiveTestCase(TestCase, UserTestMixin):
         response = ali_client.patch('/api/v1/topics/%s/' % response.data["id"], data=data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_delete_an_topic(self):
+    def test_delete_a_topic(self):
         enis, enis_client = self.create_user_and_user_client()
         ali, ali_client = self.create_user_and_user_client()
 
