@@ -42,26 +42,17 @@ class Claim(models.Model):
     @property
     def true_count(self):
         evidences = Evidence.objects.filter(claim=self, conclusion="true", active=True)
-        if evidences.exists():
-            return evidences.count()
-        else:
-            return 0
+        return evidences.count()
 
     @property
     def false_count(self):
         evidences = Evidence.objects.filter(claim=self, conclusion="false", active=True)
-        if evidences.exists():
-            return evidences.count()
-        else:
-            return 0
+        return evidences.count()
 
     @property
     def inconclusive_count(self):
         evidences = Evidence.objects.filter(claim=self, conclusion="inconclusive", active=True)
-        if evidences.exists():
-            return evidences.count()
-        else:
-            return 0
+        return evidences.count()
 
     class Meta:
         db_table = 'claims'
