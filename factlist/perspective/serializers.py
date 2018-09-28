@@ -45,7 +45,6 @@ class LinkSerializer(serializers.ModelSerializer):
 
 class TopicSerializer(serializers.ModelSerializer):
     user = MinimalUserSerializer(read_only=True)
-    tags = TagSerializer(many=True)
     links = LinkSerializer(many=True, source='topic_links')
 
     class Meta:
@@ -56,7 +55,6 @@ class TopicSerializer(serializers.ModelSerializer):
             'user',
             'created_at',
             'updated_at',
-            'tags',
             'links',
         )
 
