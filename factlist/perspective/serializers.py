@@ -63,7 +63,7 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class CreateTopicSerializer(serializers.Serializer):
     title = serializers.CharField(required=True)
-    link = serializers.CharField(required=True)
+    link = serializers.CharField(required=False)
 
 
 class TitleSerializer(serializers.Serializer):

@@ -11,6 +11,13 @@ class PerspectiveTestCase(TestCase, UserTestMixin):
 
         data = {
             'title': 'Test topic',
+        }
+        response = client.post('/api/v1/topics/', data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["title"], "Test topic")
+
+        data = {
+            'title': 'Test topic',
             'link': "https://github.com",
         }
         response = client.post('/api/v1/topics/', data=data)
