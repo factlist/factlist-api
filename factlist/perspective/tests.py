@@ -42,14 +42,13 @@ class PerspectiveTestCase(TestCase, UserTestMixin):
 
         data = {
             'title': 'Test topic2',
-            'link': "https://github.com",
         }
         response = client.post('/api/v1/topics/', data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = client.get('/api/v1/topics/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['count'], 2)
+        self.assertEqual(response.data['count'], 1)
 
     def test_get_a_topic(self):
         user, client = self.create_user_and_user_client()

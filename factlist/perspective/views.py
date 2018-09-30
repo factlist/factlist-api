@@ -19,7 +19,9 @@ class ListAndCreateTopicView(ListCreateAPIView):
             return IsAuthenticated(),
 
     def get_queryset(self):
-        return Topic.objects.filter().order_by('-id')
+        # Returning topics that contains links
+        topic_ids = list(TopicLink.objects.filter().values_list('topic_id', flat=True))
+        return Topic.objects.filter(id__in=topic_ids).order_by('-id')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
