@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
@@ -68,6 +69,8 @@ class TopicView(RetrieveUpdateDestroyAPIView):
         if serializer.is_valid(raise_exception=True):
             if "title" in serializer.data:
                 instance.title = serializer.data["title"]
+                instance.updated_at = timezone.now()
+                instance.save()
             return Response(TopicSerializer(instance).data, status=status.HTTP_200_OK)
 
 

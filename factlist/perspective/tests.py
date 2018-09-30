@@ -3,6 +3,8 @@ from rest_framework import status
 
 from factlist.users.tests import UserTestMixin
 
+from .models import Topic
+
 
 class PerspectiveTestCase(TestCase, UserTestMixin):
 
@@ -79,6 +81,9 @@ class PerspectiveTestCase(TestCase, UserTestMixin):
         }
         response = enis_client.patch('/api/v1/topics/%s/' % response.data["id"], data=data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        topic = Topic.objects.get(id=response.data['id'])
+        self.assertEqual(topic.title, 'Test topic edit')
 
         data = {
             "title": "Test topic edit"
