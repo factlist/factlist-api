@@ -44,7 +44,7 @@ class Command(BaseCommand):
                             pass
                         else:
                             for link in evidence["links"]:
-                                link_object = Link.objects.create(link=link["url"])
+                                link_object = Link.objects.create(link=link["url"], user=self.request.user)
                                 evidence_object.links.add(link_object)
                         evidence_object.save()
                 for file in value["files"]:

@@ -51,7 +51,7 @@ class ListAndCreateClaimView(ListCreateAPIView):
             if "links" in serializer.data:
                 links = serializer.data["links"]
                 for link in links:
-                    link_object = Link.objects.create(link=link)
+                    link_object = Link.objects.create(link=link, user=self.request.user)
                     claim.links.add(link_object)
             if "files" in serializer.data:
                 files = serializer.data["files"]
@@ -105,7 +105,7 @@ class ClaimView(RetrieveUpdateDestroyAPIView):
                 links = serializer.data["links"]
                 instance.links.all().delete()
                 for link in links:
-                    link_object = Link.objects.create(link=link)
+                    link_object = Link.objects.create(link=link, user=self.request.user)
                     instance.links.add(link_object)
             if "files" in serializer.data:
                 files = serializer.data["files"]
@@ -161,7 +161,7 @@ class ListAndCreateEvidenceView(ListCreateAPIView):
             if "links" in serializer.data:
                 links = serializer.data["links"]
                 for link in links:
-                    link_object = Link.objects.create(link=link)
+                    link_object = Link.objects.create(link=link, user=self.request.user)
                     evidence.links.add(link_object)
             if "files" in serializer.data:
                 files = serializer.data["files"]
@@ -222,7 +222,7 @@ class EvidenceView(RetrieveUpdateDestroyAPIView):
                 links = serializer.data["links"]
                 instance.links.all().delete()
                 for link in links:
-                    link_object = Link.objects.create(link=link)
+                    link_object = Link.objects.create(link=link, user=self.request.user)
                     instance.links.add(link_object)
             if "files" in serializer.data:
                 files = serializer.data["files"]

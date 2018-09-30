@@ -328,3 +328,28 @@ Content-Type: application/json; charset=utf-8
     ]
 }
 ```
+
+### Remove tag from a link
+
+```Authentication token is required in this endpoint```
+
+```
+DELETE /api/v1/topics/:topic_id/links/:link_id/tags/:tag_id
+```
+
+Example request:
+
+```
+DELETE /api/v1/topics/:topic_id/links/:link_id/tags/:tag_id HTTP/1.1
+Host: https://factlist.org
+Authorization: Token <YOUR-API-TOKEN>
+```
+
+Example response:
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+```
+
+`NOTE:` Only the user that sent the link can remove tags

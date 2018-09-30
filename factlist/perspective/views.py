@@ -1,5 +1,5 @@
 from django.utils import timezone
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
@@ -41,7 +41,7 @@ class ListAndCreateTopicView(ListCreateAPIView):
                 title=serializer.data["title"],
             )
             if "link" in serializer.data:
-                link_object = Link.objects.create(link=serializer.data["link"])
+                link_object = Link.objects.create(link=serializer.data["link"], user=self.request.user)
                 TopicLink.objects.create(link=link_object, topic=topic)
             return Response(TopicSerializer(topic).data, status=status.HTTP_201_CREATED)
 
@@ -81,7 +81,7 @@ class CreateLinkView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save()
+        serializer.save(user=self.request.user)
         TopicLink.objects.create(topic_id=self.kwargs["pk"], link_id=serializer.data["id"])
 
     def get_queryset(self):
@@ -111,3 +111,18 @@ class ListTagsOfTopic(ListAPIView):
 
     def get_queryset(self):
         return Tag.objects.filter(topic_id=self.kwargs['pk'])
+
+
+class RemoveTagFromLinkView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        link = Link.objects.filter(id=self.kwargs['link_pk'])
+        if link.exists():
+            if link.first().user != self.request.user:
+                return Response({'Not found'}, status=status.HTTP_404_NOT_FOUND)
+        linktag = LinkTag.objects.filter(link_id=self.kwargs['link_pk'], tag_id=self.kwargs['tag_pk'])
+        if linktag.exists():
+            linktag.delete()
+            return Response({'Tag removed successfully'}, status=status.HTTP_200_OK)
+        return Response({'Not found'}, status=status.HTTP_404_NOT_FOUND)
