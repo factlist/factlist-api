@@ -1,12 +1,15 @@
+
+// Define our schema using the GraphQL schema language
 const schema = `
 
+
   type User {
-	id: ID!
-	name: String!
-	username: String!
-	password: String!
-	created_at: String!
-	topics: [Topic!]
+		id: ID!
+		name: String!
+		username: String!
+		password: String!
+		created_at: String!
+		topics: [Topic!]
 	}
 
   type Topic {
