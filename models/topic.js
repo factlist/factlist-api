@@ -4,8 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER
   });
   Topic.associate = function(models) {
-		Topic.belongsTo(models.users);
-		Topic.hasMany(models.links);
+    Topic.belongsTo(models.users);
+    Topic.hasMany(models.links);
   };
   return Topic;
 };
