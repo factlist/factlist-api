@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Link.associate = function(models) {
 		Link.belongsTo(models.topics);
-    Link.belongsToMany(Tag, { through: models.link_tags });
+    Link.belongsToMany(models.tags, { through: models.link_tags });
   };
   return Link;
 };
