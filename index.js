@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { ApolloServer, gql } = require('apollo-server-express');
-
-const schema = require('./graphql/schema/schema');
+const db = require('./models');
+const schema = require('./graphql/schema');
+const resolvers = require('./graphql/resolvers');
 
 const app = express();
 
@@ -11,7 +12,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Graphql endpoint
 const server = new ApolloServer({
-  typeDefs: gql(schema),
+	typeDefs: gql(schema),
+	resolvers
 });
 
 server.applyMiddleware({ app });
