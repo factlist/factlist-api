@@ -1,10 +1,11 @@
 const schema = `
-
   type User {
     id: ID!
-    name: String!
-    created_at: String!
-    topics: [Topic!]
+		name: String!
+		username: String!
+		password: String!
+		created_at: String!
+		topics: [Topic!]
 	}
 
   type Topic {
