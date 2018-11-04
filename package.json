@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "watch": "NODE_ENV=development nodemon --watch . index.js -e js,html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
