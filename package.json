@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "db:migrate": "sequelize db:migrate",
+    "db:seeders": "sequelize db:seed:undo:all && sequelize db:seed:all",
     "watch": "NODE_ENV=development nodemon --watch . index.js -e js,html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,7 +29,9 @@
   "dependencies": {
     "apollo-server-express": "^2.1.0",
     "express": "^4.16.4",
+    "faker": "^4.1.0",
     "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.11",
     "mysql2": "^1.6.1",
     "sequelize": "^4.41.0"
   }
