@@ -1,16 +1,12 @@
-
-// Define our schema using the GraphQL schema language
 const schema = `
-
-
   type User {
-		id: ID!
-		name: String!
-		username: String!
-		password: String!
-		created_at: String!
-		topics: [Topic!]
-	}
+    id: ID!
+    name: String!
+    username: String!
+    password: String!
+    created_at: String!
+    topics: [Topic!]
+ }
 
   type Topic {
     id: ID!
@@ -18,7 +14,7 @@ const schema = `
     user_id: ID!
     user: User!
     links: [Link!]
-	}
+ }
 
   type Link {
     id: ID!
@@ -27,12 +23,12 @@ const schema = `
     topic_id: ID!
     topic: Topic!
     tags: [Tag!]
-	}
+ }
 
   type Tag {
     id: ID!
     title: String!
-	}
+ }
 
   type Query {
     topic(id: ID!): Topic
@@ -43,7 +39,7 @@ const schema = `
     links: [Link!]
     tag(id: ID!): Tag
     tags: [Tag!]
-	}
+ }
 `;
 
 module.exports = schema;
