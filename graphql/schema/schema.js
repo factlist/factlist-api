@@ -1,4 +1,4 @@
-module.exports = `
+const Schema = `
   type User {
     id: ID!
     name: String!
@@ -38,6 +38,8 @@ module.exports = `
     createTopic(title: String, user_id: ID!): Topic!
   }
 `;
+
+module.exports = Schema;
 
 /*
 
