@@ -10,7 +10,7 @@ module.exports = {
       link_id: {
         type: Sequelize.INTEGER
       },
-      topic_id: {
+      tag_id: {
         type: Sequelize.INTEGER
       },
       created_at: {

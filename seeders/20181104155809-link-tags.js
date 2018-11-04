@@ -8,7 +8,7 @@ module.exports = {
       _.times(5, index => {
         return {
           link_id: index + 1,
-          topic_id: index + 1,
+          tag_id: index + 1,
           created_at: new Date(),
           updated_at: new Date()
         };
