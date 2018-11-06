@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "apollo-server-express": "^2.1.0",
+    "bcryptjs": "^2.4.3",
     "express": "^4.16.4",
     "faker": "^4.1.0",
     "graphql": "^14.0.2",
