@@ -40,6 +40,30 @@ const schema = `
     tag(id: ID!): Tag
     tags: [Tag!]
  }
+
+ type Mutation {
+	login (
+		 email: String!,
+		 password: String!
+	): String
+
+ 	createUser (
+		id: Int!,
+		name: String!,
+		username: String,
+		email: String!,
+		password: String!
+   ): User
+
+	updateUser (
+		id: Int!,
+		name: String!,
+		username: String,
+		email: String!,
+		password: String!
+  ): User
+ }
+
 `;
 
 module.exports = schema;
