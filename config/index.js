@@ -1,4 +1,5 @@
-module.exports = {
+const env = process.env.NODE_ENV || 'development';
+const config = {
   development: {
     username: 'root',
     password: '',
@@ -15,6 +16,9 @@ module.exports = {
     },
     server: {
       port: process.env.port || 4000
+    },
+    auth: {
+      jwtSecret: 'secretKey'
     }
   },
 
@@ -56,6 +60,11 @@ module.exports = {
     },
     server: {
       port: process.env.port || 4000
+    },
+    auth: {
+      jwtSecret: 'secretKey'
     }
   }
 };
+
+module.exports = config[env];
