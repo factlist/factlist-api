@@ -64,6 +64,6 @@ const schema = `
   ): User
  }
 
-`;
+`
 
-module.exports = schema;
+module.exports = schema
