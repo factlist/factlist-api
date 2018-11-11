@@ -6,6 +6,7 @@ const schema = require('./graphql/schema');
 const resolvers = require('./graphql/resolvers');
 const env = process.env.NODE_ENV || 'development';
 const config = require('./config');
+const authUser = require('./graphql/context/authUser');
 
 const app = express();
 
@@ -14,11 +15,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Graphql endpoint
 const server = new ApolloServer({
-  secret: config.auth.jwtSecret,
   typeDefs: gql(schema),
   resolvers,
-	context: ({ req }) => {
-    authUser: req.user
+  context: async ({ req }) => {
+    return {
+      authUser: await authUser(req)
+    };
   }
 });
 

@@ -16,6 +16,31 @@ const schema = `
     links: [Link!]
  }
 
+
+ input postUser {
+	id: ID!
+	name: String!
+	username: String!
+	password: String!
+	created_at: String!
+	topics: [postTopic!]
+ }
+
+ input postTopic {
+	title: String!
+	links: [postLink!]
+}
+
+  input postLink {
+    title: String!
+    url: String!
+    tags: [postTag!]
+	}
+
+	input postTag {
+    title: String!
+	}
+
   type Link {
     id: ID!
     title: String!
@@ -48,7 +73,6 @@ const schema = `
 	): String
 
  	createUser (
-		id: Int!,
 		name: String!,
 		username: String,
 		email: String!,
@@ -61,9 +85,14 @@ const schema = `
 		username: String,
 		email: String!,
 		password: String!
-  ): User
+	): User
+
+	createTopic (
+		title: String!,
+		links:[postLink!],
+   ): Topic
+
  }
+`;
 
-`
-
-module.exports = schema
+module.exports = schema;
