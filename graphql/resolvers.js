@@ -113,7 +113,7 @@ const resolvers = {
 
     //create topic
     async createTopic(_, { title, links }, { authUser }) {
-			//Make sure user is logged in
+      //Make sure user is logged in
       if (!authUser) {
         throw new Error('You must log in to continue!');
       }
@@ -130,7 +130,64 @@ const resolvers = {
           }
         ]
       });
+    },
+
+    //update topic
+    async updateTopic(_, { id, title }, { authUser }) {
+      //Make sure user is logged in
+      if (!authUser) {
+        throw new Error('You must log in to continue!');
+      }
+      return await Topic.update({ title: title }, { where: { id: id } });
+    },
+
+    //delete topic
+    async deleteTopic(_, { id }, { authUser }) {
+      //Make sure user is logged in
+      if (!authUser) {
+        throw new Error('You must log in to continue!');
+      }
+      return await Topic.destroy({ where: { id: id } });
+    },
+
+    //update link
+    async updateLink(_, { id, title, url }, { authUser }) {
+      //Make sure user is logged in
+      if (!authUser) {
+        throw new Error('You must log in to continue!');
+      }
+      return await Link.update(
+        { title: title, url: url },
+        { where: { id: id } }
+      );
+		},
+
+		//delete link
+    async deleteLink(_, { id }, { authUser }) {
+      //Make sure user is logged in
+      if (!authUser) {
+        throw new Error('You must log in to continue!');
+      }
+      return await Link.destroy({ where: { id: id } });
+    },
+
+    //update tag
+    async updateTag(_, { id, title }, { authUser }) {
+      //Make sure user is logged in
+      if (!authUser) {
+        throw new Error('You must log in to continue!');
+      }
+      return await Tag.destroy({ where: { id: id } });
+		},
+
+		async deleteTag(_, { id }, { authUser }) {
+      //Make sure user is logged in
+      if (!authUser) {
+        throw new Error('You must log in to continue!');
+      }
+      return await Tag.update({ where: { id: id } });
     }
+
   }
 };
 

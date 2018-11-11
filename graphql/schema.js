@@ -8,7 +8,7 @@ const schema = `
     topics: [Topic!]
  }
 
-  type Topic {
+ type Topic {
     id: ID!
     title: String!
     user_id: ID!
@@ -18,12 +18,12 @@ const schema = `
 
 
  input postUser {
-	id: ID!
-	name: String!
-	username: String!
-	password: String!
-	created_at: String!
-	topics: [postTopic!]
+		id: ID!
+		name: String!
+		username: String!
+		password: String!
+		created_at: String!
+		topics: [postTopic!]
  }
 
  input postTopic {
@@ -90,7 +90,20 @@ const schema = `
 	createTopic (
 		title: String!,
 		links:[postLink!],
-   ): Topic
+	 ): Topic
+
+	 updateTopic (
+		id: Int!,
+		title: String!,
+	 ): [Int!]!
+
+	 deleteTopic(id: Int!):Int!
+
+	 updateLink(id: Int! title: String!, url: String! ):[Int!]!
+	 deleteLink(id: Int!):Int!
+
+	 updateTag(id: Int! title: String! ):[Int!]!
+	 deleteTag(id: Int!):Int!
 
  }
 `;
