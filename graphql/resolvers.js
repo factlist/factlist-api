@@ -58,7 +58,7 @@ const resolvers = {
 	Mutation: {
 		// Handles user login
 		async login(_, { email, password }) {
-			const user = await User.find({ where: { email } });
+			const user = await users.find({ where: { email } });
 
 			if (!user) {
 				throw new Error('No user with that email');
@@ -104,7 +104,7 @@ const resolvers = {
 				email,
 				password: await bcrypt.hash(password, 10),
 			});
-			
+
 			return user;
 		},
 	},

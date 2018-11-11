@@ -48,7 +48,6 @@ const schema = `
 	): String
 
  	createUser (
-		id: Int!,
 		name: String!,
 		username: String,
 		email: String!,
