@@ -12,13 +12,13 @@ type Topic {
  }
 
  input CreateTopicInput {
-	title: String!,
-	links: [CreateLinkInput]
+    title: String!,
+    links: [CreateLinkInput]
 }
 
 input UpdateTopicInput {
-	id: ID!,
-	title: String!
+    id: ID!,
+    title: String!
 }
 
 input DeleteTopicInput {
@@ -27,6 +27,6 @@ input DeleteTopicInput {
 
 type Mutation {
     createTopic(data:CreateTopicInput):Topic!
-	updateTopic(data:UpdateTopicInput):[Int!]!
-	deleteTopic(data:DeleteTopicInput):Int!
+    updateTopic(data:UpdateTopicInput):[Int!]!
+    deleteTopic(data:DeleteTopicInput):Int!
 }
