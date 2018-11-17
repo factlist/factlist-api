@@ -17,12 +17,12 @@ type Topic {
 }
 
 input UpdateTopicInput {
-	id: Int!,
+	id: ID!,
 	title: String!
 }
 
 input DeleteTopicInput {
-    id: Int!
+    id: ID!
 }
 
 type Mutation {
