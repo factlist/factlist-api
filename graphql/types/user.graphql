@@ -14,8 +14,8 @@ type User {
 
 type Mutation {
     login(data: LoginUserInput!): Token!
- 	createUser (data:CreateUserInput!): Token!
-	updateUser (data:UpdateUserInput!): User!
+    createUser (data:CreateUserInput!): Token!
+    updateUser (data:UpdateUserInput!): User!
  }
 
 
@@ -38,4 +38,3 @@ input UpdateUserInput {
     email: String!,
     password: String!
  }
-
