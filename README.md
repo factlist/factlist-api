@@ -1,6 +1,6 @@
 <p align="center">
   <h1 align="center">Factlist</h1>
-  <p align="center"><a href="http://faclist.com" target="_blank"><img width="150" src="https://avatars2.githubusercontent.com/u/33418877?s=200&v=4" /></a></p>
+  <p align="center"><a href="http://factlist.com" target="_blank"><img width="150" src="https://avatars2.githubusercontent.com/u/33418877?s=200&v=4" /></a></p>
 </p>
 
 ## About
