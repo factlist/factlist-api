@@ -23,6 +23,25 @@ const config = {
     logLevel: 'debug'
   },
 
+  docker: {
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    logging: false,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+    timezone: '+00:00',
+    define: {
+      paranoid: true,
+      timestamps: true,
+      freezeTableName: true,
+      underscored: true
+    },
+    server: {
+      port: process.env.port || 4000
+    }
+  },
+
   test: {
     username: 'root',
     password: '',
@@ -42,8 +61,8 @@ const config = {
     },
     auth: {
       jwtSecret: 'secretKey'
-		},
-		logLevel: 'info'
+    },
+    logLevel: 'info'
   },
 
   production: {
@@ -66,8 +85,8 @@ const config = {
     auth: {
       jwtSecret: 'secretKey'
     }
-	},
-	logLevel: 'error'
+  },
+  logLevel: 'error'
 };
 
 module.exports = config[env];
