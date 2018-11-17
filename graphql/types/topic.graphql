@@ -1,0 +1,32 @@
+type Query {
+    topic(id: ID!): Topic
+    topics: [Topic!]
+}
+
+type Topic {
+    id: ID!
+    title: String!
+    user_id: ID!
+    user: User!
+    links: [Link!]
+ }
+
+ input CreateTopicInput {
+	title: String!,
+	links: [CreateLinkInput]
+}
+
+input UpdateTopicInput {
+	id: Int!,
+	title: String!
+}
+
+input DeleteTopicInput {
+    id: Int!
+}
+
+type Mutation {
+    createTopic(data:CreateTopicInput):Topic!
+	updateTopic(data:UpdateTopicInput):[Int!]!
+	deleteTopic(data:DeleteTopicInput):Int!
+}

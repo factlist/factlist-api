@@ -1,31 +1,29 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server-express');
+const { importSchema } = require('graphql-import');
+const logger = require('./utils/logger');
 const db = require('./models');
-const schema = require('./graphql/schema');
-const resolvers = require('./graphql/resolvers');
-const env = process.env.NODE_ENV || 'development';
 const config = require('./config');
-const authUser = require('./graphql/context/authUser');
+const resolvers = require('./graphql/resolvers');
 
-const app = express();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-// Graphql endpoint
 const server = new ApolloServer({
-  typeDefs: gql(schema),
+  typeDefs: importSchema('./graphql/schema.graphql'),
   resolvers,
   context: async ({ req }) => {
     return {
-      authUser: await authUser(req)
+      db,
+      authUser: req ? req.authUser : null
     };
   }
 });
 
+const app = express();
 server.applyMiddleware({ app });
 
-app.listen(4000, () => {
-  console.log('Listening on port:4000');
+app.listen(config.server.port, () => {
+  logger.info(
+    `🚀 Server ready at http://localhost:${config.server.port}${
+      server.graphqlPath
+    }`
+  );
 });
