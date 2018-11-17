@@ -24,13 +24,13 @@ input CreateLinkInput {
 }
 
 input UpdateLinkInput {
-    id: Int!,
+    id: ID!,
     title: String!, 
     url: String!
 }
 
 input DeleteLinkInput {
-   id: Int!     
+   id: ID!     
 }
 
 

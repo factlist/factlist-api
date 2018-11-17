@@ -27,7 +27,7 @@ input CreateUserInput {
 }
 
 input UpdateUserInput {
-    id: Int!,
+    id: ID!,
     name: String!,
     email: String!,
     username: String!,
