@@ -1,0 +1,36 @@
+type Query {
+    link(id: ID!): Link
+    links: [Link!]
+}
+
+type Link {
+    id: ID!
+    title: String!
+    url: String!
+    topic_id: ID!
+    topic: Topic!
+    tags: [Tag!]
+ }
+
+ type Mutation {
+     updateLink(data:UpdateLinkInput):[Int!]!
+	 deleteLink(data:DeleteLinkInput):Int!
+}
+
+input CreateLinkInput {
+    title: String,
+    url: String,
+    tags: [CreateTagInput]
+}
+
+input UpdateLinkInput {
+    id: Int!,
+    title: String!, 
+    url: String!
+}
+
+input DeleteLinkInput {
+   id: Int!     
+}
+
+
