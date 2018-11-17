@@ -18,12 +18,12 @@ The Factlist API service is built with Nodejs, Graphql and latest stable version
 
 - Create database migration
   ```
-  yarn db:migration
+  yarn db:migrate
   ```
   
 - Create database seed
   ```
-  yarn db:seeders
+  yarn db:seed
   ```
 
 - Start server watch 
