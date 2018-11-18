@@ -39,7 +39,10 @@ const config = {
     },
     server: {
       port: process.env.port || 4000
-    }
+		},
+		auth: {
+      jwtSecret: 'secretKey'
+    },
   },
 
   test: {
