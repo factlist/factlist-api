@@ -22,10 +22,12 @@ const app = express();
 app.use(auth);
 server.applyMiddleware({ app });
 
-app.listen(config.server.port, () => {
-  logger.info(
-    `🚀 Server ready at http://localhost:${config.server.port}${
-      server.graphqlPath
-    }`
-  );
+db.sequelize.sync().then(() => {
+  app.listen(config.server.port, () => {
+    logger.info(
+      `🚀 Server ready at http://localhost:${config.server.port}${
+        server.graphqlPath
+      }`
+    );
+  });
 });
