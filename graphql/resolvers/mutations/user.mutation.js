@@ -33,6 +33,7 @@ module.exports = {
   },
 
   updateUser: async (_, args, { db, authUser }) => {
+    check.Auth(authUser);
     try {
       const user = await db.users.findByPk(args.data.id);
       await user.update({

@@ -5,6 +5,7 @@ const logger = require('./utils/logger');
 const db = require('./models');
 const config = require('./config');
 const resolvers = require('./graphql/resolvers');
+const auth = require('./middlewares/auth');
 
 const server = new ApolloServer({
   typeDefs: importSchema('./graphql/schema.graphql'),
@@ -18,6 +19,7 @@ const server = new ApolloServer({
 });
 
 const app = express();
+app.use(auth);
 server.applyMiddleware({ app });
 
 app.listen(config.server.port, () => {

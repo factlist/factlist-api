@@ -1,3 +1,4 @@
+const config = require('../config');
 const jwt = require('jsonwebtoken');
 const logger = require('../utils/logger');
 module.exports = async (req, res, next) => {
@@ -7,7 +8,7 @@ module.exports = async (req, res, next) => {
       const authUser = await jwt.verify(token, config.auth.jwtSecret);
       req.authUser = authUser;
     } catch (error) {
-      logger.error(error)
+      logger.error(error);
     }
   }
   next();

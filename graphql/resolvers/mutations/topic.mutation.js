@@ -1,10 +1,11 @@
 module.exports = {
   createTopic: async (_, { data: { title, links } }, { db, authUser }) => {
     try {
+      check.Auth(authUser);
       return await db.topics.create(
         {
           title,
-          user_id: 1,
+          user_id: authUser.sub,
           links
         },
         {
@@ -23,6 +24,7 @@ module.exports = {
 
   updateTopic: async (_, { data: { id, title } }, { db, authUser }) => {
     try {
+      check.Auth(authUser);
       return await db.topics.update({ title: title }, { where: { id: id } });
     } catch (error) {
       throw new Error(error);
@@ -31,6 +33,7 @@ module.exports = {
 
   deleteTopic: async (_, { data: { id } }, { db, authUser }) => {
     try {
+      check.Auth(authUser);
       return await db.topics.destroy({ where: { id: id } });
     } catch (error) {
       throw new Error(error);
