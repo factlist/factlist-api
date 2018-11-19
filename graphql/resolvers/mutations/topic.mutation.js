@@ -1,3 +1,5 @@
+const check = require('../../../helpers/check');
+
 module.exports = {
   createTopic: async (_, { data: { title, links } }, { db, authUser }) => {
     try {

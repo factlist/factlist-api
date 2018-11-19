@@ -1,3 +1,5 @@
+const check = require('../../../helpers/check');
+
 module.exports = {
   updateTag: async (_, { data: { id, title } }, { db, authUser }) => {
     try {

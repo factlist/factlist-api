@@ -1,3 +1,5 @@
+const check = require('../../../helpers/check');
+
 module.exports = {
   updateLink: async (_, { data: { id, title, url } }, { db, authUser }) => {
     try {
