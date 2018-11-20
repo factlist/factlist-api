@@ -4,8 +4,10 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "db:revert": "./node_modules/.bin/sequelize db:migrate:undo:all",
         "db:migrate": "./node_modules/.bin/sequelize db:migrate",
         "db:seed": "./node_modules/.bin/sequelize db:seed:undo:all && sequelize db:seed:all",
+        "db:refresh": "npm run db:revert && npm run db:migrate && npm run db:seed",
         "watch": "NODE_ENV=development nodemon --ext . index.js -e js,html,graphql",
         "docker": "NODE_ENV=docker nodemon --ext . index.js -e js,html, graphql",
         "test": "echo \"Error: no test specified\" && exit 1",
