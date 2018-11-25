@@ -3,6 +3,7 @@ const User = require('../models').users;
 const config = require('../config');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
+const TwitterStrategy = require('passport-twitter').Strategy;
 const LocalStrategy = require('passport-local');
 
 // Create local strategy
@@ -33,20 +34,29 @@ const jwtOptions = {
 };
 
 // Create JWT strategy
-const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
-  User.findById(payload.sub, (err, user) => {
-    if (err) {
-      return done(err, false);
-    }
-
+const jwtLogin = new JwtStrategy(jwtOptions, async (payload, done) => {
+  try {
+    const user = await User.findByPk(payload.sub);
     if (user) {
-      done(null, user);
-    } else {
-      done(null, false);
+      return done(null, true);
     }
-  });
+    return done(null, false);
+  } catch (err) {
+    return done(err, false);
+  }
 });
 
-// Tell passport to use this strategy
+const twitterOptions = { ...config.auth.twitter, passReqToCallback: true };
+
+const twitterStrategy = new TwitterStrategy(
+  twitterOptions,
+  async (token, tokenSecret, profile, done) => {
+    User.findOrCreate({ twitter: profile.id }, (err, user) => {
+      return done(err, user);
+    });
+  }
+);
+
+passport.use(twitterStrategy);
 passport.use(jwtLogin);
 passport.use(localLogin);

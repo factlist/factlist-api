@@ -18,7 +18,13 @@ const config = {
       port: process.env.port || 4000
     },
     auth: {
-      jwtSecret: 'secretKey'
+      tokenLifeTime: '1h',
+      jwtSecret: 'secretKey',
+      twitter: {
+        consumerKey: '6FsbKUvOkZxAO5qn6jHIR2Vw6',
+        consumerSecret: 'HGSb2Xcqb5cQmKBjUtzJX99IgjQTFpeIvJLjPQ5eeGZyB3uE7',
+        callbackURL: 'http://localhost:4000/auth/twitter/callback'
+      }
     },
     logLevel: 'debug'
   },
@@ -39,10 +45,16 @@ const config = {
     },
     server: {
       port: process.env.port || 4000
-		},
-		auth: {
-      jwtSecret: 'secretKey'
     },
+    auth: {
+      tokenLifeTime: '1h',
+      jwtSecret: 'secretKey',
+      twitter: {
+        consumerKey: 'your-consumer-key-here',
+        consumerSecret: 'your-client-secret-here',
+        callbackURL: 'http://localhost:8080/auth/twitter/callback'
+      }
+    }
   },
 
   test: {
@@ -63,7 +75,13 @@ const config = {
       port: process.env.port || 4000
     },
     auth: {
-      jwtSecret: 'secretKey'
+      tokenLifeTime: '1h',
+      jwtSecret: 'secretKey',
+      twitter: {
+        consumerKey: 'your-consumer-key-here',
+        consumerSecret: 'your-client-secret-here',
+        callbackURL: 'http://localhost:8080/auth/twitter/callback'
+      }
     },
     logLevel: 'info'
   },
@@ -86,7 +104,13 @@ const config = {
       port: process.env.port || 4000
     },
     auth: {
-      jwtSecret: 'secretKey'
+      tokenLifeTime: '1h',
+      jwtSecret: 'secretKey',
+      twitter: {
+        consumerKey: 'your-consumer-key-here',
+        consumerSecret: 'your-client-secret-here',
+        callbackURL: 'http://localhost:8080/auth/twitter/callback'
+      }
     }
   },
   logLevel: 'error'
