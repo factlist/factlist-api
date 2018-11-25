@@ -1,3 +1,4 @@
+
 type Query {
     link(id: ID!): Link
     links: [Link!]
@@ -13,9 +14,9 @@ type Link {
  }
 
  type Mutation {
-     createLink(data:CreateLinkInput):Link!
-     updateLink(data:UpdateLinkInput):[Int!]!
-	 deleteLink(data:DeleteLinkInput):Int!
+    createLink(data:CreateLinkInput):Link!
+    updateLink(data:UpdateLinkInput):[Int!]!
+    deleteLink(data:DeleteLinkInput):Int!
 }
 
 input CreateLinkInput {
