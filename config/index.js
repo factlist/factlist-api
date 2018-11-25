@@ -21,8 +21,8 @@ const config = {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
       twitter: {
-        consumerKey: '6FsbKUvOkZxAO5qn6jHIR2Vw6',
-        consumerSecret: 'HGSb2Xcqb5cQmKBjUtzJX99IgjQTFpeIvJLjPQ5eeGZyB3uE7',
+        consumerKey: 'your-consumer-key-here',
+        consumerSecret: 'your-client-secret-here',
         callbackURL: 'http://localhost:4000/auth/twitter/callback'
       }
     },
