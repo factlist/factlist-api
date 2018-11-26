@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const { ApolloServer } = require('apollo-server-express');
@@ -24,6 +25,15 @@ const server = new ApolloServer({
 });
 
 const app = express();
+
+app.use(
+  session({
+    secret: 'dsds',
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
 app.use('/graphql', requireAuth);
 app.use(bodyParser.json({ type: '*/*' }));
 
