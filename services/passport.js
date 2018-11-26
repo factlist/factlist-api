@@ -3,7 +3,7 @@ const User = require('../models').users;
 const config = require('../config');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const TwitterStrategy = require('passport-twitter').Strategy;
+
 const LocalStrategy = require('passport-local');
 
 // Create local strategy
@@ -46,17 +46,5 @@ const jwtLogin = new JwtStrategy(jwtOptions, async (payload, done) => {
   }
 });
 
-const twitterOptions = { ...config.auth.twitter, passReqToCallback: true };
-
-const twitterStrategy = new TwitterStrategy(
-  twitterOptions,
-  async (token, tokenSecret, profile, done) => {
-    User.findOrCreate({ twitter: profile.id }, (err, user) => {
-      return done(err, user);
-    });
-  }
-);
-
-passport.use(twitterStrategy);
 passport.use(jwtLogin);
 passport.use(localLogin);
