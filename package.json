@@ -36,6 +36,7 @@
         "bcryptjs": "^2.4.3",
         "express": "^4.16.4",
         "express-jwt": "^5.3.1",
+        "express-session": "^1.15.6",
         "faker": "^4.1.0",
         "graphql": "^14.0.2",
         "graphql-import": "^0.7.1",
