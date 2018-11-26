@@ -52,8 +52,7 @@ const config = {
       twitter: {
         consumerKey: 'your-consumer-key-here',
         consumerSecret: 'your-client-secret-here',
-				callbackURL: 'http://localhost:4000/auth/twitter/callback'
-
+        callbackURL: 'http://localhost:4000/auth/twitter/callback'
       }
     }
   },
@@ -81,7 +80,7 @@ const config = {
       twitter: {
         consumerKey: 'your-consumer-key-here',
         consumerSecret: 'your-client-secret-here',
-				callbackURL: 'http://localhost:4000/auth/twitter/callback'
+        callbackURL: 'http://localhost:4000/auth/twitter/callback'
       }
     },
     logLevel: 'info'
@@ -110,8 +109,7 @@ const config = {
       twitter: {
         consumerKey: 'your-consumer-key-here',
         consumerSecret: 'your-client-secret-here',
-				callbackURL: 'http://localhost:4000/auth/twitter/callback'
-
+        callbackURL: 'http://localhost:4000/auth/twitter/callback'
       }
     }
   },
