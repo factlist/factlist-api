@@ -36,9 +36,12 @@ module.exports = {
   deleteLink: async (_, { data: { id } }, { db, authUser }) => {
     try {
       check.Auth(authUser);
-      return await db.links.destroy({ where: { id: id } });
+      const user = await db.users.findByPk(authUser.sub);
+      const getTopics = await user.getTopics();
+      const topics = getTopics.map(topics => topics.id);
+      return await db.links.destroy({ where: { id: id, topic_id: topics } });
     } catch (error) {
-      throw new error();
+      throw new Error(error);
     }
   }
 };

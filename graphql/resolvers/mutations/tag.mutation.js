@@ -12,7 +12,7 @@ module.exports = {
   deleteTag: async (_, { data: { id } }, { db, authUser }) => {
     try {
       check.Auth(authUser);
-      return await db.tags.update({ where: { id: id } });
+      return await db.tags.destroy({ where: { id: id } });
     } catch (error) {
       throw new error();
     }

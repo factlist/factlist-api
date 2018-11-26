@@ -36,7 +36,9 @@ module.exports = {
   deleteTopic: async (_, { data: { id } }, { db, authUser }) => {
     try {
       check.Auth(authUser);
-      return await db.topics.destroy({ where: { id: id } });
+      return await db.topics.destroy({
+        where: { id: id, user_id: authUser.sub }
+      });
     } catch (error) {
       throw new Error(error);
     }
