@@ -27,7 +27,10 @@ module.exports = {
   updateTopic: async (_, { data: { id, title } }, { db, authUser }) => {
     try {
       check.Auth(authUser);
-      return await db.topics.update({ title: title }, { where: { id: id } });
+      return await db.topics.update(
+        { title: title },
+        { where: { id: id, user_id: authUser.sub } }
+      );
     } catch (error) {
       throw new Error(error);
     }
