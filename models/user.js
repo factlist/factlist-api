@@ -7,12 +7,12 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       username: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true
       },
       email: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true
       },
       password: DataTypes.STRING,
@@ -21,8 +21,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       hooks: {
         beforeCreate: async user => {
-          const hashedPassword = await bcrypt.hash(user.password, 10);
-          user.password = hashedPassword;
+          if (user.twitter === '') {
+            const hashedPassword = await bcrypt.hash(user.password, 10);
+            user.password = hashedPassword;
+          }
         }
       }
     }
