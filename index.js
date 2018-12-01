@@ -26,16 +26,14 @@ const server = new ApolloServer({
 
 const app = express();
 
-app.use(
-  session({
-    secret: 'dsds',
-    resave: true,
-    saveUninitialized: true
-  })
-);
+app.use(require('cookie-parser')());
+app.use(bodyParser.json({ type: '*/*' }));
+ app.use(session({ secret: 'blah', name: 'id', cookie: { secure: false }}))
+
 
 app.use('/graphql', requireAuth);
-app.use(bodyParser.json({ type: '*/*' }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 authenticate(app);
 server.applyMiddleware({ app });
