@@ -21,9 +21,9 @@ const config = {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
       twitter: {
-        consumerKey: 'your-consumer-key-here',
-        consumerSecret: 'your-client-secret-here',
-        callbackURL: 'http://localhost:4000/auth/twitter/callback'
+        consumerKey: process.env.consumerKey,
+        consumerSecret: process.env.consumerSecret,
+        callbackURL: process.env.callbackURL
       }
     },
     logLevel: 'debug'
@@ -50,9 +50,9 @@ const config = {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
       twitter: {
-        consumerKey: 'your-consumer-key-here',
-        consumerSecret: 'your-client-secret-here',
-        callbackURL: 'http://localhost:4000/auth/twitter/callback'
+        consumerKey: process.env.consumerKey,
+        consumerSecret: process.env.consumerSecret,
+        callbackURL: process.env.callbackURL
       }
     }
   },
@@ -78,9 +78,9 @@ const config = {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
       twitter: {
-        consumerKey: 'your-consumer-key-here',
-        consumerSecret: 'your-client-secret-here',
-        callbackURL: 'http://localhost:4000/auth/twitter/callback'
+        consumerKey: process.env.consumerKey,
+        consumerSecret: process.env.consumerSecret,
+        callbackURL: process.env.callbackURL
       }
     },
     logLevel: 'info'
@@ -107,9 +107,9 @@ const config = {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
       twitter: {
-        consumerKey: 'your-consumer-key-here',
-        consumerSecret: 'your-client-secret-here',
-        callbackURL: 'http://localhost:4000/auth/twitter/callback'
+        consumerKey: process.env.consumerKey,
+        consumerSecret: process.env.consumerSecret,
+        callbackURL: process.env.callbackURL
       }
     }
   },
