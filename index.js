@@ -9,6 +9,7 @@ const db = require('./models');
 const config = require('./config');
 const resolvers = require('./graphql/resolvers');
 const authenticate = require('./auth');
+const auth = require('./middlewares/auth');
 
 const requireAuth = passport.authenticate('jwt', { session: false });
 require('./services/passport');
@@ -25,15 +26,22 @@ const server = new ApolloServer({
 });
 
 const app = express();
-
 app.use(require('cookie-parser')());
 app.use(bodyParser.json({ type: '*/*' }));
- app.use(session({ secret: 'blah', name: 'id', cookie: { secure: false }}))
-
-
+app.use(session({ secret: 'blah', name: 'id', cookie: { secure: false } }));
 app.use('/graphql', requireAuth);
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get('/auth/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
+app.get('/test', (req, res) => {
+  console.log(req.isAuthenticated());
+  res.send('test');
+});
 
 authenticate(app);
 server.applyMiddleware({ app });

@@ -21,6 +21,7 @@ const config = {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
       twitter: {
+				userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
         consumerKey: process.env.consumerKey,
         consumerSecret: process.env.consumerSecret,
         callbackURL: process.env.callbackURL
@@ -50,6 +51,7 @@ const config = {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
       twitter: {
+				userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
         consumerKey: process.env.consumerKey,
         consumerSecret: process.env.consumerSecret,
         callbackURL: process.env.callbackURL
@@ -78,6 +80,7 @@ const config = {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
       twitter: {
+				userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
         consumerKey: process.env.consumerKey,
         consumerSecret: process.env.consumerSecret,
         callbackURL: process.env.callbackURL
@@ -107,6 +110,7 @@ const config = {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
       twitter: {
+				userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
         consumerKey: process.env.consumerKey,
         consumerSecret: process.env.consumerSecret,
         callbackURL: process.env.callbackURL
