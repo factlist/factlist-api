@@ -18,7 +18,14 @@ const config = {
       port: process.env.port || 4000
     },
     auth: {
-      jwtSecret: 'secretKey'
+      tokenLifeTime: '1h',
+      jwtSecret: 'secretKey',
+      twitter: {
+				userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
+        consumerKey: process.env.consumerKey,
+        consumerSecret: process.env.consumerSecret,
+        callbackURL: process.env.callbackURL
+      }
     },
     logLevel: 'debug'
   },
@@ -39,10 +46,17 @@ const config = {
     },
     server: {
       port: process.env.port || 4000
-		},
-		auth: {
-      jwtSecret: 'secretKey'
     },
+    auth: {
+      tokenLifeTime: '1h',
+      jwtSecret: 'secretKey',
+      twitter: {
+				userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
+        consumerKey: process.env.consumerKey,
+        consumerSecret: process.env.consumerSecret,
+        callbackURL: process.env.callbackURL
+      }
+    }
   },
 
   test: {
@@ -63,7 +77,14 @@ const config = {
       port: process.env.port || 4000
     },
     auth: {
-      jwtSecret: 'secretKey'
+      tokenLifeTime: '1h',
+      jwtSecret: 'secretKey',
+      twitter: {
+				userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
+        consumerKey: process.env.consumerKey,
+        consumerSecret: process.env.consumerSecret,
+        callbackURL: process.env.callbackURL
+      }
     },
     logLevel: 'info'
   },
@@ -86,7 +107,14 @@ const config = {
       port: process.env.port || 4000
     },
     auth: {
-      jwtSecret: 'secretKey'
+      tokenLifeTime: '1h',
+      jwtSecret: 'secretKey',
+      twitter: {
+				userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
+        consumerKey: process.env.consumerKey,
+        consumerSecret: process.env.consumerSecret,
+        callbackURL: process.env.callbackURL
+      }
     }
   },
   logLevel: 'error'
