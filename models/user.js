@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
         unique: true
       },
       password: DataTypes.STRING,
-      twitter: DataTypes.STRING
+      twitter: DataTypes.STRING,
+      token: DataTypes.STRING
     },
     {
       hooks: {
