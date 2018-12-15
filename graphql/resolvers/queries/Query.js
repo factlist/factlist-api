@@ -1,4 +1,4 @@
-const check = require('../../../helpers/check');
+const { check } = require('../../../helpers');
 
 module.exports = {
   users: async (_, args, { db, authUser }) => {
@@ -7,7 +7,7 @@ module.exports = {
   },
 
   user: async (_, { id }, { db, authUser }) => {
-		check.Auth(authUser);
+    check.Auth(authUser);
     return await db.users.findByPk(id);
   },
 

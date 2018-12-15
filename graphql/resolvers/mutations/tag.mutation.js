@@ -1,5 +1,4 @@
-const check = require('../../../helpers/check');
-const { getUserFromTag } = require('../../../helpers/get-user');
+const { check, getUserFromTag } = require('../../../helpers');
 
 module.exports = {
   updateTag: async (_, { data: { id, title } }, { db, authUser }) => {

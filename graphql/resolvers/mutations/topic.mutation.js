@@ -1,4 +1,4 @@
-const check = require('../../../helpers/check');
+const { check } = require('../../../helpers/');
 
 module.exports = {
   createTopic: async (_, { data: { title, links } }, { db, authUser }) => {

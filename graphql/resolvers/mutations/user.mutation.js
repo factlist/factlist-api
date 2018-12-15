@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
-const token = require('../../../helpers/token');
-const check = require('../../../helpers/check');
+const { token, check } = require('../../../helpers');
 
 module.exports = {
   login: async (_, { data: { email, password } }, { db }) => {
