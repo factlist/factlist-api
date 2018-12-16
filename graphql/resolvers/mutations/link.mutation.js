@@ -1,5 +1,4 @@
-const check = require('../../../helpers/check');
-const { getUserFromLink } = require('../../../helpers/get-user');
+const { getUserFromLink, check } = require('../../../helpers/');
 
 module.exports = {
   createLink: async (
