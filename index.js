@@ -9,7 +9,6 @@ const db = require('./models');
 const config = require('./config');
 const resolvers = require('./graphql/resolvers');
 const authenticate = require('./auth');
-const auth = require('./middlewares/auth');
 
 const requireAuth = passport.authenticate('jwt', { session: false });
 require('./services/passport');

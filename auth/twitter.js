@@ -10,7 +10,7 @@ passport.use(
   new TwitterStrategy(
     twitterOptions,
     async (req, token, tokenSecret, profile, done) => {
-      let user = await User.find({ where: { twitter: profile.id } });
+      let user = await User.findOne({ where: { twitter: profile.id } });
       if (!user) {
         user = User.create({
           twitter: profile.id,
@@ -38,7 +38,7 @@ module.exports = app => {
 
 const handleSocialAuth = (req, res) => {
   if (!req.user) {
-    return res.send('Unauthorized');
+    return res.send(config.locale.auth.not_authorized);
   }
   return res.send({
     token: token.generate({ id: req.user.id }, config.auth.tokenLifeTime)
