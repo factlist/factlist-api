@@ -36,12 +36,6 @@ app.get('/auth/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
-
-app.get('/test', (req, res) => {
-  console.log(req.isAuthenticated());
-  res.send('test');
-});
-
 authenticate(app);
 server.applyMiddleware({ app });
 
