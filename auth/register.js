@@ -5,13 +5,15 @@ module.exports = app => {
   app.post('/register', async (req, res) => {
     if (!req.body.email || !req.body.password) {
       return res
-        .status(422)
-        .send({ error: 'You must provide email and password' });
+        .status(500)
+        .send({ error: config.locale.auth.must_provide_email });
     }
     const user = await User.findOne({ where: { email: req.body.email } });
 
-    if (user) {
-      return res.status(422).send({ error: 'Email is in use' });
+    if (!user) {
+      return res
+        .status(500)
+        .send({ error: config.locale.auth.already_use_email });
     }
     const createdUser = await User.create(req.body);
     res.send({

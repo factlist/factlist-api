@@ -1,6 +1,9 @@
 const env = process.env.NODE_ENV || 'development';
+const locale = require('./locales/en');
+
 const config = {
   development: {
+    locale,
     username: 'root',
     password: '',
     logging: false,
@@ -19,9 +22,13 @@ const config = {
     },
     auth: {
       tokenLifeTime: '1h',
-      jwtSecret: 'secretKey',
+			jwtSecret: 'secretKey',
+			mailgunApiKey: process.env.mailgunApiKey,
+      mailgunAccountEmail: 'http://factlist.com',
+      mailgunDomain: 'account@factlist.com',
       twitter: {
-				userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
+        userProfileURL:
+          'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
         consumerKey: process.env.consumerKey,
         consumerSecret: process.env.consumerSecret,
         callbackURL: process.env.callbackURL
@@ -31,6 +38,7 @@ const config = {
   },
 
   docker: {
+    locale,
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     logging: false,
@@ -50,8 +58,12 @@ const config = {
     auth: {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
+      mailgunApiKey: process.env.mailgunApiKey,
+      mailgunAccountEmail: 'http://factlist.com',
+      mailgunDomain: 'account@factlist.com',
       twitter: {
-				userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
+        userProfileURL:
+          'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
         consumerKey: process.env.consumerKey,
         consumerSecret: process.env.consumerSecret,
         callbackURL: process.env.callbackURL
@@ -60,6 +72,7 @@ const config = {
   },
 
   test: {
+    locale,
     username: 'root',
     password: '',
     logging: false,
@@ -79,8 +92,12 @@ const config = {
     auth: {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
+      mailgunApiKey: process.env.mailgunApiKey,
+      mailgunAccountEmail: 'http://factlist.com',
+      mailgunDomain: 'account@factlist.com',
       twitter: {
-				userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
+        userProfileURL:
+          'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
         consumerKey: process.env.consumerKey,
         consumerSecret: process.env.consumerSecret,
         callbackURL: process.env.callbackURL
@@ -90,6 +107,7 @@ const config = {
   },
 
   production: {
+    locale,
     username: 'root',
     password: '',
     logging: false,
@@ -109,8 +127,12 @@ const config = {
     auth: {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
+      mailgunApiKey: process.env.mailgunApiKey,
+      mailgunAccountEmail: 'http://factlist.com',
+      mailgunDomain: 'account@factlist.com',
       twitter: {
-				userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
+        userProfileURL:
+          'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
         consumerKey: process.env.consumerKey,
         consumerSecret: process.env.consumerSecret,
         callbackURL: process.env.callbackURL
