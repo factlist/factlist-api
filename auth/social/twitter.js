@@ -24,7 +24,7 @@ const twitterStrategy = new TwitterStrategy(
   twitterOptions,
   async (req, token, tokenSecret, profile, done) => {
     try {
-			let user = await User.findOne({ where: { twitter: profile.id } });
+      let user = await User.findOne({ where: { twitter: profile.id } });
       if (!user) {
         user = await User.create(userData(profile));
       }
@@ -49,7 +49,7 @@ const handleSocialAuth = (req, res) => {
 
 module.exports = app => {
   app.get(authRouter, passport.authenticate(platform));
-	app.get(callbackRouter,authMiddleware,handleSocialAuth);
+  app.get(callbackRouter, authMiddleware, handleSocialAuth);
 };
 
 passport.use(twitterStrategy);
