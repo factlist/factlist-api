@@ -1,15 +1,15 @@
-const User = require('../models').users;
+const User = require('../../models').users;
 const passport = require('passport');
 const TwitterStrategy = require('passport-twitter').Strategy;
-const config = require('../config');
-const token = require('../helpers/token');
+const config = require('../../config');
+const token = require('../../helpers/token');
 
 const twitterOptions = { ...config.auth.twitter, passReqToCallback: true };
 
-passport.use(
-  new TwitterStrategy(
-    twitterOptions,
-    async (req, token, tokenSecret, profile, done) => {
+const twitterStrategy = new TwitterStrategy(
+  twitterOptions,
+  async (req, token, tokenSecret, profile, done) => {
+    try {
       let user = await User.findOne({ where: { twitter: profile.id } });
       if (!user) {
         user = User.create({
@@ -20,8 +20,10 @@ passport.use(
         });
       }
       done(null, user);
+    } catch (error) {
+      done(error, false);
     }
-  )
+  }
 );
 
 passport.serializeUser((user, done) => done(null, user));
@@ -44,3 +46,5 @@ const handleSocialAuth = (req, res) => {
     token: token.generate({ id: req.user.id }, config.auth.tokenLifeTime)
   });
 };
+
+passport.use(twitterStrategy);

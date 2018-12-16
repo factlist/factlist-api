@@ -1,6 +1,6 @@
-const User = require('../models').users;
-const token = require('../helpers/token');
-const config = require('../config');
+const User = require('../../models').users;
+const token = require('../../helpers/token');
+const config = require('../../config');
 module.exports = app => {
   app.post('/register', async (req, res) => {
     if (!req.body.email || !req.body.password) {
