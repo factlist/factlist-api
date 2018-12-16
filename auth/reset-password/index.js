@@ -1,7 +1,5 @@
 const User = require('../../models').users;
-const mailgun = require('../../services/mailgun');
 const config = require('../../config');
-const mailInfo = require('./mail-info');
 
 module.exports = app => {
   app.post('/reset-password', async(req, res) => {
@@ -32,9 +30,7 @@ module.exports = app => {
       }
 
       await user.update({ token });
-
-      await mailgun.messages().send(mailInfo({ email, token }));
-
+			//sns
       res.send(200, { success: config.locale.success.global });
     } catch (error) {
       return res.status(500).send({ error });
