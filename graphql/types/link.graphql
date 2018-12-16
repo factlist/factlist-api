@@ -20,8 +20,9 @@ type Link {
 }
 
 input CreateLinkInput {
-    title: String,
-    url: String,
+    title: String!,
+    url: String!,    
+    topic_id:Int
     tags: [CreateTagInput]
 }
 

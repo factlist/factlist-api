@@ -11,7 +11,8 @@ module.exports = {
     already_use_email: 'Email is in use.',
     failed: 'These credentials do not match our records.',
     send_reset_password_mail: 'Reset password mail has been sent successfully.',
-    token_invalid: 'Password reset token is invalid.'
+    token_invalid: 'Password reset token is invalid.',
+    incorrect_password: 'Incorrect password.'
   },
   mailer: {
     reset_password_email_subject: 'Reset your password',

@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const config = require('../../../config/');
 const { token, check } = require('../../../helpers');
 
 module.exports = {
@@ -6,11 +7,11 @@ module.exports = {
     try {
       const user = await db.users.findOne({ where: { email } });
       if (!user) {
-        throw new Error('No user with that email');
+        throw new Error(config.locale.auth.failed);
       }
       const valid = await bcrypt.compare(password, user.password);
       if (!valid) {
-        throw new Error('Incorrect password');
+        throw new Error(config.locale.auth.incorrect_password);
       }
       return { token: token.generate(user, '1h') };
     } catch (error) {

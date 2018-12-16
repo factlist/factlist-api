@@ -7,7 +7,7 @@ module.exports = {
       return await db.topics.create(
         {
           title,
-          user_id: authUser.sub,
+          user_id: authUser.id,
           links
         },
         {
@@ -29,7 +29,7 @@ module.exports = {
       check.Auth(authUser);
       return await db.topics.update(
         { title: title },
-        { where: { id: id, user_id: authUser.sub } }
+        { where: { id: id, user_id: authUser.id } }
       );
     } catch (error) {
       throw new Error(error);
@@ -40,7 +40,7 @@ module.exports = {
     try {
       check.Auth(authUser);
       return await db.topics.destroy({
-        where: { id: id, user_id: authUser.sub }
+        where: { id: id, user_id: authUser.id }
       });
     } catch (error) {
       throw new Error(error);
