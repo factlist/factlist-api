@@ -4,20 +4,29 @@ const TwitterStrategy = require('passport-twitter').Strategy;
 const config = require('../../config');
 const token = require('../../helpers/token');
 
+const platform = 'twitter';
+const authRouter = '/auth/twitter';
+const callbackRouter = '/auth/twitter/callback';
+const failureRedirect = '/login';
+const authMiddleware = passport.authenticate(platform, { failureRedirect });
 const twitterOptions = { ...config.auth.twitter, passReqToCallback: true };
+
+const userData = profile => {
+  return {
+    twitter: profile.id,
+    username: profile.username,
+    name: profile.displayName,
+    email: profile.emails[0].value
+  };
+};
 
 const twitterStrategy = new TwitterStrategy(
   twitterOptions,
   async (req, token, tokenSecret, profile, done) => {
     try {
-      let user = await User.findOne({ where: { twitter: profile.id } });
+			let user = await User.findOne({ where: { twitter: profile.id } });
       if (!user) {
-        user = User.create({
-          twitter: profile.id,
-          username: profile.username,
-          name: profile.displayName,
-          email: profile.emails[0].value
-        });
+        user = await User.create(userData(profile));
       }
       done(null, user);
     } catch (error) {
@@ -29,15 +38,6 @@ const twitterStrategy = new TwitterStrategy(
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
-module.exports = app => {
-  app.get('/auth/twitter', passport.authenticate('twitter'));
-  app.get(
-    '/auth/twitter/callback',
-    passport.authenticate('twitter', { failureRedirect: '/login' }),
-    handleSocialAuth
-  );
-};
-
 const handleSocialAuth = (req, res) => {
   if (!req.user) {
     return res.send(config.locale.auth.not_authorized);
@@ -45,6 +45,11 @@ const handleSocialAuth = (req, res) => {
   return res.send({
     token: token.generate({ id: req.user.id }, config.auth.tokenLifeTime)
   });
+};
+
+module.exports = app => {
+  app.get(authRouter, passport.authenticate(platform));
+	app.get(callbackRouter,authMiddleware,handleSocialAuth);
 };
 
 passport.use(twitterStrategy);
