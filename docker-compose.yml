@@ -1,0 +1,21 @@
+version: '3'
+services:  
+  db:
+    image: 'mysql:5.7'    
+    ports:      
+      - "3307:3306"
+    environment:         
+        MYSQL_ROOT_PASSWORD: factlist
+        MYSQL_DATABASE: factlist
+        MYSQL_USER: root
+        MYSQL_PASSWORD: factlist  
+  api:
+    build: .    
+    env_file: .env
+    command: /api/manage.py runserver 0.0.0.0:8000
+    volumes:    
+      - .:/api      
+    ports:
+      - '8000:8000'
+  redis:
+    image: 'redis:latest'      
