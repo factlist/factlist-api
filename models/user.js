@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       hooks: {
         beforeCreate: async user => {
-          if (typeof user.twitter === 'undefined') {
+          if (!user.twitter) {
             const hashedPassword = await bcrypt.hash(user.password, 10);
             user.password = hashedPassword;
           }
