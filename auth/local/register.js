@@ -10,7 +10,7 @@ module.exports = app => {
     }
     const user = await User.findOne({ where: { email: req.body.email } });
 
-    if (!user) {
+    if (user) {
       return res
         .status(500)
         .send({ error: config.locale.auth.already_use_email });
