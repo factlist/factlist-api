@@ -2,7 +2,7 @@ const User = require('../../models').users;
 const config = require('../../config');
 
 module.exports = app => {
-  app.post('/reset-password', async(req, res) => {
+  app.post('/auth/reset-password', async(req, res) => {
     try {
       const token = req.body.token;
       const password = req.body.password;
@@ -17,7 +17,7 @@ module.exports = app => {
     }
   });
 
-  app.post('/send-reset-password-mail', async (req, res) => {
+  app.post('/auth/send-reset-password-mail', async (req, res) => {
     try {
       const email = req.body.email;
 
