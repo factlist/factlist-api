@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { ApolloServer } = require('apollo-server-express');
 const { importSchema } = require('graphql-import');
 const logger = require('./utils/logger');
@@ -31,6 +32,8 @@ app.use(session({ secret: 'blah', name: 'id', cookie: { secure: false } }));
 app.use('/graphql', requireAuth);
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cors())
+
 
 app.get('/auth/logout', (req, res) => {
   req.logout();
