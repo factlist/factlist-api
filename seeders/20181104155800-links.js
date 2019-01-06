@@ -10,6 +10,7 @@ module.exports = {
 					title: faker.random.word(),
 					url: faker.internet.url(),
 					topic_id: index + 1,
+					order: index+1,
 					created_at: new Date(),
 					updated_at: new Date()
 				}
