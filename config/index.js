@@ -22,8 +22,8 @@ const config = {
     },
     auth: {
       tokenLifeTime: '1h',
-			jwtSecret: 'secretKey',
-			mailgunApiKey: process.env.mailgunApiKey,
+      jwtSecret: 'secretKey',
+      mailgunApiKey: process.env.mailgunApiKey,
       mailgunAccountEmail: 'http://factlist.com',
       mailgunDomain: 'account@factlist.com',
       twitter: {
@@ -32,6 +32,12 @@ const config = {
         consumerKey: process.env.consumerKey,
         consumerSecret: process.env.consumerSecret,
         callbackURL: process.env.callbackURL
+      }
+    },
+    service: {
+      embedly: {
+        api: 'https://api.embedly.com/1/oembed',
+        key: process.env.embedlyKey
       }
     },
     logLevel: 'debug'
@@ -54,6 +60,10 @@ const config = {
     },
     server: {
       port: process.env.port || 4000
+    },
+    embedly: {
+      api: 'https://api.embedly.com/1/oembed',
+      key: process.env.embedlyKey
     },
     auth: {
       tokenLifeTime: '1h',
@@ -89,6 +99,10 @@ const config = {
     server: {
       port: process.env.port || 4000
     },
+    embedly: {
+      api: 'https://api.embedly.com/1/oembed',
+      key: process.env.embedlyKey
+    },
     auth: {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
@@ -123,6 +137,10 @@ const config = {
     },
     server: {
       port: process.env.port || 4000
+    },
+    embedly: {
+      api: 'https://api.embedly.com/1/oembed',
+      key: process.env.embedlyKey
     },
     auth: {
       tokenLifeTime: '1h',

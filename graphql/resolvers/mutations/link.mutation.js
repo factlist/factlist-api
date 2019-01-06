@@ -1,4 +1,4 @@
-const { getUserFromTopic, check } = require('../../../helpers/');
+const { check, previewLink } = require('../../../helpers/');
 const config = require('../../../config/');
 
 module.exports = {
@@ -46,6 +46,20 @@ module.exports = {
       if (authUser.id === user.id) {
         return await db.links.update({ order }, { where: { id: id } });
       }
+      throw new Error(config.locale.auth.not_authorized);
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
+  getPreviewLink: async (_, { data: { url } }, { authUser }) => {
+    try {
+      check.Auth(authUser);
+			// const user = await getUserFromLink(id);
+			return await previewLink(url);
+      // if (authUser.id === user.id) {
+
+      // }
       throw new Error(config.locale.auth.not_authorized);
     } catch (error) {
       throw new Error(error);
