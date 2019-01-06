@@ -9,6 +9,7 @@ type Link {
     title: String!
     url: String!
     topic_id: ID!
+    order: Int!
     topic: Topic!
     tags: [Tag!]
  }
@@ -17,6 +18,7 @@ type Link {
     createLink(data:CreateLinkInput):Link!
     updateLink(data:UpdateLinkInput):[Int!]!
     deleteLink(data:DeleteLinkInput):Int!
+    updateLinkOrder(data:UpdateLinkOrderInput):[Int!]!
 }
 
 input CreateLinkInput {
@@ -30,6 +32,11 @@ input UpdateLinkInput {
     id: ID!,
     title: String!, 
     url: String!
+}
+
+input UpdateLinkOrderInput {
+    id: ID!
+    order: Int!
 }
 
 input DeleteLinkInput {
