@@ -20,7 +20,6 @@ module.exports = {
           ]
         }
 			);
-			topic = topic.get({plain:true});
 			topic.user = authUser.get({plain:true});
 			return topic;
 
