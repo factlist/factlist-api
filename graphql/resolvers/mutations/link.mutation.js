@@ -14,9 +14,11 @@ module.exports = {
         return await db.links.create(
           { title, description, url, topic_id, tags },
           {
-            include: [{ model: db.tags }]
+            include: [{ model: db.topics }, { model: db.tags }]
           }
-        );
+				);
+				link.topic = topic.get({ plain: true });
+				return link;
       }
       throw new Error(config.locale.auth.not_authorized);
     } catch (error) {

@@ -3,22 +3,26 @@ const { check } = require('../../../helpers/');
 module.exports = {
   createTopic: async (_, { data: { title, links } }, { db, authUser }) => {
     try {
-      check.Auth(authUser);
-      return await db.topics.create(
+			check.Auth(authUser);
+      let topic=  await db.topics.create(
         {
           title,
           user_id: authUser.id,
-          links
+          links,
         },
         {
           include: [
+            { model: db.users },
             {
               model: db.links,
               include: [{ model: db.tags }]
             }
           ]
         }
-      );
+			);
+			topic.user = authUser.get({plain:true});
+			return topic;
+
     } catch (error) {
       throw new Error(error);
     }
