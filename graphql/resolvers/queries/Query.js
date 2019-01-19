@@ -13,7 +13,13 @@ module.exports = {
 
   topics: async (_, args, { db, authUser }) => {
     check.Auth(authUser);
-    return await db.topics.all();
+    return await db.topics.all({
+      include: [
+        {
+          model: db.users
+        }
+      ]
+    });
   },
 
   topic: async (_, { id }, { db, authUser }) => {
