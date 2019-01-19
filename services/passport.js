@@ -36,7 +36,7 @@ const jwtOptions = {
 // Create JWT strategy
 const jwtLogin = new JwtStrategy(jwtOptions, async (payload, done) => {
   try {
-		const user = await User.findByPk(payload.sub);
+    const user = await User.findByPk(payload.sub);
     if (user) {
       return done(null, user);
     }

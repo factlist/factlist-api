@@ -10,15 +10,18 @@ module.exports = {
       title: {
         type: Sequelize.STRING
       },
+      description: {
+        type: Sequelize.STRING
+      },
       url: {
         type: Sequelize.STRING
       },
       topic_id: {
         type: Sequelize.INTEGER
-			},
-			order: {
-				type: Sequelize.INTEGER
-			},
+      },
+      order: {
+        type: Sequelize.INTEGER
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE
