@@ -35,13 +35,15 @@ type Link {
 input CreateLinkInput {
     title: String!,
     url: String!,    
-    topic_id:Int
+    topic_id:Int,
+    description: String
     tags: [CreateTagInput]
 }
 
 input UpdateLinkInput {
     id: ID!,
     title: String!, 
+    description: String
     url: String!
 }
 
