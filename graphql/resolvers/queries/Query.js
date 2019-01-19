@@ -24,6 +24,25 @@ module.exports = {
     });
   },
 
+  links: async (_, args, { db, authUser }) => {
+    check.Auth(authUser);
+    return await db.links.all({
+      include: [
+        {
+          model: db.topics
+        },
+        {
+          model: db.tags
+        }
+      ]
+    });
+  },
+
+  link: async (_, { id }, { db, authUser }) => {
+    check.Auth(authUser);
+    return await db.links.findByPk(id);
+  },
+
   topic: async (_, { id }, { db, authUser }) => {
     check.Auth(authUser);
     return await db.topics.findByPk(id);
