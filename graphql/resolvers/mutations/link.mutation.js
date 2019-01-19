@@ -11,12 +11,14 @@ module.exports = {
       check.Auth(authUser);
       const topic = await db.topics.findByPk(topic_id);
       if (authUser.id === topic.user_id) {
-        return await db.links.create(
+        const link = await db.links.create(
           { title, url, topic_id, tags },
           {
-            include: [{ model: db.tags }]
+            include: [{ model: db.topics }, { model: db.tags }]
           }
-        );
+				);
+				link.topic = topic.get({ plain: true });
+				return link;
       }
       throw new Error(config.locale.auth.not_authorized);
     } catch (error) {
