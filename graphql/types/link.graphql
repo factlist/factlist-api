@@ -16,6 +16,7 @@ type PreviewLink {
 type Link {
     id: ID!
     title: String!
+    description: String
     url: String!
     topic_id: ID!
     order: Int!
