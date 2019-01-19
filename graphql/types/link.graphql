@@ -9,7 +9,7 @@ type Link {
     title: String!
     url: String!
     topic_id: ID!
-    order: Int!
+    order: Int
     topic: Topic!
     tags: [Tag!]
  }
