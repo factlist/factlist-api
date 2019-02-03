@@ -33,7 +33,7 @@ type Link {
 }
 
 input CreateLinkInput {
-    title: String!,
+    title: String,
     url: String!,    
     topic_id:Int,
     description: String
@@ -42,7 +42,7 @@ input CreateLinkInput {
 
 input UpdateLinkInput {
     id: ID!,
-    title: String!, 
+    title: String, 
     description: String
     url: String!
 }
