@@ -11,6 +11,13 @@ module.exports = {
     return await db.users.find({
       where: { username }
     });
+	},
+
+	getUserById: async (_, { id }, { db, authUser }) => {
+    check.Auth(authUser);
+    return await db.users.find({
+      where: { id }
+    });
   },
 
   topics: async (_, args, { db, authUser }) => {
