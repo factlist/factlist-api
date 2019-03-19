@@ -1,0 +1,27 @@
+type Query {
+    tag(id: ID!): Tag
+    tags: [Tag!]
+}
+
+type Tag {
+    id: ID!
+    title: String!
+ }
+
+input CreateTagInput {
+    title: String!
+}
+
+input UpdateTagInput {
+    id: ID!,
+    title: String!
+}
+
+input DeleteTagInput {
+    id: ID!
+}
+
+type Mutation {
+    updateTag(data: UpdateTagInput):[Int!]!
+    deleteTag(data: DeleteTagInput):Int!
+}

@@ -1,0 +1,41 @@
+type Query {
+    user(username: String!): User!
+    getUserById(id: ID!): User!
+    users: [User!]
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    username: String!
+    password: String!
+    topics: [Topic]
+ }
+
+type Mutation {
+    login(data: LoginUserInput!): Token!
+    createUser (data:CreateUserInput!): Token!
+    updateUser (data:UpdateUserInput!): User!
+ }
+
+
+input CreateUserInput {
+    name: String!,
+    email: String!,
+    username: String!,
+    password: String!
+}
+
+input UpdateUserInput {
+    id: ID!,
+    name: String!,
+    email: String!,
+    username: String!,
+    password: String!
+ }
+
+ input LoginUserInput {
+    email: String!,
+    password: String!
+ }

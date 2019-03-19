@@ -1,0 +1,63 @@
+
+type Query {
+    link(id: ID!): Link
+    links: [Link!]
+}
+
+type PreviewLink {
+    url:String!
+    thumbnail_width: Int!
+    thumbnail_height: Int!
+    thumbnail_url: String!
+    description: String!
+    type: String!
+}
+
+type Link {
+    id: ID!
+    title: String!
+    description: String
+    url: String!
+    topic_id: ID!
+    order: Int
+    topic: Topic!
+    tags: [Tag!]
+ }
+
+ type Mutation {
+    createLink(data:CreateLinkInput):Link!
+    updateLink(data:UpdateLinkInput):[Int!]!
+    deleteLink(data:DeleteLinkInput):Int!
+    updateLinkOrder(data:UpdateLinkOrderInput):[Int!]!
+    getPreviewLink(data:PreviewLinkInput):PreviewLink!
+}
+
+input CreateLinkInput {
+    title: String,
+    url: String!,    
+    topic_id:Int,
+    description: String
+    tags: [CreateTagInput]
+}
+
+input UpdateLinkInput {
+    id: ID!,
+    title: String, 
+    description: String
+    url: String!
+}
+
+input UpdateLinkOrderInput {
+    id: ID!
+    order: Int!
+}
+
+input PreviewLinkInput {
+    url: String!
+}
+
+input DeleteLinkInput {
+   id: ID!     
+}
+
+
