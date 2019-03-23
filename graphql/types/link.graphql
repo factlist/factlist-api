@@ -6,6 +6,7 @@ type Query {
 
 type PreviewLink {
     url:String!
+    title: String!
     thumbnail_width: Int!
     thumbnail_height: Int!
     thumbnail_url: String!
