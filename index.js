@@ -26,13 +26,13 @@ const server = new ApolloServer({
 });
 
 const app = express();
+app.use(cors())
 app.use(require('cookie-parser')());
 app.use(bodyParser.json({ type: '*/*' }));
 app.use(session({ secret: 'blah', name: 'id', cookie: { secure: false } }));
 app.use('/graphql', requireAuth);
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors())
 
 
 app.get('/auth/logout', (req, res) => {
