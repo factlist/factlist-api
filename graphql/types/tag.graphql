@@ -4,8 +4,8 @@ type Query {
 }
 
 type Tag {
-    id: ID!
-    title: String!
+    id: ID
+    title: String
  }
 
 input CreateTagInput {
