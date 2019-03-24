@@ -1,11 +1,30 @@
 version: '3'
+<<<<<<< HEAD
+services:  
+=======
 services:
+>>>>>>> develop
   db:
     image: 'mysql:5.7'    
     ports:      
       - "3307:3306"
     environment:         
         MYSQL_ROOT_PASSWORD: factlist
+<<<<<<< HEAD
+        MYSQL_DATABASE: factlist
+        MYSQL_USER: root
+        MYSQL_PASSWORD: factlist  
+  api:
+    build: .    
+    env_file: .env
+    command: /api/manage.py runserver 0.0.0.0:8000
+    volumes:    
+      - .:/api      
+    ports:
+      - '8000:8000'
+  redis:
+    image: 'redis:latest'      
+=======
         MYSQL_DATABASE: factlist-api
         MYSQL_USER: factlist
         MYSQL_PASSWORD: factlist
@@ -24,3 +43,4 @@ services:
         PORT: 4000
     ports:
       - '4000:4000'    
+>>>>>>> develop

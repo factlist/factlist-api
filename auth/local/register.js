@@ -2,7 +2,7 @@ const User = require('../../models').users;
 const token = require('../../helpers/token');
 const config = require('../../config');
 module.exports = app => {
-  app.post('/auth/register', async (req, res) => {
+  app.post('/api/v1/auth/register', async (req, res) => {
     if (!req.body.email || !req.body.password) {
       return res
         .status(500)
