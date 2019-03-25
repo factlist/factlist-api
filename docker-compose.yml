@@ -1,30 +1,11 @@
 version: '3'
-<<<<<<< HEAD
-services:  
-=======
 services:
->>>>>>> develop
   db:
     image: 'mysql:5.7'    
     ports:      
       - "3307:3306"
     environment:         
         MYSQL_ROOT_PASSWORD: factlist
-<<<<<<< HEAD
-        MYSQL_DATABASE: factlist
-        MYSQL_USER: root
-        MYSQL_PASSWORD: factlist  
-  api:
-    build: .    
-    env_file: .env
-    command: /api/manage.py runserver 0.0.0.0:8000
-    volumes:    
-      - .:/api      
-    ports:
-      - '8000:8000'
-  redis:
-    image: 'redis:latest'      
-=======
         MYSQL_DATABASE: factlist-api
         MYSQL_USER: factlist
         MYSQL_PASSWORD: factlist
@@ -36,11 +17,17 @@ services:
       - /app/node_modules
       - ./:/app
     environment: 
-        DB_USER: factlist
-        DB_PASSWORD: factlist
-        DB_NAME: factlist-api
-        DB_HOST: db         
-        PORT: 4000
+          DB_USER: factlist
+          DB_PASSWORD: factlist
+          DB_NAME: factlist-api
+          DB_HOST: db         
+          PORT: 4000
+          TWITTER_CONSUMER_SECRET: TWITTER_CONSUMER_SECRET
+          TWITTER_CONSUMER_KEY: TWITTER_CONSUMER_KEY
+          TWITTER_CALLBACK_URL: TWITTER_CALLBACK_URL
+          MAILGUN_API_KEY: MAILGUN_API_KEY
+          EMBEDLY_API_KEY: EMBEDLY_API_KEY            
     ports:
       - '4000:4000'    
->>>>>>> develop
+
+

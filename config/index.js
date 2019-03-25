@@ -23,21 +23,21 @@ const config = {
     auth: {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
-      mailgunApiKey: process.env.mailgunApiKey,
+      mailgunApiKey: process.env.MAILGUN_API_KEY,
       mailgunAccountEmail: 'http://factlist.com',
       mailgunDomain: 'account@factlist.com',
       twitter: {
         userProfileURL:
           'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
-        consumerKey: process.env.consumerKey,
-        consumerSecret: process.env.consumerSecret,
-        callbackURL: process.env.callbackURL
+        consumerKey: process.env.TWITTER_CONSUMER_KEY,
+        consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+        callbackURL: process.env.TWITTER_CALLBACK_URL
       }
     },
     service: {
       embedly: {
         api: 'https://api.embedly.com/1/oembed',
-        key: process.env.embedlyKey
+        key: process.env.EMBEDLY_API_KEY
       }
     },
     logLevel: 'debug'
@@ -63,20 +63,19 @@ const config = {
     },
     embedly: {
       api: 'https://api.embedly.com/1/oembed',
-      key: process.env.embedlyKey
+      key: process.env.EMBEDLY_API_KEY
     },
     auth: {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
-      mailgunApiKey: process.env.mailgunApiKey,
+      mailgunApiKey: process.env.MAILGUN_API_KEY,
       mailgunAccountEmail: 'http://factlist.com',
       mailgunDomain: 'account@factlist.com',
       twitter: {
-        userProfileURL:
-          'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
-        consumerKey: process.env.consumerKey,
-        consumerSecret: process.env.consumerSecret,
-        callbackURL: process.env.callbackURL
+        userProfileURL: 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
+        consumerKey: process.env.TWITTER_CONSUMER_KEY,
+        consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+        callbackURL: process.env.TWITTER_CALLBACK_URL
       }
     }
   },
@@ -101,20 +100,19 @@ const config = {
     },
     embedly: {
       api: 'https://api.embedly.com/1/oembed',
-      key: process.env.embedlyKey
+      key: process.env.EMBEDLY_API_KEY
     },
     auth: {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
-      mailgunApiKey: process.env.mailgunApiKey,
+      mailgunApiKey: process.env.MAILGUN_API_KEY,
       mailgunAccountEmail: 'http://factlist.com',
       mailgunDomain: 'account@factlist.com',
       twitter: {
-        userProfileURL:
-          'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
-        consumerKey: process.env.consumerKey,
-        consumerSecret: process.env.consumerSecret,
-        callbackURL: process.env.callbackURL
+        userProfileURL: 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
+        consumerKey: process.env.TWITTER_CONSUMER_KEY,
+        consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+        callbackURL: process.env.TWITTER_CALLBACK_URL
       }
     },
     logLevel: 'info'
@@ -140,20 +138,19 @@ const config = {
     },
     embedly: {
       api: 'https://api.embedly.com/1/oembed',
-      key: process.env.embedlyKey
+      key: process.env.EMBEDLY_API_KEY
     },
     auth: {
       tokenLifeTime: '1h',
       jwtSecret: 'secretKey',
-      mailgunApiKey: process.env.mailgunApiKey,
+      mailgunApiKey: process.env.MAILGUN_API_KEY,
       mailgunAccountEmail: 'http://factlist.com',
       mailgunDomain: 'account@factlist.com',
       twitter: {
-        userProfileURL:
-          'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
-        consumerKey: process.env.consumerKey,
-        consumerSecret: process.env.consumerSecret,
-        callbackURL: process.env.callbackURL
+        userProfileURL:'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true',
+        consumerKey: process.env.TWITTER_CONSUMER_KEY,
+        consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+        callbackURL: process.env.TWITTER_CALLBACK_URL
       }
     }
   },
