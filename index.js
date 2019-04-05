@@ -29,11 +29,10 @@ const app = express();
 app.use(cors())
 app.use(require('cookie-parser')());
 app.use(bodyParser.json({ type: '*/*' }));
-//app.use(session({ secret: 'blah', name: 'id', cookie: { secure: false } }));
+app.use(session({ secret: 'blah', name: 'id', cookie: { secure: false } }));
 app.use('/api/v1/graphql', requireAuth);
 app.use(passport.initialize());
-//app.use(passport.session());
-
+app.use(passport.session());
 /*
 app.get('/api/v1/auth/logout', (req, res) => {
   req.logout();
