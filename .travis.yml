@@ -1,1 +1,13 @@
+language: minimal
 
+services:
+  - docker
+
+before_install:
+  - DOCKER_TAG=factlist/factlist-api:${TRAVIS_BRANCH}
+script:
+  - docker build -t $DOCKER_TAG .
+  
+deploy:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push $DOCKER_TAG

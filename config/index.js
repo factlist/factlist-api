@@ -4,11 +4,11 @@ const locale = require('./locales/en');
 const config = {
   development: {
     locale,
-    username: 'root',
-    password: '',
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
     logging: false,
-    database: 'factlist-api',
-    host: 'localhost',
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
     dialect: 'mysql',
     timezone: '+00:00',
     define: {
