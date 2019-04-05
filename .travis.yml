@@ -3,11 +3,20 @@ language: minimal
 services:
   - docker
 
+addons:
+  ssh_known_hosts:
+  - dev.factlist.com
+  
 before_install:
   - DOCKER_TAG=factlist/factlist-api:${TRAVIS_BRANCH}
-script:
+
+install:
   - docker build -t $DOCKER_TAG .
-  
-deploy:
+
+after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push $DOCKER_TAG
+
+deploy:
+  - provider: script
+    script: ssh ubuntu@dev.factlist.com ./deploy.sh
