@@ -5,8 +5,8 @@ const config = require('../../config');
 const token = require('../../helpers/token');
 
 const platform = 'twitter';
-const authRouter = '/auth/twitter';
-const callbackRouter = '/auth/twitter/callback';
+const authRouter = '/api/v1/auth/twitter';
+const callbackRouter = '/api/v1/auth/twitter/callback';
 const failureRedirect = '/login';
 const authMiddleware = passport.authenticate(platform, { failureRedirect });
 const twitterOptions = { ...config.auth.twitter, passReqToCallback: true };
