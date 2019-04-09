@@ -21,7 +21,7 @@ const config = {
       port: process.env.port || 4000
     },
     auth: {
-      tokenLifeTime: '1h',
+      tokenLifeTime: '30d',
       jwtSecret: 'secretKey',
       mailgunApiKey: process.env.MAILGUN_API_KEY,
       mailgunAccountEmail: 'http://factlist.com',
@@ -66,7 +66,7 @@ const config = {
       key: process.env.EMBEDLY_API_KEY
     },
     auth: {
-      tokenLifeTime: '1h',
+      tokenLifeTime: '30d',
       jwtSecret: 'secretKey',
       mailgunApiKey: process.env.MAILGUN_API_KEY,
       mailgunAccountEmail: 'http://factlist.com',
@@ -103,7 +103,7 @@ const config = {
       key: process.env.EMBEDLY_API_KEY
     },
     auth: {
-      tokenLifeTime: '1h',
+      tokenLifeTime: '30d',
       jwtSecret: 'secretKey',
       mailgunApiKey: process.env.MAILGUN_API_KEY,
       mailgunAccountEmail: 'http://factlist.com',
@@ -141,7 +141,7 @@ const config = {
       key: process.env.EMBEDLY_API_KEY
     },
     auth: {
-      tokenLifeTime: '1h',
+      tokenLifeTime: '30d',
       jwtSecret: 'secretKey',
       mailgunApiKey: process.env.MAILGUN_API_KEY,
       mailgunAccountEmail: 'http://factlist.com',
