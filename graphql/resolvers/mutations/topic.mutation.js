@@ -1,7 +1,10 @@
 const { check } = require('../../../helpers/');
 
 module.exports = {
-  createTopic: async (_, { data: { title, links } }, { db, authUser }) => {
+  createTopic: async (_, { data: { title = "Untitled topic", links = [] } }, { db, authUser }) => {
+    
+    //TODO validate both title or link is empty.
+      
     try {
 			check.Auth(authUser);
       let topic=  await db.topics.create(
@@ -28,13 +31,17 @@ module.exports = {
     }
   },
 
-  updateTopic: async (_, { data: { id, title } }, { db, authUser }) => {
+  updateTopicTitle : async (_, { data: { id, title } }, { db, authUser }) => {
     try {
       check.Auth(authUser);
-      return await db.topics.update(
-        { title: title },
-        { where: { id: id, user_id: authUser.id } }
-      );
+      const topic = await db.topics.findOne({
+        where : { id: id, user_id: authUser.id }
+      });
+      await topic.update({
+        title : title
+      });
+
+      return topic;
     } catch (error) {
       throw new Error(error);
     }
