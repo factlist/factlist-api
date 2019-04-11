@@ -69,5 +69,59 @@ module.exports = {
     } catch (error) {
       throw new Error(error);
     }
+  },
+
+  addTag: async (_, { data: { id, tags } }, { db, authUser }) => {
+    try {
+      check.Auth(authUser);
+      const user = await getUserFromLink(id);
+      if (authUser.id === user.id) {
+
+        const link = await db.links.findOne({
+          where : { id: id }
+        });
+
+        tags = tags.map( ({ title }) => {
+          return db.tags.findOrCreate({
+            where : { title }
+          })  
+        })
+
+        tags = await Promise.all(tags);
+        
+        tags = tags.map(response => response[0]);
+        
+        await link.setTags(tags);
+
+        return tags;
+        
+        
+      }
+      throw new Error(config.locale.auth.not_authorized);
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
+  removeTag: async (_, { data: { id, tags } }, { db, authUser }) => {
+    try {
+      check.Auth(authUser);
+      const user = await getUserFromLink(id);
+      if (authUser.id === user.id) {
+      
+        return await db.link_tags.destroy({
+          where : {
+            tag_id : tags.map(t => t.id),
+            link_id : id
+          }
+        })
+
+       
+      }
+      throw new Error(config.locale.auth.not_authorized);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
+
 };

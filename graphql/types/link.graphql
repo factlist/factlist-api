@@ -19,8 +19,8 @@ type Link {
     updateLinkTitle(data:UpdateLinkTitleInput):Link!
     deleteLink(data:DeleteLinkInput):Int!
     updateLinkOrder(data:UpdateLinkOrderInput):[Int!]!
-    addTag(data:AddTagInput):[Tag!]!
-    removeTag(data:RemoveTagInput):[Int!]!
+    addTag(data:AddTagInput):[Tag]
+    removeTag(data:RemoveTagsInput):Int!
 }
 
 input CreateLinkInput {
@@ -49,9 +49,9 @@ input AddTagInput {
     tags: [CreateTagInput!]!
 }
 
-input RemoveTagInput {
+input RemoveTagsInput {
     id: ID!,
-    tags: [RemoveTagInput!]!
+    tags: [DeleteTagInput!]!
 }
 
 
