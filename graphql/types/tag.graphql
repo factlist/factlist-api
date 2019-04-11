@@ -21,6 +21,10 @@ input DeleteTagInput {
     id: ID!
 }
 
+input RemoveTagInput {
+    id: ID!
+}
+
 type Mutation {
     updateTag(data: UpdateTagInput):[Int!]!
     deleteTag(data: DeleteTagInput):Int!
