@@ -1,4 +1,4 @@
-const { check } = require('../../../helpers/');
+const { check, previewLink } = require('../../../helpers/');
 const config = require('../../../config/');
 
 module.exports = {
@@ -11,12 +11,19 @@ module.exports = {
       check.Auth(authUser);
       const topic = await db.topics.findByPk(topic_id);
       if (authUser.id === topic.user_id) {
+        
+        if( !title ) {
+          const linkData = await previewLink(url);
+          title = linkData.title;
+        }
+
         return  await db.links.create(
           { title, url, topic_id, tags },
           {
             include: [{ model: db.topics }, { model: db.tags }]
           }
-				);
+        );
+          
       }
       throw new Error(config.locale.auth.not_authorized);
     } catch (error) {
