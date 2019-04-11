@@ -41,6 +41,7 @@ module.exports = {
         title : title
       });
 
+      topic.user = authUser.get({plain:true});
       return topic;
     } catch (error) {
       throw new Error(error);
