@@ -4,7 +4,7 @@ const config = require('../../../config/');
 module.exports = {
   createLink: async (
     _,
-    { data: { title, description, url, topic_id, tags } },
+    { data: { title, url, topic_id, tags } },
     { db, authUser }
   ) => {
     try {
@@ -12,7 +12,7 @@ module.exports = {
       const topic = await db.topics.findByPk(topic_id);
       if (authUser.id === topic.user_id) {
         return await db.links.create(
-          { title, description, url, topic_id, tags },
+          { title, url, topic_id, tags },
           {
             include: [{ model: db.topics }, { model: db.tags }]
           }
@@ -25,13 +25,13 @@ module.exports = {
       throw new Error(error);
     }
   },
-  updateLink: async (_, { data: { id, title, description, url } }, { db, authUser }) => {
+  updateLink: async (_, { data: { id, title, url } }, { db, authUser }) => {
     try {
       check.Auth(authUser);
       const user = await getUserFromLink(id);
       if (authUser.id === user.id) {
         return await db.links.update(
-          { title: title, url: url, description: description },
+          { title: title, url: url},
           { where: { id: id } }
         );
       }

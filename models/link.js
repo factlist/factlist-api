@@ -3,8 +3,7 @@ module.exports = (sequelize, DataTypes) => {
 		title: DataTypes.STRING,
 		url: DataTypes.STRING,
 		topic_id: DataTypes.INTEGER,
-		order: DataTypes.INTEGER,
-		description: DataTypes.STRING
+		order: DataTypes.INTEGER
 	})
 	Link.associate = function(models) {
 		Link.belongsTo(models.topics)

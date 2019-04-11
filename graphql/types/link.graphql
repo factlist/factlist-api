@@ -10,14 +10,12 @@ type PreviewLink {
     thumbnail_width: Int!
     thumbnail_height: Int!
     thumbnail_url: String!
-    description: String!
     type: String!
 }
 
 type Link {
     id: ID!
     title: String!
-    description: String
     url: String!
     topic_id: ID!
     order: Int
@@ -37,14 +35,12 @@ input CreateLinkInput {
     title: String,
     url: String!,    
     topic_id:Int,
-    description: String
     tags: [CreateTagInput]
 }
 
 input UpdateLinkInput {
     id: ID!,
     title: String, 
-    description: String
     url: String!
 }
 
