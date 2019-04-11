@@ -1,4 +1,4 @@
-const { check, previewLink } = require('../../../helpers/');
+const { check } = require('../../../helpers/');
 const config = require('../../../config/');
 
 module.exports = {
@@ -53,15 +53,6 @@ module.exports = {
         return await db.links.update({ order }, { where: { id: id } });
       }
       throw new Error(config.locale.auth.not_authorized);
-    } catch (error) {
-      throw new Error(error);
-    }
-  },
-
-  getPreviewLink: async (_, { data: { url } }, { authUser }) => {
-    try {
-      check.Auth(authUser);
-			return await previewLink(url);
     } catch (error) {
       throw new Error(error);
     }

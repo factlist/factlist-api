@@ -4,15 +4,6 @@ type Query {
     links: [Link!]
 }
 
-type PreviewLink {
-    url:String!
-    title: String!
-    thumbnail_width: Int!
-    thumbnail_height: Int!
-    thumbnail_url: String!
-    type: String!
-}
-
 type Link {
     id: ID!
     title: String!
@@ -30,7 +21,6 @@ type Link {
     updateLinkOrder(data:UpdateLinkOrderInput):[Int!]!
     addTag(data:AddTagInput):[Tag!]!
     removeTag(data:RemoveTagInput):[Int!]!
-    getPreviewLink(data:PreviewLinkInput):PreviewLink!
 }
 
 input CreateLinkInput {
@@ -62,10 +52,6 @@ input AddTagInput {
 input RemoveTagInput {
     id: ID!,
     tags: [RemoveTagInput!]!
-}
-
-input PreviewLinkInput {
-    url: String!
 }
 
 
