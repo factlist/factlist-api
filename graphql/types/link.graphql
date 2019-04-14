@@ -26,8 +26,8 @@ type Link {
 input CreateLinkInput {
     title: String,
     url: String!,    
-    topic_id:Int!,
-    tags: [CreateTagInput!]
+    topic_id: ID,
+    tags: [CreateTagInput]
 }
 
 input UpdateLinkTitleInput {
