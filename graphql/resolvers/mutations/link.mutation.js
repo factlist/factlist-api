@@ -97,8 +97,7 @@ module.exports = {
         tags = await Promise.all(tags);
         
         tags = tags.map(response => response[0]);
-        
-        await link.setTags(tags);
+        await link.addTags(tags);
 
         return tags;
         
