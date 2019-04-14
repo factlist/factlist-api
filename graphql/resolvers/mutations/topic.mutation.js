@@ -1,4 +1,4 @@
-const { check } = require('../../../helpers/');
+const { check, previewLink } = require('../../../helpers/');
 
 module.exports = {
   createTopic: async (_, { data: { title = "Untitled topic", links = [] } }, { db, authUser }) => {
@@ -6,24 +6,32 @@ module.exports = {
     //TODO validate both title or link is empty.
       
     try {
-			check.Auth(authUser);
-      let topic=  await db.topics.create(
-        {
+      check.Auth(authUser);
+      
+      let topic = await db.topics.create({
           title,
           user_id: authUser.id,
-          links,
-        },
-        {
-          include: [
-            { model: db.users },
-            {
-              model: db.links,
-              include: [{ model: db.tags }]
-            }
-          ]
-        }
-			);
-			topic.user = authUser.get({plain:true});
+      });
+      
+      links = links.map(async link => {
+        link.topic_id = topic.id;
+        
+        if(!link.title){
+          const linkData = await previewLink(link.url);
+          link.title = linkData.title;
+        }  
+
+        return await db.links.create(link, {
+          include: [{ model: db.tags }]
+        });
+
+      })
+
+      links = await Promise.all(links);
+      
+      topic.links = links.map(response => response[0]);
+      topic.user = authUser.get({plain:true});
+      
 			return topic;
 
     } catch (error) {
