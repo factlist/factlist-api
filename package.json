@@ -8,8 +8,8 @@
         "db:migrate": "./node_modules/.bin/sequelize db:migrate",
         "db:seed": "./node_modules/.bin/sequelize db:seed:undo:all && sequelize db:seed:all",
         "db:refresh": "npm run db:revert && npm run db:migrate && npm run db:seed",
-        "watch": "NODE_ENV=development nodemon --ext . index.js -e js,html,graphql",
-        "docker": "NODE_ENV=docker node index.js",
+        "watch": "NODE_ENV=development NODE_PATH=src nodemon --ext . src/index.js -e js,html,graphql",
+        "docker": "NODE_ENV=docker NODE_PATH=src node index.js",
         "test": "echo \"Error: no test specified\" && exit 1",
         "format": "prettier --write ./**/*.js"
     },
