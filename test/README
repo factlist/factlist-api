@@ -1,0 +1,3 @@
+I quickly put some small shell scripts here to test several
+endpoints manually. These are not fancy automated tests but
+"manual integration tests".
