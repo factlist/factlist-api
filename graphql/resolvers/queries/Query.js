@@ -3,26 +3,26 @@ const { check } = require('../../../helpers');
 module.exports = {
   users: async (_, args, { db, authUser }) => {
     check.Auth(authUser);
-    return await db.users.all();
+    return await db.users.findAll();
   },
 
   user: async (_, { username }, { db, authUser }) => {
     check.Auth(authUser);
-    return await db.users.find({
+    return await db.users.findOne({
       where: { username }
     });
 	},
 
 	getUserById: async (_, { id }, { db, authUser }) => {
     check.Auth(authUser);
-    return await db.users.find({
+    return await db.users.findOne({
       where: { id }
     });
   },
 
   topics: async (_, args, { db, authUser }) => {
     check.Auth(authUser);
-    return await db.topics.all({
+    return await db.topics.findAll({
       include: [
         {
           model: db.users
@@ -33,7 +33,7 @@ module.exports = {
 
   links: async (_, args, { db, authUser }) => {
     check.Auth(authUser);
-    return await db.links.all({
+    return await db.links.findAll({
       include: [
         {
           model: db.topics
@@ -57,7 +57,7 @@ module.exports = {
 
   tags: async (_, args, { db, authUser }) => {
     check.Auth(authUser);
-    return await db.tags.all();
+    return await db.tags.findAll();
   },
 
   tag: async (_, { id }, { db, authUser }) => {
