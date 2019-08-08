@@ -1,0 +1,62 @@
+#!/bin/sh
+
+# Small migration helper script built on top of Migra
+
+mgrscript="migration.sql"
+
+main() {
+    if test -z "$DB_URL" -o -z "$DB2_URL"
+    then
+        echo '$DB_URL and $DB2_URL must be defined'
+        exit 3
+    fi
+
+    cmd="$1"
+
+    case "$cmd" in
+        patch) patch ;;
+        diff) diff ;;
+        *) usage ;;
+    esac
+}
+
+usage() {
+    echo "Usage:"
+    echo "  $0 diff <path/to/schema.sql  # Diff current db schema with given schema"
+    echo "  $0 patch <path/to/migration.sql  # Apply given migration to current db"
+}
+
+patch() {
+    psql "$DB_URL" -1 || exit 4
+}
+
+diff_cleanup() {
+    echo -e "\nCleaning up:\n"
+
+    echo "drop schema public cascade; create schema public" \
+    | DB_URL="$DB2_URL" "$0" patch
+}
+
+diff() {
+    trap diff_cleanup 1 2 3 6
+
+    echo -e "Setting up the helper database with the new schema:\n"
+
+    cat | DB_URL="$DB2_URL" "$0" patch
+
+    echo "-- Please review and feel free to modify this auto-generated migration file." > "$mgrscript"
+    echo -e "-- Don't worry, it won't be applied until you explicitly call the patch command.\n" >> "$mgrscript"
+
+    migra --unsafe "$DB_URL" "$DB2_URL" >> "./$mgrscript"
+
+    test $? -eq 2 && diff_cleanup || exit 5
+
+    echo -e "\nSuccessfully generated migration script: $mgrscript"
+    echo "Please review & optionally modify it"
+    echo "Apply it when you are ready using the patch command"
+
+    test -n "$EDITOR" && "$EDITOR" "$mgrscript" </dev/tty
+    # "</dev/tty" fixes vim's "input not from terminal" error
+}
+
+main "$@"

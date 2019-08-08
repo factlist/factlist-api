@@ -1,9 +1,0 @@
-#!/bin/sh
-
-test -z $1 && echo 'usage: ./signin <email> <pass>' && exit 1
-
-curl http://localhost:4000/api/v1/auth/login \
-  -XPOST \
-  -i \
-  -H 'Content-type: application/json' \
-  -d '{"email": "'$1'", "password": "'$2'"}'
