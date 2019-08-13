@@ -10,6 +10,8 @@ module.exports = app => ({
             type: 'object',
             required: ['email', 'password'],
             properties: {
+                name: {type: 'string'},
+                username: {type: 'string'},
                 email: {type: 'string'},
                 password: {type: 'string'},
             },
@@ -42,7 +44,7 @@ module.exports = app => ({
             )
             .then(hashedPassword =>
                 app.db.users.insert({
-                    email: req.body.email,
+                    ...req.body,
                     password: hashedPassword,
                 }, {
                     fields: ['id'],
