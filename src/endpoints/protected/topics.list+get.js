@@ -77,8 +77,8 @@ const listEndpoint = app => ({
             },
         },
     },
-    handler: () =>
-        fetchTopics(app.db),
+    handler: req =>
+        fetchTopics(app.db, {user_id: req.user.id}),
 })
 
 const showEndpoint = app => ({
@@ -97,6 +97,7 @@ const showEndpoint = app => ({
     handler: req =>
         fetchTopics(app.db, {
             topic_id: req.params.id,
+            user_id: req.user.id,
         }, {
             single: true,
         })

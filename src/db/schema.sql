@@ -47,6 +47,7 @@ create view links_extended as
         l.weight,
         t.id topic_id,
         t.title topic_title,
+        t.user_id,
         u.username,
         ltg.id link_tag_id,
         tg.id tag_id,
