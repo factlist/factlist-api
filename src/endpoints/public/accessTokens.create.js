@@ -1,6 +1,5 @@
 const
     bcrypt = require('bcryptjs'),
-    {pick} = require('lodash'),
     jwt = require('lib/jsonwebtoken'),
     {JWT_SECRET, JWT_LIFETIME} = process.env
 
@@ -31,7 +30,7 @@ module.exports = app => ({
     },
     handler: req =>
         app.db.users.findOne({email: req.body.email}, {
-            fields: ['id', 'email', 'password', 'name'],
+            fields: ['id', 'password'],
         })
             .then(userRecord =>
                 userRecord || Promise.reject({statusCode: 401})
@@ -42,7 +41,7 @@ module.exports = app => ({
                         !match
                             ? Promise.reject({statusCode: 401})
                             : jwt.sign(
-                                pick(userRecord, ['id', 'email', 'name']),
+                                {id: userRecord.id},
                                 JWT_SECRET,
                                 {expiresIn: JWT_LIFETIME}
                             )

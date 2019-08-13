@@ -1,5 +1,4 @@
 const
-    {pick} = require('lodash'),
     jwt = require('lib/jsonwebtoken'),
     {JWT_SECRET, JWT_LIFETIME} = process.env
 
@@ -48,12 +47,12 @@ module.exports = app => ({
                 }, {
                     onConflictUpdate: ['twitterid'],
                     onConflictUpdateExclude: ['username'],
-                    fields: ['id', 'name', 'email'],
+                    fields: ['id'],
                 })
             )
             .then(userRecord =>
                 jwt.sign(
-                    pick(userRecord, ['id', 'email', 'name']),
+                    {id: userRecord.id},
                     JWT_SECRET,
                     {expiresIn: JWT_LIFETIME}
                 ),

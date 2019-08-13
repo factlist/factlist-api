@@ -4,6 +4,7 @@ const
     fastify = require('fastify'),
     fastifySwagger = require('fastify-swagger'),
     fastifyCors = require('fastify-cors'),
+    Ajv = require('ajv'),
     massive = require('massive'),
     nodemailer = require('nodemailer'),
     {PromiseOAuth} = require('oauth-libre'),
@@ -14,7 +15,11 @@ const
 
 
 const main = () => {
-    const app = fastify({logger: true})
+    const
+      app = fastify({logger: true}),
+      ajv = makeAjv()
+
+    app.setSchemaCompiler(schema => ajv.compile(schema))
 
     app.register(fastifySwagger, config.fastifySwagger)
     app.ready(() => app.swagger())
@@ -91,6 +96,16 @@ const handleErrors = app => (err, req, res) => {
 
     return res.status(err.statusCode).send(err)
 }
+
+const makeAjv = () =>
+    new Ajv({
+        removeAdditional: true,
+        useDefaults: true,
+        coerceTypes: true,
+        allErrors: true,
+        nullable: true,
+        $data: true,
+    })
 
 const makeTwitterOAuthCli = () =>
     new PromiseOAuth(

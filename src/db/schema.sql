@@ -4,7 +4,9 @@ create table users (
   username text unique,
   twitterid bigint unique,
   email text unique,
-  password text
+  password text,
+  bio text,
+  avatar text  -- base64 encoded image
 );
 
 create table password_reset_requests (
