@@ -98,11 +98,9 @@ const showEndpoint = app => ({
         fetchTopics(app.db, {
             topic_id: req.params.id,
             user_id: req.user.id,
-        }, {
-            single: true,
         })
-            .then(topicRecord =>
-                topicRecord || Promise.reject({statusCode: 404})
+            .then(topicRecords =>
+                topicRecords[0] || Promise.reject({statusCode: 404})
             ),
 })
 
