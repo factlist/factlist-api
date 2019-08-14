@@ -19,6 +19,7 @@
     "fastify": "^2.6.0",
     "fastify-cors": "^2.1.3",
     "fastify-swagger": "^2.4.0",
+    "htmlparser2": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "massive": "git+https://gitlab.com/gwn/massive-js.git#ed879fa4bc3f3da74f2f47bd10626f5d13dcb091",
